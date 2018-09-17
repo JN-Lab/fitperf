@@ -16,10 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from authentification import views as auth_views
+from program_builder import views as pgr_builder_views
 
 urlpatterns = [
+    path('', pgr_builder_views.index, name="index"),
     path('authentification/', include('authentification.urls', namespace="authentification")),
-    path('home/', auth_views.homepage, name="homepage"),
+    path('app/', include('program_builder.urls', namespace='program_builder')),
     path('admin/', admin.site.urls),
 ]
