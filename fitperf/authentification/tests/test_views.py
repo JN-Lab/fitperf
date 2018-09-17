@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.db.models import Q
 from django.contrib import auth
 from django.contrib.auth.models import User
-from ..models import Profile
+from program_builder.models import Profile
 
 class RegisterPageTestCase(TestCase):
     
