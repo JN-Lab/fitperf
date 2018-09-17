@@ -1,3 +1,4 @@
 env/
 fitperf/fitperf/__pycache__/
 fitperf/fitperf/settings/__pycache__/
+fitperf/authentification/__pycache__/
