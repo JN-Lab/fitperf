@@ -16,6 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from authentification import views as auth_views
+
 urlpatterns = [
+    path('login/', auth_views.log_in, name="log_in"),
+    path('logout/', auth_views.log_out, name="log_out"),
+    path('register/', auth_views.register, name="register"),
+    path('activate/<uidb64>/<token>/', auth_views.activate, name="activate"),
+    path('password-forgotten/', auth_views.password_forgotten, name="password_forgotten"),
+    path('password-reset-activate/<uidb64>/<token>/', auth_views.password_reset_activate, name="password_reset_activate"),
+    path('password-reset/', auth_views.password_reset_new, name="password_reset_new"),
+    path('home/', auth_views.homepage, name="homepage"),
     path('admin/', admin.site.urls),
 ]
