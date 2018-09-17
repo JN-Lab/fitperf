@@ -17,4 +17,4 @@ services:
   - postgresql
 
 script:
-  - ./manage.py test
+  - cd fitperf && ./manage.py test
