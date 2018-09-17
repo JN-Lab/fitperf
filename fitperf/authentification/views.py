@@ -26,7 +26,7 @@ def log_in(request):
             user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)
-                return redirect(reverse('authentification:homepage'), locals())
+                return redirect(reverse('homepage'), locals())
             else:
                 messages.error(request, """Votre nom d'utilisateur ou votre mot de passe est incorrect.""")
                 return render(request, 'login.html', locals())
@@ -206,7 +206,7 @@ def password_reset_new(request):
         password_reset_form = PasswordResetNew()
         return render(request, 'password_reset_new.html', locals())
 
-@login_required(login_url='/login/')
+@login_required(login_url='authentification/login/')
 def homepage(request):
     """
     This is just a view to have an homepage for the example.
