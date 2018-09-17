@@ -26,7 +26,7 @@ def log_in(request):
             user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)
-                return redirect(reverse('homepage'), locals())
+                return redirect(reverse('authentification:homepage'), locals())
             else:
                 messages.error(request, """Votre nom d'utilisateur ou votre mot de passe est incorrect.""")
                 return render(request, 'login.html', locals())
@@ -71,7 +71,7 @@ def register(request):
 
                 messages.success(request, """Un email vous a été envoyé. Veuillez cliquer sur le lien pour finaliser
                     votre inscription s'il vous plait""")
-                return redirect('log_in')
+                return redirect(reverse('authentification:log_in'), locals())
 
             else:
                 if username_already_exist:
@@ -80,7 +80,7 @@ def register(request):
                 elif mail_already_exist:
                     messages.error(request, """L'email est déjà associé à un compte utilisateur. Veuillez
                         vous connecter avec vos identifiants s'il vous plaît.""")
-                    return redirect('log_in')
+                    return redirect(reverse('authentification:log_in'), locals())
                 else:
                     messages.error(request, """Il y a une erreur au niveau du mot de passe. Veuillez réessayer
                         s'il vous plaît.""")
@@ -105,17 +105,17 @@ def activate(request, uidb64, token):
         login(request, user)
         messages.success(request, """Merci pour avoir confirmé votre email. Vous pouvez désormais 
             vous connecter à votre compte.""")
-        return redirect(reverse('log_in'), locals())
+        return redirect(reverse('authentification:log_in'), locals())
     else:
         messages.error(request, """Le lien d'activation n'est pas valide!""")
-        return redirect(reverse('register'), locals())
+        return redirect(reverse('authentification:register'), locals())
 
 def log_out(request):
     """
     This mail manages the logout process
     """
     logout(request)
-    return redirect(reverse('log_in'), locals())
+    return redirect(reverse('authentification:log_in'), locals())
 
 def password_forgotten(request):
     """
@@ -175,10 +175,10 @@ def password_reset_activate(request, uidb64, token):
         user = None
     if user is not None and account_activation_token.check_token(user, token):
         login(request, user)
-        return redirect(reverse('password_reset_new'), locals())
+        return redirect(reverse('authentification:password_reset_new'), locals())
     else:
         messages.error(request, """Le lien d'activation n'est pas valide!""")
-        return redirect(reverse('log_in'), locals())
+        return redirect(reverse('authentification:log_in'), locals())
 
 def password_reset_new(request):
     """
@@ -197,11 +197,11 @@ def password_reset_new(request):
                 logout(request)
                 messages.success(request, """Votre mot de passe a été modifié.
                     Vous pouvez désormais vous connecter avec votre nouveau mot de passe.""")
-                return redirect(reverse('log_in'), locals())
+                return redirect(reverse('authentification:log_in'), locals())
             else:
                 messages.error(request, """Il y a un problème concernant votre compte.
                     Nous travaillons actuellement dessus.""")
-                return redirect(reverse('register'), locals())
+                return redirect(reverse('authentification:register'), locals())
     else:
         password_reset_form = PasswordResetNew()
         return render(request, 'password_reset_new.html', locals())
