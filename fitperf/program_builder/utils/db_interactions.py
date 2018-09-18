@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 # coding: utf-8
 from django.contrib.auth.models import User
-from ..models import Profile, Session, ExercisesPerSession, Program, Training, Exercise, MovementsPerExercise, Movement, MovementSettings
+from ..models import Profile, Session, ExercisesPerSession, Program, Training, Exercise, MovementsPerExercise, Movement, MovementSettings, Equipment
 
 class DBInteractions:
     """
@@ -18,33 +18,52 @@ class DBInteractions:
     def set_profile(self):
         pass
 
-    def set_movement_setting(self, setting_value):
+    def set_movement_setting(self, setting_value, founder):
         """
-        This method registers a new movement settings only if:
+        This method registers and returns a new movement settings only if:
             - it is in a predetermined list. Just to ensure it had been thinked before on models
-            - if it doesn't exist in the table. If it already exists return str(already_exists)
+            - if it doesn't exist in the table. If it already exists, it returns the string
+            "already_exists"
         """
 
         movement_settings = [
             'Repetitions',
             'Poids',
             'Distance',
+            'Calories',
         ]
 
         if setting_value in movement_settings:
             try:
-                movement_setting = MovementSettings.objects.create(name=setting_value)
+                movement_setting = MovementSettings.objects.create(name=setting_value, founder=founder)
                 return movement_setting
             except:
                 return "already_exists"
         else:
             return None
 
-    def set_equipment(self, equipment_name):
-        pass
+    def set_equipment(self, equipment_name, founder):
+        """
+        This method registers and returns a new equipment only if it does not already exist
+        in the database.
+        If the equipment already exists, it returns the string "already_exists"
+        """
 
-    def set_movement(self):
-        pass
+        try:
+            equipment = Equipment.objects.create(name=equipment_name, founder=founder)
+            return equipment
+        except:
+            return "already_exists"
+
+    def set_movement(self, movement_name, founder, equipment, *settings):
+
+        try:
+            movement = Movement.objects.create(name=movement_name, founder=founder, equipment=equipment)
+            for setting in settings:
+                movement.settings.add(setting)
+            return movement
+        except:
+            return "already_exists"
 
     def set_setting_to_movement(self):
         pass
