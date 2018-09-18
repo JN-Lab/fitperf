@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.db.models import Q
 from django.contrib import auth
 from django.contrib.auth.models import User
-from ..models import Profile
+from program_builder.models import Profile
 
 class RegisterPageTestCase(TestCase):
     
@@ -94,7 +94,7 @@ class LoginPageTestCase(TestCase):
 
         response = self.client.post(reverse('authentification:log_in'), data)
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('homepage'))
+        self.assertRedirects(response, reverse('program_builder:homepage'))
 
         user = auth.get_user(self.client)
         self.assertTrue(user.is_authenticated)
