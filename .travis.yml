@@ -16,5 +16,8 @@ env: DJANGO_SETTINGS_MODULE="fitperf.settings.travis"
 services:
   - postgresql
 
+addons:
+  postgresql: "9.4"
+
 script:
   - cd fitperf/ && ./manage.py test
