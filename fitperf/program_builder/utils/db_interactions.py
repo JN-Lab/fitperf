@@ -1,7 +1,89 @@
 #! /usr/bin/env python3
 # coding: utf-8
 from django.contrib.auth.models import User
-from ..models import Profile, Program, Training, MovementSettings, Movement, Exercise, MovementsPerExercise, Session
+from ..models import Profile, Session, ExercisesPerSession, Program, Training, Exercise, MovementsPerExercise, Movement, MovementSettings
+
+class DBInteractions:
+    """
+    This class manages all the interactions with the database:
+        - all set_* methods register data in the database
+        - all get_* methods get data from the database
+        - all change_* methods modify information in the database
+        - all del_* methods delete information from the database
+    """
+
+    ## SET METHODS ##
+
+    # Maybe set this methods in auth app
+    def set_profile(self):
+        pass
+
+    def set_movement_setting(self, setting_value):
+        """
+        This method registers a new movement settings only if:
+            - it is in a predetermined list. Just to ensure it had been thinked before on models
+            - if it doesn't exist in the table. If it already exists return str(already_exists)
+        """
+
+        movement_settings = [
+            'Repetitions',
+            'Poids',
+            'Distance',
+        ]
+
+        if setting_value in movement_settings:
+            try:
+                movement_setting = MovementSettings.objects.create(name=setting_value)
+                return movement_setting
+            except:
+                return "already_exists"
+        else:
+            return None
+
+    def set_equipment(self, equipment_name):
+        pass
+
+    def set_movement(self):
+        pass
+
+    def set_setting_to_movement(self):
+        pass
+
+    def set_equipment_to_movement(self):
+        pass
+
+    def set_exercise(self):
+        pass
+
+    def set_movement_to_exercise(self):
+        pass
+
+    def set_training(self):
+        pass
+
+    def set_exercise_to_training(self):
+        pass
+
+    def set_program(self):
+        pass
+
+    def set_training_to_program(self):
+        pass
+
+    def set_session(self):
+        pass
+
+    def set_user_to_session(self):
+        pass
+
+    def set_program_to_session(self):
+        pass
+
+    def set_training_to_session(self):
+        pass
+
+    def set_exercise_to_session(self):
+        pass
 
 class DBSet:
     """
@@ -14,8 +96,11 @@ class DBSet:
 
     # Créer une caractéristique de mouvement
 
+    # Créer un équipement
+
     # Créer un mouvement (<-- Admin)
         # Créer une association entre une caractéristique et un mouvement
+        # Créer un association entre un équipement et un mouvement
     
     # Créer un exercice
         # Créer une association entre un mouvement et un exercice
@@ -30,12 +115,6 @@ class DBSet:
         # Ca consiste à plusieurs choses:
         #     - Associer un entrainements d un programme à une date
         #     - Définir si les exercices de cet entrainement sont un challenge
-
-    def set_profile(self):
-        pass
-
-    def set_program(self):
-        pass
 
 class DBGet:
     """
@@ -84,6 +163,13 @@ class DBGet:
         # Récupérer toutes les caractéristique d'un mouvement
         # Récupérer une caractéristique d'un mouvement
 
+    # Récupérer tous les équipements
+        # Récupérer un équipement
+        # Récupérer l'équipement d'un mouvement
+        # Récupérer tous les équipements d'un exercice
+        # Récupérer tous les équipements d'un entraînement
+        # Récupérer tous les équipements d'un programme
+
     pass
 
 class DBAlter:
@@ -113,6 +199,9 @@ class DBAlter:
         # Modifier/ Enregistrer la performance sur un exercice d'une session
         # Modifier le statut challenge d'un exercice d'une session
 
+    # Modifier un équipement
+        # Modifier l'équipement associé à un mouvement
+
     pass
 
 class DBDelete:
@@ -132,5 +221,6 @@ class DBDelete:
     # Supprimer une caracteristique de mouvement
     # Supprimer une caracteristique de mouvement d'un mouvement
     # Supprimer une session
+    # Supprimer un équipement
 
     pass

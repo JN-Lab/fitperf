@@ -138,9 +138,11 @@ class Movement(models.Model):
     """
     This class represents the movements created
     """
-    name = models.CharField(max_length=50)
-    equipment = models.CharField(max_length=20,
-                                 null=True)
+    name = models.CharField(max_length=50, 
+                            unique=True)
+    equipment = models.ForeignKey('Equipment',
+                                on_delete=models.CASCADE,
+                                verbose_name="the movement's equipment")
     founder = models.ForeignKey('Profile',
                                 on_delete=models.CASCADE,
                                 verbose_name="the movement's creator")
@@ -162,8 +164,17 @@ class MovementSettings(models.Model):
         ('DISTANCE', 'Distance'),
     )
     name = models.CharField(max_length=20,
-                            choices=MOVEMENTS_SETTINGS)
+                            choices=MOVEMENTS_SETTINGS,
+                            unique=True)
     unity = models.CharField(max_length=5)
 
     def __str__(self):
         return self.name
+
+class Equipment(models.Model):
+    name = models.CharField(max_length=20,
+                            unique=True)
+
+    founder = models.ForeignKey('Profile',
+                                on_delete=models.CASCADE,
+                                verbose_name="the movement's creator")
