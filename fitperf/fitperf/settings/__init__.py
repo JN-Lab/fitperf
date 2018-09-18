@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'authentification',
+    'program_builder',
 ]
 
 MIDDLEWARE = [
@@ -59,6 +60,7 @@ TEMPLATES = [
         'DIRS': [
             os.path.join(BASE_DIR, 'templates'),
             os.path.join(BASE_DIR, 'authentification/templates/authentification'),
+            os.path.join(BASE_DIR, 'program_builder/templates/program_builder'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {

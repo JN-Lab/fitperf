@@ -11,7 +11,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_text
 from django.core.mail import EmailMessage
 from .forms import LoginForm, RegisterForm, PasswordResetMail, PasswordResetNew
-from .models import Profile
+from program_builder.models import Profile
 from .tokens import account_activation_token
 
 def log_in(request):
@@ -26,7 +26,7 @@ def log_in(request):
             user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)
-                return redirect(reverse('homepage'), locals())
+                return redirect(reverse('program_builder:homepage'), locals())
             else:
                 messages.error(request, """Votre nom d'utilisateur ou votre mot de passe est incorrect.""")
                 return render(request, 'login.html', locals())
@@ -205,11 +205,3 @@ def password_reset_new(request):
     else:
         password_reset_form = PasswordResetNew()
         return render(request, 'password_reset_new.html', locals())
-
-@login_required(login_url='authentification/login/')
-def homepage(request):
-    """
-    This is just a view to have an homepage for the example.
-    Usually, this view will be out of the application in another project
-    """
-    return render(request, 'homepage_example.html', locals())
