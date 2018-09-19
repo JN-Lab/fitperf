@@ -22,7 +22,7 @@ class TestDBSetInteractions(TestCase):
     def setUp(self):
         self.db = DBInteractions()
 
-    def test_set_movement_settings_good_value(self):
+    def test_set_movement_settings_success(self):
         """
         This test checks if the method set_movement_setting
         registers well a new movement setting which is linked
@@ -39,21 +39,6 @@ class TestDBSetInteractions(TestCase):
 
         movement_registered = MovementSettings.objects.get(name=setting_value)
         self.assertEqual(movement_registered.name, 'Repetitions') 
-
-    def test_set_movement_settings_wrong_value(self):
-        """
-        This test checks if the method set_movement_setting
-        don't registers a new movement's setting which is not linked
-        to the predetermined list
-        """
-
-        setting_value = 'Wrong value'
-        founder = User.objects.get(username='admin_user')
-
-        movement_setting = self.db.set_movement_setting(setting_value, founder)
-
-        movement_setting_exists = MovementSettings.objects.filter(name=setting_value).exists()
-        self.assertFalse(movement_setting_exists)
 
     def test_set_movement_settings_not_unique(self):
         """
@@ -112,39 +97,101 @@ class TestDBSetInteractions(TestCase):
         a new movement
         """
 
-        # avoir un nom, un createur, un équipement, un ou plusieurs settings
-        # We add in the database, the different elements which are necessary
-        # This method is dependant from previous ones
         movement_name = 'squat'
         founder = User.objects.get(username='admin_user')
         equipment = self.db.set_equipment("kettlebell", founder)
-        first_setting = self.db.set_movement_setting("Repetitions", founder)
-        second_setting = self.db.set_movement_setting("Poids", founder)
 
-
-        new_movement = self.db.set_movement(movement_name, founder, equipment, first_setting, second_setting)
-        print(new_movement.settings.all())
+        new_movement = self.db.set_movement(movement_name, founder, equipment)
 
         movement_exists = Movement.objects.filter(name=movement_name).exists()
         self.assertTrue(movement_exists)
 
         movement_registered = Movement.objects.get(name=movement_name)
         self.assertEqual(movement_registered.name, 'squat')
-        self.assertEqual(len(movement_registered.settings.all()), 2)
 
-    # def test_set_movement_not_unique(self):
-    #     """
-    #     This test check if the method set_movement returns the string
-    #     "already_exists" when we try to register a movement which is
-    #     already in the table
-    #     """
+    def test_set_movement_not_unique(self):
+        """
+        This test check if the method set_movement returns the string
+        "already_exists" when we try to register a movement which is
+        already in the table
+        """
 
-    #     movement_name = 'squat'
-    #     founder = User.objects.get(username='admin_user')
+        movement_name = 'squat'
+        founder = User.objects.get(username='admin_user')
+        equipment = self.db.set_equipment("kettlebell", founder)
 
-    #     first_movement = self.db.set_movement(movement_name, founder)
-    #     movement_exists = Movement.objects.filter(name=movement_name).exists()
-    #     self.assertTrue(movement_exists)
+        first_movement = self.db.set_movement(movement_name, founder, equipment)
+        movement_exists = Movement.objects.filter(name=movement_name).exists()
+        self.assertTrue(movement_exists)
 
-    #     second_movement = self.db.set_movement(movement_name, founder)
-    #     self.assertEqual(second_movement, "already_exists")
+        second_movement = self.db.set_movement(movement_name, founder, equipment)
+        self.assertEqual(second_movement, "already_exists")
+
+    def test_set_settings_movement_one_setting_success(self):
+        """
+        This test check if:
+            - the method set_settings_to_movement associates correctly a
+             setting to a chosen movement already created
+            - it returns the movement settings
+        """
+        movement_name = 'squat'
+        founder = User.objects.get(username='admin_user')
+        equipment = self.db.set_equipment("kettlebell", founder)
+        movement = self.db.set_movement(movement_name, founder, equipment)
+
+        setting = self.db.set_movement_setting("Repetitions", founder)
+        movement_settings = self.db.set_settings_to_movement(movement, setting)
+
+        self.assertEqual(movement.settings.all().count(), 1)
+
+    def test_set_settings_movement_several_settings_success(self):
+
+        movement_name = 'squat'
+        founder = User.objects.get(username='admin_user')
+        equipment = self.db.set_equipment("kettlebell", founder)
+        movement = self.db.set_movement(movement_name, founder, equipment)
+
+        first_setting = self.db.set_movement_setting("Repetitions", founder)
+        second_setting = self.db.set_movement_setting("Poids", founder)
+        movement_settings = self.db.set_settings_to_movement(movement, first_setting, second_setting)
+
+        self.assertEqual(movement.settings.all().count(), 2)
+
+    def test_set_settings_movement_setting_already_exists(self):
+        movement_name = 'squat'
+        founder = User.objects.get(username='admin_user')
+        equipment = self.db.set_equipment("kettlebell", founder)
+        movement = self.db.set_movement(movement_name, founder, equipment)
+
+        first_setting = self.db.set_movement_setting("Repetitions", founder)
+        movement_settings = self.db.set_settings_to_movement(movement, first_setting)
+
+        second_setting = self.db.set_movement_setting("Poids", founder)
+        movement_settings = self.db.set_settings_to_movement(movement, first_setting, second_setting)
+        self.assertEqual(movement.settings.all().count(), 2)
+
+
+    def test_set_exercise_success(self):
+        """
+        This test checks if the method set_exercise registeres well
+        a new exercise
+        """
+
+        exercise_name = 'Angie'
+        exercise_type = "RUNNING"
+        performance_value = "TIME"
+        founder = User.objects.get(username='admin_user')
+        # equipment = self.db.set_equipment("kettlebell", founder)
+        # setting = self.db.set_movement_setting("Repetitions", founder)
+        # first_movement = self.db.set_movement("squat", founder, equipment, setting)
+        # second_movement = self.db.set_movement("squat", founder, equipment, setting)
+
+        exercise = self.db.set_exercise(exercise_name, exercise_type, performance_value, founder)
+
+        exercise_exists = Exercise.objects.filter(name=exercise_name).exists()
+        self.assertTrue(exercise_exists)
+
+        exercise_registered = Exercise.objects.get(name=exercise_name)
+        self.assertEqual(exercise_registered.name, 'Angie')
+        self.assertEqual(exercise_registered.exercise_type, 'RUNNING')
+        self.assertEqual(exercise_registered.performance_type, 'TIME')

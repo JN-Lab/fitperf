@@ -26,21 +26,11 @@ class DBInteractions:
             "already_exists"
         """
 
-        movement_settings = [
-            'Repetitions',
-            'Poids',
-            'Distance',
-            'Calories',
-        ]
-
-        if setting_value in movement_settings:
-            try:
-                movement_setting = MovementSettings.objects.create(name=setting_value, founder=founder)
-                return movement_setting
-            except:
-                return "already_exists"
-        else:
-            return None
+        try:
+            movement_setting = MovementSettings.objects.create(name=setting_value, founder=founder)
+            return movement_setting
+        except:
+            return "already_exists"
 
     def set_equipment(self, equipment_name, founder):
         """
@@ -55,24 +45,42 @@ class DBInteractions:
         except:
             return "already_exists"
 
-    def set_movement(self, movement_name, founder, equipment, *settings):
+    def set_movement(self, movement_name, founder, equipment):
+        """
+        This method registers and returns a movement only if it does not already exist
+        in the database.
+        If the movement already exists, it returns the string "already_exists"
+        To create a movement, the argument used must have been created before:
+            - founder
+            - equipment
+        """
 
         try:
-            movement = Movement.objects.create(name=movement_name, founder=founder, equipment=equipment)
-            for setting in settings:
-                movement.settings.add(setting)
+            movement = Movement.objects.create(name=movement_name,
+                                               founder=founder,
+                                               equipment=equipment)
             return movement
         except:
             return "already_exists"
 
-    def set_setting_to_movement(self):
-        pass
+    def set_settings_to_movement(self, movement, *settings):
+        
+        movement_settings = movement.settings.all()
+        for setting in settings:
+            if setting not in movement_settings:
+                movement.settings.add(setting)
+        return movement.settings.all()
 
-    def set_equipment_to_movement(self):
-        pass
-
-    def set_exercise(self):
-        pass
+    def set_exercise(self, exercise_name, exercise_type, performance_type, founder):
+        
+        try:
+            exercise = Exercise.objects.create(name=exercise_name, 
+                                               exercise_type=exercise_type,
+                                               performance_type=performance_type,
+                                               founder=founder)
+            return exercise
+        except:
+            return "already_exists"
 
     def set_movement_to_exercise(self):
         pass
