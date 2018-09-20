@@ -127,12 +127,15 @@ class MovementsPerExercise(models.Model):
     movement = models.ForeignKey('Movement',
                                  on_delete=models.CASCADE)
     movement_setting = models.ForeignKey('MovementSettings',
-                                         on_delete=models.CASCADE)
+                                         on_delete=models.CASCADE,
+                                         null=True)
     setting_value = models.DecimalField(max_digits=5, 
-                                        decimal_places=1)
+                                        decimal_places=1,
+                                        null=True)
+    movement_number = models.IntegerField()
 
     def __str__(self):
-        return self.exercise + " / " + self.movement
+        return "{} - {} - {}".format(self.exercise.name, self.movement.name, self.movement_number)
 
 class Movement(models.Model):
     """

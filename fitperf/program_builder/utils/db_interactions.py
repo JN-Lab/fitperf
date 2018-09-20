@@ -64,6 +64,12 @@ class DBInteractions:
             return "already_exists"
 
     def set_settings_to_movement(self, movement, *settings):
+        """
+        This method associates and returns movement settings to a movement if the 
+        setting is not already associated in the database.
+        To associate one or several settings to a movement, the movement must have
+        been created before
+        """
         
         movement_settings = movement.settings.all()
         for setting in settings:
@@ -72,17 +78,44 @@ class DBInteractions:
         return movement.settings.all()
 
     def set_exercise(self, exercise_name, exercise_type, performance_type, founder):
+        """
+        This method creates and returns an exercise.
+        To create an exercise, the argument used must have been created before:
+            - the exercise type
+            - the performance type
+            - the founder
+        """
         
-        try:
-            exercise = Exercise.objects.create(name=exercise_name, 
-                                               exercise_type=exercise_type,
-                                               performance_type=performance_type,
-                                               founder=founder)
-            return exercise
-        except:
-            return "already_exists"
+        exercise = Exercise.objects.create(name=exercise_name, 
+                                            exercise_type=exercise_type,
+                                            performance_type=performance_type,
+                                            founder=founder)
+        return exercise
 
-    def set_movement_to_exercise(self):
+    def set_movement_to_exercise(self, exercise, movement):
+        """
+        This method associates and returns movements to an exercise.
+        To associate one or several settings to a movement, the movement must have been created before
+        We need to associate an order to a movement to hierarchize the different movements inside the exercise.
+        During this process, the order is added automatically. We take the number of movements already added to
+        the identified exercise and we add +1.
+        Thanks to this, we are sure at the moment of the creation that two different movements won't have the
+        same movement_number(= order)
+        """
+
+        movements_number = exercise.movements.all().count()
+
+        movement_exercise = MovementsPerExercise.objects.create(exercise=exercise,
+                                                                movement=movement,
+                                                                movement_number=movements_number + 1)
+        
+        return movement_exercise
+
+    def set_movement_settings_value_to_exercise(self):
+        """
+        This method organizes and defines value for movement settings for an identified movement
+        associated to an identified exercise
+        """
         pass
 
     def set_training(self):
@@ -219,6 +252,7 @@ class DBAlter:
 
     # Modifier un exercice
         # Modifier le nom d'un exercice
+        # MODIFIER L'ORDRE DES MOUVEMENTS D'UN EXERCICE
 
     # Modifier une session
         # Modifier la date d'une session

@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from ..models import Profile, Session, ExercisesPerSession, Program, Training, Exercise, MovementsPerExercise, Movement, MovementSettings, Equipment
 from ..utils.db_interactions import DBInteractions
 
+from django.db.models import Q
+
 class TestDBSetInteractions(TestCase):
     """
     This class tests all the set_* methods
@@ -173,7 +175,7 @@ class TestDBSetInteractions(TestCase):
 
     def test_set_exercise_success(self):
         """
-        This test checks if the method set_exercise registeres well
+        This test checks if the method set_exercise registers well
         a new exercise
         """
 
@@ -195,3 +197,62 @@ class TestDBSetInteractions(TestCase):
         self.assertEqual(exercise_registered.name, 'Angie')
         self.assertEqual(exercise_registered.exercise_type, 'RUNNING')
         self.assertEqual(exercise_registered.performance_type, 'TIME')
+
+    def test_set_movement_to_exercise_success(self):
+        """
+        This test checks if the method set_exercise registers well a new
+        movement to an exercise
+        """
+        
+        #We get the user
+        founder = User.objects.get(username='admin_user')
+
+        # We create an exercise
+        exercise_name = 'Angie'
+        exercise_type = "RUNNING"
+        performance_value = "TIME"
+        exercise = self.db.set_exercise(exercise_name, exercise_type, performance_value, founder)
+
+        # We create one movement
+        equipment = self.db.set_equipment("kettlebell", founder)
+        movement = self.db.set_movement("russian swing kettlebell", founder, equipment)
+
+        # We associate this two movements to the exercise
+        exercise_mvt = self.db.set_movement_to_exercise(exercise, movement)
+
+        # We test
+        self.assertEqual(exercise.movements.all().count(), 1)
+        self.assertEqual(exercise_mvt.movement_number, 1)
+
+    def test_set_several_movements_to_exercise_success(self):
+        """
+        This test checks if the method set_exercise registers well several
+        movements to an exercise(repeting the same method several times) by
+        managing correctly the field movement_number
+        """
+        
+        #We get the user
+        founder = User.objects.get(username='admin_user')
+
+        # We create an exercise
+        exercise_name = 'Angie'
+        exercise_type = "RUNNING"
+        performance_value = "TIME"
+        exercise = self.db.set_exercise(exercise_name, exercise_type, performance_value, founder)
+
+        # We create one movement
+        equipment = self.db.set_equipment("kettlebell", founder)
+        first_mvt = self.db.set_movement("russian swing kettlebell", founder, equipment)
+        second_mvt = self.db.set_movement("american swing kettlebell", founder, equipment)
+
+        # We associate this two movements to the exercise
+        exercise_first_mvt = self.db.set_movement_to_exercise(exercise, first_mvt)
+        exercise_second_mvt = self.db.set_movement_to_exercise(exercise, second_mvt)
+
+        # We test
+        self.assertEqual(exercise.movements.all().count(), 2)
+        self.assertEqual(exercise_first_mvt.movement_number, 1)
+        self.assertEqual(exercise_second_mvt.movement_number, 2)
+
+
+
