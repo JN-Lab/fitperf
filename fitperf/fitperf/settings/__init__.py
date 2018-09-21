@@ -150,3 +150,6 @@ MESSAGE_TAGS = {
     messages.WARNING: 'warning',
     messages.ERROR: 'danger',
 }
+
+# Login URL
+LOGIN_URL = '/authentification/login'
