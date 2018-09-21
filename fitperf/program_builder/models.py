@@ -9,20 +9,44 @@ class Profile(models.Model):
     and exercises.
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    programs = models.ManyToManyField('Program',
-                                       through='Session',
-                                       related_name='profiles',
-                                       verbose_name="list of programs per user")
-    trainings = models.ManyToManyField('Training',
-                                        through='Session',
-                                        related_name='profiles',
-                                        verbose_name="list of trainings per user")
-    exercises = models.ManyToManyField('Exercise',
-                                        through='Session',
-                                        verbose_name="list of exercises per user")
  
     def __str__(self):
         return self.user.username
+
+class Session(models.Model):
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             verbose_name="user who does the session")
+    program = models.ForeignKey('Program', 
+                                on_delete=models.CASCADE,
+                                null=True,
+                                verbose_name="program linked to the session if exists")
+    training = models.ForeignKey('Training',
+                                on_delete=models.CASCADE,
+                                verbose_name="training associated to the session")
+    date = models.DateTimeField(default=timezone.now)
+    done = models.BooleanField(default=False)
+
+    exercises = models.ManyToManyField('Exercise',
+                                        through='ExercisesPerSession',
+                                        related_name='sessions',
+                                        verbose_name="list of exercises per session")
+    
+    def __str__(self):
+        return self.training + "-"  + self.date
+
+class ExercisesPerSession(models.Model):
+    exercise = models.ForeignKey('Exercise',
+                                 on_delete=models.CASCADE)
+    session = models.ForeignKey('Session',
+                                 on_delete=models.CASCADE)
+    challenge = models.BooleanField(default=False)
+    performance = models.DecimalField(max_digits=5, 
+                                     decimal_places=1,
+                                     null=True)
+
+    def __str__(self):
+        return self.session + "-" + self.exercise
 
 class Program(models.Model):
     """
@@ -32,18 +56,12 @@ class Program(models.Model):
     description = models.TextField(null=True)
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(default=timezone.now)
-    founder = models.ForeignKey('Profile', 
+    founder = models.ForeignKey(User, 
                                 on_delete=models.CASCADE,
                                  verbose_name="the program's creator")
     trainings = models.ManyToManyField('Training',
-                                        through='Session',
                                         related_name='programs',
                                         verbose_name='list of trainings per program')
-    exercises = models.ManyToManyField('Exercise',
-                                        through='Session',
-                                        related_name='programs',
-                                        verbose_name='list of exercises per program')
-
     def __str__(self):
         return self.name
 
@@ -52,47 +70,12 @@ class Training(models.Model):
     This class represents the trainings created
     """
     name = models.CharField(max_length=200)
-    founder = models.ForeignKey('Profile', 
+    founder = models.ForeignKey(User, 
                                 on_delete=models.CASCADE, 
                                 verbose_name="the training's creator")
     exercises = models.ManyToManyField('Exercise',
-                                        through='Session',
                                         related_name='trainings',
                                         verbose_name='list of exercises per training')
-
-    def __str__(self):
-        return self.name
-
-class MovementSettings(models.Model):
-    """
-    This class represents the different settings a movement can be
-    associated with.
-    """
-    MOVEMENTS_SETTINGS = (
-        ('REP', 'Repetitions'),
-        ('WEIGTH', 'Poids'),
-        ('DISTANCE', 'Distance'),
-    )
-    name = models.CharField(max_length=20,
-                            choices=MOVEMENTS_SETTINGS)
-    unity = models.CharField(max_length=5)
-
-    def __str__(self):
-        return self.name
-
-class Movement(models.Model):
-    """
-    This class represents the movements created
-    """
-    name = models.CharField(max_length=50)
-    equipment = models.CharField(max_length=20,
-                                 null=True)
-    founder = models.ForeignKey('Profile',
-                                on_delete=models.CASCADE,
-                                verbose_name="the movement's creator")
-    settings = models.ManyToManyField('MovementSettings',
-                                     related_name='movements',
-                                     verbose_name="list of settings")
 
     def __str__(self):
         return self.name
@@ -122,7 +105,7 @@ class Exercise(models.Model):
     performance_type = models.CharField(max_length=20, 
                                         null=True,
                                         choices=PERFORMANCE_TYPE)
-    founder = models.ForeignKey('Profile', 
+    founder = models.ForeignKey(User, 
                                 on_delete=models.CASCADE,
                                 verbose_name="the execise's creator")
     movements = models.ManyToManyField('Movement',
@@ -143,31 +126,87 @@ class MovementsPerExercise(models.Model):
                                  on_delete=models.CASCADE)
     movement = models.ForeignKey('Movement',
                                  on_delete=models.CASCADE)
-    movement_setting = models.ForeignKey('MovementSettings',
-                                         on_delete=models.CASCADE)
-    setting_value = models.DecimalField(max_digits=5, 
-                                        decimal_places=1)
+
+    movement_number = models.IntegerField()
+
+    movement_settings = models.ManyToManyField('MovementSettings',
+                                                through='MovementSettingsPerMovementsPerExercise',
+                                                related_name="exercise_movements",
+                                                verbose_name="settings value per movement for one exercise")
 
     def __str__(self):
-        return self.exercise + " / " + self.movement
+        return "{} - {} - {}".format(self.exercise.name, self.movement.name, self.movement_number)
 
-class Session(models.Model):
+class MovementSettingsPerMovementsPerExercise(models.Model):
     """
-    This class linked all the different elements to create a unique activity.
-    The idea is to get an exercise which is linked to a training, also linked
-    to a program and which is realized by a specific user.
+    This class represents the different settings for each movement linked to
+    an exercise.
+    It will set a value for each settings linked to the movement
     """
-    user = models.ForeignKey('Profile',
-                             on_delete=models.CASCADE)
-    program = models.ForeignKey('Program',
-                                on_delete=models.CASCADE)
-    training = models.ForeignKey('Training',
-                                 on_delete=models.CASCADE)
-    exercise = models.ForeignKey('Exercise',
-                                on_delete=models.CASCADE)
-    date = models.DateTimeField()
-    challenge = models.BooleanField(default=False)
-    done = models.BooleanField(default=False)
-    performance = models.DecimalField(max_digits=5, 
-                                     decimal_places=1,
-                                     null=True)
+
+    exercise_movement = models.ForeignKey('MovementsPerExercise',
+                                              on_delete=models.CASCADE,
+                                              verbose_name="the settings value for each movement per exercise")
+    setting = models.ForeignKey('MovementSettings',
+                                on_delete=models.CASCADE,
+                                verbose_name="the setting linked to the movement associated to the exercise")  
+    setting_value = models.IntegerField(default=0)
+
+    def __str__(self):
+        return "{} : {} -> {} : {}".format(self.exercise_movement.exercise.name,
+                                           self.exercise_movement.movement.name,
+                                           self.setting, 
+                                           self.setting_value)
+
+class Movement(models.Model):
+    """
+    This class represents the movements created
+    """
+    name = models.CharField(max_length=50, 
+                            unique=True)
+    equipment = models.ForeignKey('Equipment',
+                                on_delete=models.CASCADE,
+                                verbose_name="the movement's equipment")
+    founder = models.ForeignKey(User,
+                                on_delete=models.CASCADE,
+                                verbose_name="the movement's creator")
+    settings = models.ManyToManyField('MovementSettings',
+                                     related_name='movements',
+                                     verbose_name="list of settings")
+
+    def __str__(self):
+        return self.name
+
+class MovementSettings(models.Model):
+    """
+    This class represents the different settings a movement can be
+    associated with.
+    """
+    MOVEMENTS_SETTINGS = (
+        ('REP', 'Repetitions'),
+        ('WEIGTH', 'Poids'),
+        ('DISTANCE', 'Distance'),
+        ('CAL', 'Calories')
+    )
+    name = models.CharField(max_length=20,
+                            choices=MOVEMENTS_SETTINGS,
+                            unique=True)
+    founder = models.ForeignKey(User,
+                            on_delete=models.CASCADE,
+                            verbose_name="the movement setting's creator")
+
+    setting_values = models.ManyToManyField('MovementsPerExercise',
+                                            through='MovementSettingsPerMovementsPerExercise',
+                                            related_name="exercise_settings",
+                                            verbose_name="all the values linked to a setting")
+
+    def __str__(self):
+        return self.name
+
+class Equipment(models.Model):
+    name = models.CharField(max_length=20,
+                            unique=True)
+
+    founder = models.ForeignKey(User,
+                                on_delete=models.CASCADE,
+                                verbose_name="the movement's creator")
