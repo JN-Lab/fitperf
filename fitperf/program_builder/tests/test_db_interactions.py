@@ -1,6 +1,6 @@
 from django.test import TestCase, TransactionTestCase
 from django.contrib.auth.models import User
-from ..models import Profile, Session, ExercisesPerSession, Program, Training, Exercise, MovementsPerExercise, Movement, MovementSettings, Equipment
+from ..models import Profile, Session, ExercisesPerSession, Program, Training, Exercise, MovementsPerExercise, Movement, MovementSettings, Equipment, MovementSettingsPerMovementsPerExercise
 from ..utils.db_interactions import DBInteractions
 
 from django.db.models import Q
@@ -254,5 +254,42 @@ class TestDBSetInteractions(TestCase):
         self.assertEqual(exercise_first_mvt.movement_number, 1)
         self.assertEqual(exercise_second_mvt.movement_number, 2)
 
+    def test_set_settings_value_to_movement_linked_to_exercise_success(self):
 
+        ## ENVIRONMENT SET UP ##
+        #We get the user
+        founder = User.objects.get(username='admin_user')
 
+        # We create an exercise
+        exercise_name = 'Angie'
+        exercise_type = "RUNNING"
+        performance_value = "TIME"
+        exercise = self.db.set_exercise(exercise_name, exercise_type, performance_value, founder)
+
+        # We create one movement
+        equipment = self.db.set_equipment("kettlebell", founder)
+        movement = self.db.set_movement("russian swing kettlebell", founder, equipment)
+
+        # We create some settings that we linked to the movement
+        repetitions = self.db.set_movement_setting("Repetitions", founder)
+        weight = self.db.set_movement_setting("Poids", founder)
+        movement_settings = self.db.set_settings_to_movement(movement, repetitions, weight)
+
+        # We associate the movement to the exercise
+        exercise_mvt = self.db.set_movement_to_exercise(exercise, movement)
+
+        ## TEST ##
+        # We set some values for each settings linked to the movement of the exercise
+        rep_value = self.db.set_settings_value_to_movement_linked_to_exercise(exercise_mvt, repetitions, 10)
+        weight_value = self.db.set_settings_value_to_movement_linked_to_exercise(exercise_mvt, weight, 40)
+
+        # We test
+        self.assertEqual(rep_value.setting_value, 10)
+        self.assertEqual(rep_value.setting, repetitions)
+        self.assertEqual(rep_value.exercise_movement.exercise, exercise)
+        self.assertEqual(rep_value.exercise_movement.movement, movement)
+
+        self.assertEqual(weight_value.setting_value, 40)
+        self.assertEqual(weight_value.setting, weight)
+        self.assertEqual(weight_value.exercise_movement.exercise, exercise)
+        self.assertEqual(weight_value.exercise_movement.movement, movement)

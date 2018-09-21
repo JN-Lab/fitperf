@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 # coding: utf-8
 from django.contrib.auth.models import User
-from ..models import Profile, Session, ExercisesPerSession, Program, Training, Exercise, MovementsPerExercise, Movement, MovementSettings, Equipment
+from ..models import Profile, Session, ExercisesPerSession, Program, Training, Exercise, MovementsPerExercise, MovementSettingsPerMovementsPerExercise, Movement, MovementSettings, Equipment
 
 class DBInteractions:
     """
@@ -111,12 +111,17 @@ class DBInteractions:
         
         return movement_exercise
 
-    def set_movement_settings_value_to_exercise(self):
+    def set_settings_value_to_movement_linked_to_exercise(self, exercise_movement, setting, setting_value):
         """
         This method organizes and defines value for movement settings for an identified movement
         associated to an identified exercise
         """
-        pass
+        exercise_movement = MovementSettingsPerMovementsPerExercise.objects.create(exercise_movement=exercise_movement,
+                                                                setting=setting,
+                                                                setting_value=setting_value)
+        
+        return exercise_movement
+
 
     def set_training(self):
         pass

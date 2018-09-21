@@ -126,16 +126,37 @@ class MovementsPerExercise(models.Model):
                                  on_delete=models.CASCADE)
     movement = models.ForeignKey('Movement',
                                  on_delete=models.CASCADE)
-    movement_setting = models.ForeignKey('MovementSettings',
-                                         on_delete=models.CASCADE,
-                                         null=True)
-    setting_value = models.DecimalField(max_digits=5, 
-                                        decimal_places=1,
-                                        null=True)
+
     movement_number = models.IntegerField()
+
+    movement_settings = models.ManyToManyField('MovementSettings',
+                                                through='MovementSettingsPerMovementsPerExercise',
+                                                related_name="exercise_movements",
+                                                verbose_name="settings value per movement for one exercise")
 
     def __str__(self):
         return "{} - {} - {}".format(self.exercise.name, self.movement.name, self.movement_number)
+
+class MovementSettingsPerMovementsPerExercise(models.Model):
+    """
+    This class represents the different settings for each movement linked to
+    an exercise.
+    It will set a value for each settings linked to the movement
+    """
+
+    exercise_movement = models.ForeignKey('MovementsPerExercise',
+                                              on_delete=models.CASCADE,
+                                              verbose_name="the settings value for each movement per exercise")
+    setting = models.ForeignKey('MovementSettings',
+                                on_delete=models.CASCADE,
+                                verbose_name="the setting linked to the movement associated to the exercise")  
+    setting_value = models.IntegerField(default=0)
+
+    def __str__(self):
+        return "{} : {} -> {} : {}".format(self.exercise_movement.exercise.name,
+                                           self.exercise_movement.movement.name,
+                                           self.setting, 
+                                           self.setting_value)
 
 class Movement(models.Model):
     """
@@ -173,6 +194,11 @@ class MovementSettings(models.Model):
     founder = models.ForeignKey(User,
                             on_delete=models.CASCADE,
                             verbose_name="the movement setting's creator")
+
+    setting_values = models.ManyToManyField('MovementsPerExercise',
+                                            through='MovementSettingsPerMovementsPerExercise',
+                                            related_name="exercise_settings",
+                                            verbose_name="all the values linked to a setting")
 
     def __str__(self):
         return self.name
