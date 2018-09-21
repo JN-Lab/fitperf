@@ -3,21 +3,15 @@
 from django.contrib.auth.models import User
 from ..models import Profile, Session, ExercisesPerSession, Program, Training, Exercise, MovementsPerExercise, MovementSettingsPerMovementsPerExercise, Movement, MovementSettings, Equipment
 
-class DBInteractions:
+class DBMovement:
     """
-    This class manages all the interactions with the database:
+    This class manages all the interactions with the database concerning Movement:
         - all set_* methods register data in the database
         - all get_* methods get data from the database
         - all change_* methods modify information in the database
         - all del_* methods delete information from the database
     """
-
-    ## SET METHODS ##
-
-    # Maybe set this methods in auth app
-    def set_profile(self):
-        pass
-
+   
     def set_movement_setting(self, setting_value, founder):
         """
         This method registers and returns a new movement settings only if:
@@ -77,6 +71,15 @@ class DBInteractions:
                 movement.settings.add(setting)
         return movement.settings.all()
 
+class DBExercise:
+    """
+    This class manages all the interactions with the database concerning Exercise:
+        - all set_* methods register data in the database
+        - all get_* methods get data from the database
+        - all change_* methods modify information in the database
+        - all del_* methods delete information from the database
+    """
+
     def set_exercise(self, exercise_name, exercise_type, performance_type, founder):
         """
         This method creates and returns an exercise.
@@ -122,6 +125,21 @@ class DBInteractions:
         
         return exercise_movement
 
+
+class DBInteractions:
+    """
+    This class manages all the interactions with the database:
+        - all set_* methods register data in the database
+        - all get_* methods get data from the database
+        - all change_* methods modify information in the database
+        - all del_* methods delete information from the database
+    """
+
+    ## SET METHODS ##
+
+    # Maybe set this methods in auth app
+    def set_profile(self):
+        pass
 
     def set_training(self):
         pass
