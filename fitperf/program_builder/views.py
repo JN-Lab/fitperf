@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from .forms import RegisterMovement
+from .utils.db_interactions import DBMovement
 
 def index(request):
     if request.user.is_authenticated:
@@ -20,5 +21,7 @@ def homepage(request):
 
 @login_required
 def movements_list(request):
+    db = DBMovement()
+    movements = db.get_all_movements()
     new_movement_form = RegisterMovement()
     return render(request, 'movements_list.html', locals())

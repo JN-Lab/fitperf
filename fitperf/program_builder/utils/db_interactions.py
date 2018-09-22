@@ -71,6 +71,13 @@ class DBMovement:
                 movement.settings.add(setting)
         return movement.settings.all()
 
+    def get_all_movements(self):
+        """
+        This simple method returns all the movements registered in the database
+        """
+
+        return Movement.objects.all()
+
 class DBExercise:
     """
     This class manages all the interactions with the database concerning Exercise:

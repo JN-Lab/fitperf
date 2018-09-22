@@ -5,12 +5,20 @@
 {% load static %}
     <h1>Movements</h1>
 
+    {% for movement in movements %}
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ movement.name }}</h5>
+            </div>
+        </div>
+    {% endfor %}
+
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#movementModalForm">
         Nouveau Mouvement
     </button>
   
-    <!-- Modal -->
+    <!-- Form Modal -->
     <div class="modal fade" id="movementModalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -36,8 +44,13 @@
                         {{ new_movement_form.founder }}
                     </div>
                     <div class="form-group">
-                        {{ new_movement_form.equipment.label }}
-                        {{ new_movement_form.settings }}
+                        {{ new_movement_form.settings.label }}
+                        {% for setting in new_movement_form.settings %}
+                        <div class="form-check">
+                            {{ setting.label }}
+                            {{ setting }}
+                        </div>
+                        {% endfor %}
                     </div>
                     <button type="submit" class="btn btn-block btn-primary">Enregistrer</button> 
                 </form>
@@ -46,3 +59,5 @@
         </div>
     </div>
 {% endblock %}
+
+<!-- Movement List -->
