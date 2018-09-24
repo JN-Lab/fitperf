@@ -51,3 +51,15 @@ def movements_list(request):
         movements = db.get_all_movements()
         new_movement_form = RegisterMovement()
         return render(request, 'movements_list.html', locals())
+
+@login_required
+def delete_movement(request, movement_pk):
+    """
+    This view manages only the movement's removal
+    """
+    db = DBMovement()
+    deleted_movement = db.del_movement(movement_pk)
+    messages.success(request, """Le mouvement a été supprimé.""")
+
+    referer = request.META.get("HTTP_REFERER")
+    return redirect(referer, locals())

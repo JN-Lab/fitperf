@@ -82,7 +82,16 @@ class DBMovement:
         This simple method returns one movement according its name
         """
         return Movement.objects.get(name=name)
+
+    def del_movement(self, movement_pk):
+        """
+        This method deletes a movement only if the movement is not associated
+        to an exercise
+        NEED TO BE IMPROVED TO MANAGE THE CASE WHERE THE MOVEMENT IS ASSOCIATED
+        TO ONE OR SEVERAL EXERCISE
+        """
         
+        return Movement.objects.get(pk=movement_pk).delete()
 
 class DBExercise:
     """

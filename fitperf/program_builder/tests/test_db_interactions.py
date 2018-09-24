@@ -173,6 +173,38 @@ class TestDBMovement(TestCase):
         movement_settings = self.db_mvt.set_settings_to_movement(movement, first_setting, second_setting)
         self.assertEqual(movement.settings.all().count(), 2)
 
+    def test_del_movement_success(self):
+        """
+        This test checks if the methods removes weel a movement
+        """
+
+        # We create a movement
+        movement_name = 'squat'
+        founder = User.objects.get(username='admin_user')
+        equipment = self.db_mvt.set_equipment("kettlebell", founder)
+        movement = self.db_mvt.set_movement(movement_name, founder, equipment)
+
+        first_setting = self.db_mvt.set_movement_setting("Repetitions", founder)
+        movement_settings = self.db_mvt.set_settings_to_movement(movement, first_setting)
+
+        second_setting = self.db_mvt.set_movement_setting("Poids", founder)
+        movement_settings = self.db_mvt.set_settings_to_movement(movement, first_setting, second_setting)
+
+        # We delete the movement
+        movement_to_delete = self.db_mvt.del_movement(movement.pk)
+
+        # We test
+        movement_existence = Movement.objects.filter(name=movement.name).exists()
+        self.assertFalse(movement_existence)
+
+    def test_del_movement_associated_to_exercise(self):
+        """
+        This test has to checked that the method does not remove the movement if it is
+        associated at least one exercise
+        It will need to be done after setting all exercises features
+        """
+
+
 class TestDBExercise(TestCase):
     """
     This class tests all the set_* methods

@@ -3,8 +3,16 @@
 {% block title %}Movements List{% endblock %}
 {% block content %}
 {% load static %}
-<div class="container">
-    <h1>Movements</h1>
+<main class="container">
+    <div class="jumbotron mt-4">
+        <h1 class="display-4">Mouvements</h1>
+        <p class="lead">Retrouvez l'ensemble des mouvements disponibles avec lesquels vous pouvez composez vos exercices.</p>
+        <hr class="my-4">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#movementModalForm">
+            Nouveau Mouvement
+        </button>
+    </div>
     <div class="row">
         <div class="col-12">
             {% if messages %}
@@ -12,22 +20,19 @@
             {% endif %}
         </div>
         {% for movement in movements %}
-        <div class="card col-12">
-            <div class="card-body">
-                <h5 class="card-title">{{ movement.name }}</h5>
-            </div>
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">{{ movement.name }}</h5>
+                    <h6 class="card-subtitle">{{ movement.equipment }}</h6>
+                </div>
+                <a href="{% url 'program_builder:delete_movement' movement_pk=movement.pk %}" class="card-link pl-3 pb-2">Supprimer</a>
+            </div>            
         </div>
-    {% endfor %}
+        {% endfor %}
     </div>
+</main>
 
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#movementModalForm">
-        Nouveau Mouvement
-    </button>
-</div>
-
-
-  
     <!-- Form Modal -->
     <div class="modal fade" id="movementModalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
