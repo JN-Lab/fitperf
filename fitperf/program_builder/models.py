@@ -163,16 +163,17 @@ class Movement(models.Model):
     This class represents the movements created
     """
     name = models.CharField(max_length=50, 
-                            unique=True)
+                            unique=True,
+                            verbose_name="Nom")
     equipment = models.ForeignKey('Equipment',
                                 on_delete=models.CASCADE,
-                                verbose_name="the movement's equipment")
+                                verbose_name="Equipement")
     founder = models.ForeignKey(User,
                                 on_delete=models.CASCADE,
-                                verbose_name="the movement's creator")
+                                verbose_name="Createur")
     settings = models.ManyToManyField('MovementSettings',
                                      related_name='movements',
-                                     verbose_name="list of settings")
+                                     verbose_name="Caracteristiques")
 
     def __str__(self):
         return self.name
@@ -210,3 +211,6 @@ class Equipment(models.Model):
     founder = models.ForeignKey(User,
                                 on_delete=models.CASCADE,
                                 verbose_name="the movement's creator")
+
+    def __str__(self):
+        return self.name
