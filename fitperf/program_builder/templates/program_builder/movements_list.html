@@ -3,20 +3,30 @@
 {% block title %}Movements List{% endblock %}
 {% block content %}
 {% load static %}
+<div class="container">
     <h1>Movements</h1>
-
-    {% for movement in movements %}
-        <div class="card">
+    <div class="row">
+        <div class="col-12">
+            {% if messages %}
+                {% include 'messages.html' %}
+            {% endif %}
+        </div>
+        {% for movement in movements %}
+        <div class="card col-12">
             <div class="card-body">
                 <h5 class="card-title">{{ movement.name }}</h5>
             </div>
         </div>
     {% endfor %}
+    </div>
 
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#movementModalForm">
         Nouveau Mouvement
     </button>
+</div>
+
+
   
     <!-- Form Modal -->
     <div class="modal fade" id="movementModalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

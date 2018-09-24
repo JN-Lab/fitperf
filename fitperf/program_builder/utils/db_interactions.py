@@ -75,8 +75,14 @@ class DBMovement:
         """
         This simple method returns all the movements registered in the database
         """
-
         return Movement.objects.all()
+
+    def get_one_movement(self, name):
+        """
+        This simple method returns one movement according its name
+        """
+        return Movement.objects.get(name=name)
+        
 
 class DBExercise:
     """
