@@ -62,3 +62,12 @@ def delete_movement(request, movement_pk):
 
     referer = request.META.get("HTTP_REFERER")
     return redirect(referer, locals())
+
+@login_required
+def exercises_list(request):
+    """
+    This view mnages the exercises:
+        - print a list of exercise
+        - add an exercise
+    """
+    pass
