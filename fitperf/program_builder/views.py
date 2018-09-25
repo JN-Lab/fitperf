@@ -94,6 +94,7 @@ def exercises_list(request):
                            des erreurs.""")
             return render(request, 'exercises_list.html', locals)
     else:
+        exercises = db.get_all_exercises()
         new_exercise_form = RegisterExerciseStep1()
         return render(request, 'exercises_list.html', locals())
 
@@ -103,3 +104,15 @@ def exercise_page(request, exercise_pk):
     db = DBExercise()
     exercise = db.get_one_exercise_by_pk(exercise_pk)
     return render(request, 'exercise_page.html', locals())
+
+@login_required
+def delete_exercise(request, exercise_pk):
+    """
+    This view manages only the exercise's removal
+    """
+    db = DBExercise()
+    deleted_exercise = db.del_exercise(exercise_pk)
+    messages.success(request, """L'exercice a été supprimé.""")
+
+    referer = request.META.get("HTTP_REFERER")
+    return redirect(referer, locals())

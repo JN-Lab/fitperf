@@ -19,6 +19,24 @@
                 {% include 'messages.html' %}
             {% endif %}
         </div>
+        {% for exercise in exercises %}
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">{{ exercise.name }}</h5>
+                    <h6 class="card-subtitle">
+                        {% if exercise.completed %}
+                            TERMINE
+                        {% else %}
+                            A CONSTRUIRE
+                        {% endif %}
+                    </h6>
+                </div>
+                <a href="{% url 'program_builder:exercise_page' exercise_pk=exercise.pk %}" class="card-link pl-3 pb-2">Détails</a>
+                <a href="{% url 'program_builder:delete_exercise' exercise_pk=exercise.pk %}" class="card-link pl-3 pb-2">Supprimer</a>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </main>
 

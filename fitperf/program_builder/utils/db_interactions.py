@@ -164,13 +164,23 @@ class DBExercise:
         return exercise_movement
 
 
-    def get_all_exercise(self):
+    def get_all_exercises(self):
 
         return Exercise.objects.all()
 
     def get_one_exercise_by_pk(self, exercise_pk):
 
         return Exercise.objects.get(pk=exercise_pk)
+
+    def del_exercise(self, exercise_pk):
+        """
+        This method deletes an exercise only if the exercise is not associated
+        to a training
+        NEED TO BE IMPROVED TO MANAGE THE CASE WHERE THE EXERCISE IS ASSOCIATED
+        TO ONE OR SEVERAL TRAININGS
+        """
+        
+        return Exercise.objects.get(pk=exercise_pk).delete()
 
 class DBInteractions:
     """
