@@ -92,16 +92,22 @@ class Exercise(models.Model):
         ('STRENGTH', 'FORCE'),
         ('EMOM', 'EMOM'),
         ('CONDITIONNING', 'CONDITIONNEMENT'),
-        ('MAX_REP', 'MAXIMUM DE REPETITION')
+        ('MAX_REP', 'MAXIMUM DE REPETITIONS')
     )
     PERFORMANCE_TYPE = (
-        ('TIME', 'Temps'),
-        ('NB_ROUNDS', 'Nombre de tours'),
-        ('NB_REP', 'Nombre de repetitions'),
+        ('TIME', 'duree'),
+        ('NB_ROUNDS', 'tours'),
+        ('NB_REP', 'repetitions'),
+        ('DIST', 'distance'),
     )
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200,
+                            verbose_name="Nom")
+    description = models.TextField(null=True,
+                                    verbose_name="Description")
+    completed = models.BooleanField(default=False)
     exercise_type = models.CharField(max_length=20, 
-                                     choices=EXERCISE_TYPE)
+                                     choices=EXERCISE_TYPE,
+                                     verbose_name="Type")
     performance_type = models.CharField(max_length=20, 
                                         null=True,
                                         choices=PERFORMANCE_TYPE)

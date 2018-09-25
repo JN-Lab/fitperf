@@ -1,0 +1,56 @@
+{% extends "program_builder/base.html" %}
+{% block meta_description %}Liste d'exercies{% endblock %}
+{% block title %}Fitperf - Exercices{% endblock %}
+{% block content %}
+{% load static %}
+<main class="container">
+    <div class="jumbotron mt-4">
+        <h1 class="display-4">Exercices</h1>
+        <p class="lead">Retrouvez l'ensemble des exercices disponibles avec lesquels vous pouvez composez vos entraînements.</p>
+        <hr class="my-4">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exerciseModalForm">
+            Nouvel Exercice
+        </button>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            {% if messages %}
+                {% include 'messages.html' %}
+            {% endif %}
+        </div>
+    </div>
+</main>
+
+<!-- Form Modal -->
+<div class="modal fade" id="exerciseModalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Nouvel Exercice</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ new_exercise_form.name.label }}
+                        {{ new_exercise_form.name }}
+                    </div>
+                    <div class="form-group">
+                        {{ new_exercise_form.exercise_type.label }}
+                        {{ new_exercise_form.exercise_type }}
+                    </div>
+                    <div class="form-group">
+                        {{ new_exercise_form.description.label }}
+                        {{ new_exercise_form.description }}
+                    </div>
+                    <button type="submit" class="btn btn-block btn-primary">Créer</button> 
+                </form>
+            </div>
+        </div>
+        </div>
+    </div>
+{% endblock %}

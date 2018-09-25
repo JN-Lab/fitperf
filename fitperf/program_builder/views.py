@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import RegisterMovement
-from .utils.db_interactions import DBMovement
+from .forms import RegisterMovement, RegisterExerciseStep1
+from .utils.db_interactions import DBMovement, DBExercise
 
 def index(request):
     if request.user.is_authenticated:
@@ -37,10 +37,12 @@ def movements_list(request):
             settings = new_movement_form.cleaned_data["settings"]
 
             new_movement = db.set_movement(name, request.user, equipment)
-            for setting in settings:
-                new_movement_setting = db.set_settings_to_movement(new_movement, setting)
-
-            messages.success(request, """Le mouvement a bien été créé.""")
+            if new_movement: # For uppercase in movement name not blocked by is_valid() method
+                for setting in settings:
+                    new_movement_setting = db.set_settings_to_movement(new_movement, setting)
+                messages.success(request, """Le mouvement a bien été créé.""")
+            else:
+                messages.error(request, """Le mouvement existe déjà. """)                
         else:
             messages.error(request, """Le mouvement existe déjà. """) 
 
@@ -66,8 +68,38 @@ def delete_movement(request, movement_pk):
 @login_required
 def exercises_list(request):
     """
-    This view mnages the exercises:
+    This view manages the exercises:
         - print a list of exercise
-        - add an exercise
+        - create an exercise and redirect on the exercise page to finalize
     """
-    pass
+    db = DBExercise()
+    if request.method == "POST":
+        new_exercise_form = RegisterExerciseStep1(request.POST)
+        if new_exercise_form.is_valid():
+            name = new_exercise_form.cleaned_data["name"]
+            exercise_type = new_exercise_form.cleaned_data["exercise_type"]
+            description = new_exercise_form.cleaned_data["description"]
+
+            new_exercise = db.set_exercise(name, exercise_type, description, request.user)
+            if new_exercise:
+                messages.success(request, """L'exercice a bien été créé. Afin de le finaliser,
+                                 veuillez construire votre entraînement. """)
+                return redirect('program_builder:exercise_page', exercise_pk=str(new_exercise.pk))
+            else:
+                messages.error(request, """Un problème a eu lieu lors de la création de l'exercice.
+                               Veuillez recommencer s'il vous plaît.""")
+                return render(request, 'exercises_list.html', locals)
+        else:
+            messages.error(request, """Les informations que vous avez indiqué semblent présenter
+                           des erreurs.""")
+            return render(request, 'exercises_list.html', locals)
+    else:
+        new_exercise_form = RegisterExerciseStep1()
+        return render(request, 'exercises_list.html', locals())
+
+@login_required
+def exercise_page(request, exercise_pk):
+    
+    db = DBExercise()
+    exercise = db.get_one_exercise_by_pk(exercise_pk)
+    return render(request, 'exercise_page.html', locals())

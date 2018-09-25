@@ -12,7 +12,7 @@ class DBMovement:
         - all del_* methods delete information from the database
     """
    
-    def set_movement_setting(self, setting_value, founder):
+    def set_movement_setting(self, setting_name, founder):
         """
         This method registers and returns a new movement settings only if:
             - it is in a predetermined list. Just to ensure it had been thinked before on models
@@ -21,7 +21,7 @@ class DBMovement:
         """
 
         try:
-            movement_setting = MovementSettings.objects.create(name=setting_value, founder=founder)
+            movement_setting = MovementSettings.objects.create(name=setting_name.lower(), founder=founder)
             return movement_setting
         except:
             return "already_exists"
@@ -34,7 +34,7 @@ class DBMovement:
         """
 
         try:
-            equipment = Equipment.objects.create(name=equipment_name, founder=founder)
+            equipment = Equipment.objects.create(name=equipment_name.lower(), founder=founder)
             return equipment
         except:
             return "already_exists"
@@ -50,12 +50,12 @@ class DBMovement:
         """
 
         try:
-            movement = Movement.objects.create(name=movement_name,
+            movement = Movement.objects.create(name=movement_name.lower(),
                                                founder=founder,
                                                equipment=equipment)
             return movement
         except:
-            return "already_exists"
+            return None
 
     def set_settings_to_movement(self, movement, *settings):
         """
@@ -102,15 +102,31 @@ class DBExercise:
         - all del_* methods delete information from the database
     """
 
-    def set_exercise(self, exercise_name, exercise_type, performance_type, founder):
+    def _define_performance_type(self, exercise_type):
+        """
+        This method defines the adequate value of performance type accoding
+        the exercise type (see possibilities in model Exercise)
+        """
+        performance_type = ''
+        if exercise_type == 'MAXIMUM DE REPETITIONS':
+            performance_type = 'repetitions'
+        elif exercise_type == 'AMRAP' or exercise_type == "EMOM":
+            performance_type = 'duree'
+        elif exercise_type == 'RUNNING':
+            performance_type = 'distance'
+        else:
+            performance_type = 'tours'
+        return performance_type
+
+
+    def set_exercise(self, exercise_name, exercise_type, description, founder):
         """
         This method creates and returns an exercise.
         To create an exercise, the argument used must have been created before:
-            - the exercise type
-            - the performance type
             - the founder
         """
-        
+
+        performance_type = self._define_performance_type(exercise_type)
         exercise = Exercise.objects.create(name=exercise_name, 
                                             exercise_type=exercise_type,
                                             performance_type=performance_type,
@@ -147,6 +163,14 @@ class DBExercise:
         
         return exercise_movement
 
+
+    def get_all_exercise(self):
+
+        return Exercise.objects.all()
+
+    def get_one_exercise_by_pk(self, exercise_pk):
+
+        return Exercise.objects.get(pk=exercise_pk)
 
 class DBInteractions:
     """

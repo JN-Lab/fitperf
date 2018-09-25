@@ -32,13 +32,16 @@
                     <div class="collapse navbar-collapse w-100" id="verticalNav">                        
                         <ul class="navbar-nav flex-column w-100">
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Programmes<span class="sr-only">(current)</span></a>
+                                <a class="nav-link" href="{% url 'program_builder:homepage' %}">Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Programmes</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Entraînements</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Exercices</a>
+                                <a class="nav-link" href="{% url 'program_builder:exercises_list' %}">Exercices</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'program_builder:movements_list' %}">Mouvements</a>
