@@ -111,6 +111,7 @@ class Exercise(models.Model):
     performance_type = models.CharField(max_length=20, 
                                         null=True,
                                         choices=PERFORMANCE_TYPE)
+    performance_value = models.IntegerField(null=True)
     founder = models.ForeignKey(User, 
                                 on_delete=models.CASCADE,
                                 verbose_name="the execise's creator")

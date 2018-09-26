@@ -130,6 +130,7 @@ class DBExercise:
         exercise = Exercise.objects.create(name=exercise_name, 
                                             exercise_type=exercise_type,
                                             performance_type=performance_type,
+                                            description=description,
                                             founder=founder)
         return exercise
 

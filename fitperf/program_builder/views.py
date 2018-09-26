@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import RegisterMovement, RegisterExerciseStep1
+from .forms import RegisterMovement, RegisterExerciseStep1, RegisterExerciseStep2, RegisterMovementToExercise
 from .utils.db_interactions import DBMovement, DBExercise
 
 def index(request):
@@ -102,6 +102,9 @@ def exercises_list(request):
 def exercise_page(request, exercise_pk):
     
     db = DBExercise()
+
+    exercise_form = RegisterExerciseStep2()
+    movement_form = RegisterMovementToExercise()
     exercise = db.get_one_exercise_by_pk(exercise_pk)
     return render(request, 'exercise_page.html', locals())
 

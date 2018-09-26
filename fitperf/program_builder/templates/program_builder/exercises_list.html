@@ -42,33 +42,33 @@
 
 <!-- Form Modal -->
 <div class="modal fade" id="exerciseModalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Nouvel Exercice</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            </div>
-            <div class="modal-body">
-                <form action="" method="post">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        {{ new_exercise_form.name.label }}
-                        {{ new_exercise_form.name }}
-                    </div>
-                    <div class="form-group">
-                        {{ new_exercise_form.exercise_type.label }}
-                        {{ new_exercise_form.exercise_type }}
-                    </div>
-                    <div class="form-group">
-                        {{ new_exercise_form.description.label }}
-                        {{ new_exercise_form.description }}
-                    </div>
-                    <button type="submit" class="btn btn-block btn-primary">Créer</button> 
-                </form>
-            </div>
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Nouvel Exercice</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
         </div>
+        <div class="modal-body">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ new_exercise_form.name.label }}
+                    {{ new_exercise_form.name }}
+                </div>
+                <div class="form-group">
+                    {{ new_exercise_form.exercise_type.label }}
+                    {{ new_exercise_form.exercise_type }}
+                </div>
+                <div class="form-group">
+                    {{ new_exercise_form.description.label }}
+                    {{ new_exercise_form.description }}
+                </div>
+                <button type="submit" class="btn btn-block btn-primary">Créer</button> 
+            </form>
         </div>
     </div>
+    </div>
+</div>
 {% endblock %}
