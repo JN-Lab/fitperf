@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import RegisterMovement, RegisterExerciseStep1, RegisterExerciseStep2, RegisterMovementToExercise
 from .utils.db_interactions import DBMovement, DBExercise
+from .utils.treatments import DataTreatment
 
 def index(request):
     if request.user.is_authenticated:
@@ -72,7 +74,11 @@ def ajax_all_movements(request):
     For JSON structure -> see JSONTreatments class > def get_all_movements
     in utils.treatments.py
     """
-    pass
+    treatment = DataTreatment()
+    movements = treatment.get_all_movements_in_dict()
+
+    return JsonResponse(movements, safe=False)
+
 
 @login_required
 def exercises_list(request):

@@ -28,6 +28,7 @@ modalStep1.form.addEventListener("submit", function(e) {
     modalStep2.changeTitle(exercise.name);
     modalStep2.addFormSection("Type: " + exercise.exerciseType);
     if (exercise.exerciseType != "RUNNING") {
+        ajaxGet('/app/get-all-movements/', function(response) {console.log(response);});
         modalStep2.addFormTextInput("modalStep2Performance", exercise.performanceType, "number");
         modalStep2.addMovementBlock();
     } else {
