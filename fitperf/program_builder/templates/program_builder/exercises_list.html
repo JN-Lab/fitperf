@@ -59,7 +59,6 @@
         </nav>
         <div class="modal-body">
             <form action="" method="" id="exerciseModalStep1Form">
-                {% csrf_token %}
                 <div class="form-group">
                     {{ new_exercise_form.name.label }}
                     {{ new_exercise_form.name }}
@@ -98,9 +97,7 @@
         </nav>
         <div class="modal-body">
             <form action="" method="post" id="exerciseModalStep2Form">
-                {% csrf_token %}
                 {# The form is managed by the front #}
-                <button type="submit" class="btn btn-block btn-primary">Suivant</button> 
             </form>
         </div>
     </div>

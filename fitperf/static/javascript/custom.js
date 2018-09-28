@@ -1,12 +1,15 @@
 // ----------------------------------
-// Modal Prototype
+// Modal Prototypes
 // ----------------------------------
+
+// ---- Modal Parent ----
 
 function Modal(id) {
     this.id = id;
     this.modal = document.getElementById(this.id);
+    this.title = document.getElementById(this.id + "Label");
     this.form = document.getElementById(this.id + "Form");
-}
+};
 
 Modal.prototype.getFormTextInput = function(inputId) {
     return document.getElementById(inputId).value;
@@ -25,7 +28,62 @@ Modal.prototype.getFormCheckboxClicked = function(inputName) {
         }
     }
     return clickedCheckboxesValues;
-} ;
+};
+
+Modal.prototype.pushOptions = function(option) {
+    $('#' + this.id).modal(option);
+};
+
+Modal.prototype.changeTitle = function(title) {
+    this.title.textContent = title;
+};
+
+// ---- Modal Child with block builder ----
+
+function ModalBuilder(id) {
+    Modal.call(this, id);
+};
+ModalBuilder.prototype = Object.create(Modal.prototype);
+ModalBuilder.prototype.constructor = ModalBuilder;
+
+ModalBuilder.prototype.addSplittedLine = function() {
+    var hrElt = document.createElement('hr');
+    this.form.appendChild(hrElt);
+}
+
+ModalBuilder.prototype.addFormSection = function(sectionName) {
+    var sectionElt = document.createElement('h6');
+    sectionElt.textContent = sectionName;
+    this.form.appendChild(sectionElt);
+};
+
+ModalBuilder.prototype.addFormTextInput = function(id, labelName) {
+    var divElt = document.createElement("div");
+    divElt.classList.add("form-group");
+
+    var labelElt = document.createElement("label");
+    labelElt.setAttribute("for", id);
+    labelElt.textContent = labelName;
+
+    var inputElt = document.createElement("input");
+    inputElt.id = id;
+    inputElt.setAttribute("type", "text");
+    inputElt.setAttribute("required", "true");
+    inputElt.classList.add("form-control");
+
+    divElt.appendChild(labelElt);
+    divElt.appendChild(inputElt);
+    this.form.appendChild(divElt);
+};
+
+ModalBuilder.prototype.addSubmitButton = function(buttonText) {
+    var buttonElt = document.createElement("button");
+    buttonElt.setAttribute("type", "submit");
+    buttonElt.classList.add("btn", "btn-block" ,"btn-primary");
+    buttonElt.textContent = buttonText;
+
+    this.form.appendChild(buttonElt);
+};
 
 // ----------------------------------
 // Function to get csrf token
