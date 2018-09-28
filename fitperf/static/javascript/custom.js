@@ -1,3 +1,42 @@
+// -------------------------------
+// Exercise Prototype
+// -------------------------------
+
+function Exercise() {
+    this.id = Number();
+    this.name = String();
+    this.exerciseType = String();
+    this.description = String();
+    this.founder = String();
+    this.performanceType = String();
+    this.permormanceValue = Number();
+    this.movements = {};
+};
+
+Exercise.prototype.definePerformanceType= function(exerciseType) {
+    // To define performanceType according exerciseType when got
+    if (exerciseType === 'MAXIMUM DE REPETITION') {
+        this.performanceType = 'Nombre de répétitions';
+    } else if (exerciseType === 'AMRAP' || exerciseType === 'EMOM') {
+        this.performanceType = 'Temps';
+    } else if (exerciseType === 'RUNNING') {
+        this.performanceType = 'Distance';
+    } else {
+        this.performanceType = 'Nombre de tours';
+    }
+};
+
+// -------------------------------
+// Movement Prototype
+// -------------------------------
+
+function Movement() {
+    this.id = Number();
+    this.name = String();
+    this.equipment = Number();
+    this.founder = String();
+    this.settings = Array();
+};
 // ----------------------------------
 // Modal Prototypes
 // ----------------------------------
@@ -46,6 +85,15 @@ function ModalBuilder(id) {
 ModalBuilder.prototype = Object.create(Modal.prototype);
 ModalBuilder.prototype.constructor = ModalBuilder;
 
+ModalBuilder.prototype.cleanFormElt = function() {
+    if (this.form.hasChildNodes()) {
+        var formElts = this.form.childNodes;
+        while (formElts.length > 0) {
+            this.form.removeChild(formElts[0]);
+        }
+    }
+}
+
 ModalBuilder.prototype.addSplittedLine = function() {
     var hrElt = document.createElement('hr');
     this.form.appendChild(hrElt);
@@ -57,7 +105,25 @@ ModalBuilder.prototype.addFormSection = function(sectionName) {
     this.form.appendChild(sectionElt);
 };
 
-ModalBuilder.prototype.addFormTextInput = function(id, labelName) {
+ModalBuilder.prototype.returnSplittedLine = function() {
+    var hrElt = document.createElement('hr');
+    return hrElt
+}
+
+ModalBuilder.prototype.returnFormSection = function(sectionName) {
+    var sectionElt = document.createElement('h6');
+    sectionElt.textContent = sectionName;
+    return sectionElt;
+};
+
+ModalBuilder.prototype.returnMovementForm = function() {
+    var mvtForm = document.createElement("div");
+    mvtForm.classList.add("form-control", "mb-2");
+    mvtForm.textContent = "TEST";
+    return mvtForm;
+};
+
+ModalBuilder.prototype.addFormTextInput = function(id, labelName, type, is_decimal) {
     var divElt = document.createElement("div");
     divElt.classList.add("form-group");
 
@@ -67,13 +133,45 @@ ModalBuilder.prototype.addFormTextInput = function(id, labelName) {
 
     var inputElt = document.createElement("input");
     inputElt.id = id;
-    inputElt.setAttribute("type", "text");
     inputElt.setAttribute("required", "true");
     inputElt.classList.add("form-control");
+    inputElt.setAttribute("type", type);
+    if (type === "number" && is_decimal) {
+        inputElt.setAttribute("step", "0.1");
+    }
 
     divElt.appendChild(labelElt);
     divElt.appendChild(inputElt);
     this.form.appendChild(divElt);
+};
+
+
+ModalBuilder.prototype.addMovementBlock = function(movements) {
+
+    var startHrElt = this.returnSplittedLine();
+    this.form.appendChild(startHrElt);
+    
+    var sectionElt = this.returnFormSection("Mouvements");
+    this.form.appendChild(sectionElt);
+    
+    var endHrElt = this.returnSplittedLine();
+    this.form.appendChild(endHrElt);
+
+
+    var buttonElt = document.createElement('button');
+    buttonElt.setAttribute("type", "button");
+    buttonElt.classList.add("btn", "btn-sm", "btn-outline-info");
+    buttonElt.textContent = "+ Mouvement";
+
+    var mvtForm = this.returnMovementForm();
+    this.form.insertBefore(mvtForm, endHrElt);
+
+    buttonElt.addEventListener("click", function() {
+        var mvtForm = this.returnMovementForm()
+        this.form.insertBefore(mvtForm, endHrElt);
+    }.bind(this));
+
+    this.form.appendChild(buttonElt);
 };
 
 ModalBuilder.prototype.addSubmitButton = function(buttonText) {
@@ -109,6 +207,7 @@ function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
+
 
 // ----------------------------------
 // Ajax Interactions

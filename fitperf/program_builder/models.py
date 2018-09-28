@@ -85,20 +85,20 @@ class Exercise(models.Model):
     This class represents the exercises created
     """
     EXERCISE_TYPE = (
-        ('RUN', 'RUNNING'),
+        ('RUNNING', 'RUNNING'),
         ('FORTIME', 'FORTIME'),
         ('AMRAP', 'AMRAP'),
-        ('WARMUP', 'ECHAUFFEMENT'),
-        ('STRENGTH', 'FORCE'),
+        ('ECHAUFFEMENT', 'ECHAUFFEMENT'),
+        ('FORCE', 'FORCE'),
         ('EMOM', 'EMOM'),
-        ('CONDITIONNING', 'CONDITIONNEMENT'),
-        ('MAX_REP', 'MAXIMUM DE REPETITIONS')
+        ('CONDITIONNEMENY', 'CONDITIONNEMENT'),
+        ('MAXIMUM DE REPETITIONS', 'MAXIMUM DE REPETITIONS')
     )
     PERFORMANCE_TYPE = (
-        ('TIME', 'duree'),
-        ('NB_ROUNDS', 'tours'),
-        ('NB_REP', 'repetitions'),
-        ('DIST', 'distance'),
+        ('Temps', 'Temps'),
+        ('Nombre de tours', 'Nombre de tours'),
+        ('Nombre de répétitions', 'Nombre de répétitions'),
+        ('Distance', 'Distance'),
     )
     name = models.CharField(max_length=200,
                             verbose_name="Nom")

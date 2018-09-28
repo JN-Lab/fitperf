@@ -1,3 +1,5 @@
+#! /usr/bin/env python3
+# coding: utf-8
 from django.test import TestCase, TransactionTestCase
 from django.contrib.auth.models import User
 from ..models import Profile, Session, ExercisesPerSession, Program, Training, Exercise, MovementsPerExercise, Movement, MovementSettings, Equipment, MovementSettingsPerMovementsPerExercise

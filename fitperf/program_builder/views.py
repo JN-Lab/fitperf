@@ -66,6 +66,15 @@ def delete_movement(request, movement_pk):
     return redirect(referer, locals())
 
 @login_required
+def ajax_all_movements(request):
+    """
+    This view returns all the movements in JSON
+    For JSON structure -> see JSONTreatments class > def get_all_movements
+    in utils.treatments.py
+    """
+    pass
+
+@login_required
 def exercises_list(request):
     """
     This view manages the exercises:
