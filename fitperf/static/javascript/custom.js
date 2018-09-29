@@ -1,6 +1,28 @@
-// -------------------------------
+// ---------------------------------------------------------------
+// ObjectList Prototype
+
+// This prototype is used to get the different necessary elements
+// in Ajax from db (movements, exercise, trainings, ...)
+// ---------------------------------------------------------------
+
+function ObjectsList(objectType, url) {
+    this.objectsType = objectType;
+    this.url = url;
+    this.objectsList = Array();
+
+    this.getList(this.url);
+}
+
+ObjectsList.prototype.getList = function(url) {
+    ajaxGet(url, function(response) {
+        this.objectsList = JSON.parse(response); 
+    }.bind(this));
+};
+
+
+// ---------------------------------------------------------------
 // Exercise Prototype
-// -------------------------------
+// ---------------------------------------------------------------
 
 function Exercise() {
     this.id = Number();
@@ -26,9 +48,9 @@ Exercise.prototype.definePerformanceType= function(exerciseType) {
     }
 };
 
-// -------------------------------
+// ---------------------------------------------------------------
 // Movement Prototype
-// -------------------------------
+// ---------------------------------------------------------------
 
 function Movement() {
     this.id = Number();
@@ -37,9 +59,9 @@ function Movement() {
     this.founder = String();
     this.settings = Array();
 };
-// ----------------------------------
+// ---------------------------------------------------------------
 // Modal Prototypes
-// ----------------------------------
+// ---------------------------------------------------------------
 
 // ---- Modal Parent ----
 
@@ -50,14 +72,17 @@ function Modal(id) {
     this.form = document.getElementById(this.id + "Form");
 };
 
+// Get value from textinputform
 Modal.prototype.getFormTextInput = function(inputId) {
     return document.getElementById(inputId).value;
 };
 
+// Get option selected from select form
 Modal.prototype.getFormSelectInput = function(selectId) {
     return document.getElementById(selectId).value;
 };
 
+// Get checkbox clicked from form
 Modal.prototype.getFormCheckboxClicked = function(inputName) {
     clickedCheckboxesValues = []
     var checkboxes = document.getElementsByName(inputName);
@@ -69,10 +94,12 @@ Modal.prototype.getFormCheckboxClicked = function(inputName) {
     return clickedCheckboxesValues;
 };
 
+// Manage modal option through bootstrap JQuery function
 Modal.prototype.pushOptions = function(option) {
     $('#' + this.id).modal(option);
 };
 
+// Change the title of the modal
 Modal.prototype.changeTitle = function(title) {
     this.title.textContent = title;
 };
@@ -183,9 +210,9 @@ ModalBuilder.prototype.addSubmitButton = function(buttonText) {
     this.form.appendChild(buttonElt);
 };
 
-// ----------------------------------
+// ---------------------------------------------------------------
 // Function to get csrf token
-// ----------------------------------
+// ---------------------------------------------------------------
 
 function getCookie(name) {
     var cookieValue = null;
@@ -209,9 +236,9 @@ function csrfSafeMethod(method) {
 }
 
 
-// ----------------------------------
+// ---------------------------------------------------------------
 // Ajax Interactions
-// ----------------------------------
+// ---------------------------------------------------------------
 
 // Ajax Get function
 function ajaxGet(url, callback) {

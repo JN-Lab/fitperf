@@ -27,6 +27,7 @@ function Movement(name, settings) {
 // All this things has to be managed in javascript
 
 // Define Modal Object and its prototype
+
 function Modal(id, step) {
     this.id = id;
     this.modal = document.getElementById(this.id);
