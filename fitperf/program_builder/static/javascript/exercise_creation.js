@@ -28,7 +28,7 @@ modalStep1.form.addEventListener("submit", function(e) {
     modalStep2.changeTitle(exercise.name);
     modalStep2.addFormSection("Type: " + exercise.exerciseType);
     if (exercise.exerciseType != "RUNNING") {
-        modalStep2.addFormTextInput("modalStep2Performance", exercise.performanceType, "number");
+        modalStep2.addFormTextInput("modalStep2Performance", exercise.performanceType, "number", false);
         
         // We get all the movements and when we have them, we generate the movement blocks + end of the form
         getAjaxJson("/app/get-all-movements/", "GET")

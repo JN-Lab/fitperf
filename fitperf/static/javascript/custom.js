@@ -13,17 +13,20 @@ function Exercise() {
     this.movements = {};
 };
 
-Exercise.prototype.definePerformanceType= function(exerciseType) {
-    // To define performanceType according exerciseType when got
+Exercise.prototype.definePerformanceType = function(exerciseType) {
+    // To define performanceType according exerciseType
+    performanceType = String();
+
     if (exerciseType === 'MAXIMUM DE REPETITION') {
-        this.performanceType = 'Nombre de répétitions';
+        performanceType = 'Nombre de répétitions';
     } else if (exerciseType === 'AMRAP' || exerciseType === 'EMOM') {
-        this.performanceType = 'Temps';
+        performanceType = 'Temps';
     } else if (exerciseType === 'RUNNING') {
-        this.performanceType = 'Distance';
+        performanceType = 'Distance';
     } else {
-        this.performanceType = 'Nombre de tours';
+        performanceType = 'Nombre de tours';
     }
+    return performanceType;
 };
 
 // ---------------------------------------------------------------
@@ -143,27 +146,103 @@ ModalBuilder.prototype.addFormTextInput = function(id, labelName, type, is_decim
     this.form.appendChild(divElt);
 };
 
-ModalBuilder.prototype.returnMovementForm = function(movementsList) {
+ModalBuilder.prototype.returnSettingsMovementForm = function (movementSelected, mvtFormIndex) {
+
+    var allSettingsElt = document.createElement("div")
+    allSettingsElt.id = "Settings" + mvtFormIndex;
+    allSettingsElt.classList.add("mt-2", "ml-5");
+    
+    for (i=0; i < movementSelected.settings.length; i++) {
+        var formElt = document.createElement("div");
+        formElt.classList.add("form-group", "row");
+    
+        var labelElt = document.createElement("label");
+        labelElt.setAttribute("for", movementSelected.name + movementSelected.settings[i] + mvtFormIndex);
+        labelElt.classList.add("col-sm-2", "col-form-label", "mr-4");
+        labelElt.textContent = movementSelected.settings[i];
+
+        var divInputElt = document.createElement("div");
+        divInputElt.classList.add("col-sm-4");
+
+        var inputElt = document.createElement("input");
+        inputElt.id = movementSelected.name + movementSelected.settings[i] + mvtFormIndex;
+        inputElt.setAttribute("type", "number");
+        inputElt.setAttribute("required", "true");
+        inputElt.classList.add("form-control");
+
+        divInputElt.appendChild(inputElt);
+        formElt.appendChild(labelElt);
+        formElt.appendChild(divInputElt);
+        allSettingsElt.appendChild(formElt);
+    }
+    return allSettingsElt;
+}
+
+ModalBuilder.prototype.returnMovementForm = function(movementsList, mvtFormIndex) {
     var formElt = document.createElement("div");
     formElt.classList.add("form-group", "mb-2");
 
+    var labelElt = document.createElement("label");
+    labelElt.setAttribute("for", "select" + mvtFormIndex);
+    labelElt.textContent = "mouvement " + mvtFormIndex;
+
     var selectElt = document.createElement("select");
     selectElt.classList.add("form-control");
+    selectElt.id = "select" + mvtFormIndex;
+
+    optionDefaultElt = document.createElement("option");
+    optionDefaultElt.value = "none";
+    optionDefaultElt.textContent = "Sélectionnez un mouvement";
+    selectElt.appendChild(optionDefaultElt);
 
     for (var i = 0; i < movementsList.length; i++) {
         var optionElt = document.createElement("option");
         optionElt.setAttribute("value", movementsList[i].id);
         optionElt.textContent = movementsList[i].name;
+        optionElt.value = movementsList[i].name;
         selectElt.appendChild(optionElt);
     }
 
-    //addEventListener change on selectElt element
-
+    formElt.appendChild(labelElt);
     formElt.appendChild(selectElt);
+
+    //addEventListener change on selectElt element
+    selectElt.addEventListener("change", function() {
+
+        // We get the value of the selected option
+        var mvtName = selectElt[selectElt.selectedIndex].value;
+
+        // With nvtName, we get the adeaquate movement in movementsList
+        var mvtSelected = {};
+        if (mvtName != "none") {
+            var i = 0
+            var mvtNumb = movementsList.length;
+            var notFound = true;
+            while (i < mvtNumb && notFound) {
+                if (mvtName != movementsList[i].name) {
+                    i++;
+                } else {
+                    mvtSelected = movementsList[i];
+                    notFound = false;
+                }
+            }
+        }
+
+        // We need to remove a previous settings block before pushing another one
+        // These blocks have the id equal to "Settings" + mvtFormIndex : see returnMovementForm prototype
+        var settingElt = document.getElementById("Settings" + mvtFormIndex); 
+        if (settingElt != null) {
+            settingElt.parentNode.removeChild(settingElt);
+        }
+
+        // For each setting linked to the movement, we create an text input with a number type
+        mvtSettingsForm = this.returnSettingsMovementForm(mvtSelected, mvtFormIndex);
+        formElt.appendChild(mvtSettingsForm);
+
+    }.bind(this));
 
     return formElt;
 };
-
 
 ModalBuilder.prototype.addMovementBlock = function(movementsList) {
 
@@ -181,11 +260,14 @@ ModalBuilder.prototype.addMovementBlock = function(movementsList) {
     buttonElt.classList.add("btn", "btn-sm", "btn-outline-info");
     buttonElt.textContent = "+ Mouvement";
 
-    var mvtForm = this.returnMovementForm(movementsList);
+    // mvtFormIndex used to set-up id in selected form + order
+    var mvtFormIndex = 1;
+    var mvtForm = this.returnMovementForm(movementsList, mvtFormIndex);
     this.form.insertBefore(mvtForm, endHrElt);
 
     buttonElt.addEventListener("click", function() {
-        var mvtForm = this.returnMovementForm(movementsList);
+        mvtFormIndex = mvtFormIndex + 1;
+        var mvtForm = this.returnMovementForm(movementsList, mvtFormIndex);
         this.form.insertBefore(mvtForm, endHrElt);
     }.bind(this));
 

@@ -1,6 +1,9 @@
 /**
 * VARIABLES
 */
+.modal {
+  overflow: auto; }
+
 html,
 body {
   height: 100%;
