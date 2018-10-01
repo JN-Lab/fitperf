@@ -1,26 +1,4 @@
 // ---------------------------------------------------------------
-// ObjectList Prototype
-
-// This prototype is used to get the different necessary elements
-// in Ajax from db (movements, exercise, trainings, ...)
-// ---------------------------------------------------------------
-
-function ObjectsList(objectType, url) {
-    this.objectsType = objectType;
-    this.url = url;
-    this.objectsList = Array();
-
-    this.getList(this.url);
-}
-
-ObjectsList.prototype.getList = function(url) {
-    ajaxGet(url, function(response) {
-        this.objectsList = JSON.parse(response); 
-    }.bind(this));
-};
-
-
-// ---------------------------------------------------------------
 // Exercise Prototype
 // ---------------------------------------------------------------
 
@@ -143,13 +121,6 @@ ModalBuilder.prototype.returnFormSection = function(sectionName) {
     return sectionElt;
 };
 
-ModalBuilder.prototype.returnMovementForm = function() {
-    var mvtForm = document.createElement("div");
-    mvtForm.classList.add("form-control", "mb-2");
-    mvtForm.textContent = "TEST";
-    return mvtForm;
-};
-
 ModalBuilder.prototype.addFormTextInput = function(id, labelName, type, is_decimal) {
     var divElt = document.createElement("div");
     divElt.classList.add("form-group");
@@ -172,8 +143,29 @@ ModalBuilder.prototype.addFormTextInput = function(id, labelName, type, is_decim
     this.form.appendChild(divElt);
 };
 
+ModalBuilder.prototype.returnMovementForm = function(movementsList) {
+    var formElt = document.createElement("div");
+    formElt.classList.add("form-group", "mb-2");
 
-ModalBuilder.prototype.addMovementBlock = function(movements) {
+    var selectElt = document.createElement("select");
+    selectElt.classList.add("form-control");
+
+    for (var i = 0; i < movementsList.length; i++) {
+        var optionElt = document.createElement("option");
+        optionElt.setAttribute("value", movementsList[i].id);
+        optionElt.textContent = movementsList[i].name;
+        selectElt.appendChild(optionElt);
+    }
+
+    //addEventListener change on selectElt element
+
+    formElt.appendChild(selectElt);
+
+    return formElt;
+};
+
+
+ModalBuilder.prototype.addMovementBlock = function(movementsList) {
 
     var startHrElt = this.returnSplittedLine();
     this.form.appendChild(startHrElt);
@@ -184,17 +176,16 @@ ModalBuilder.prototype.addMovementBlock = function(movements) {
     var endHrElt = this.returnSplittedLine();
     this.form.appendChild(endHrElt);
 
-
     var buttonElt = document.createElement('button');
     buttonElt.setAttribute("type", "button");
     buttonElt.classList.add("btn", "btn-sm", "btn-outline-info");
     buttonElt.textContent = "+ Mouvement";
 
-    var mvtForm = this.returnMovementForm();
+    var mvtForm = this.returnMovementForm(movementsList);
     this.form.insertBefore(mvtForm, endHrElt);
 
     buttonElt.addEventListener("click", function() {
-        var mvtForm = this.returnMovementForm()
+        var mvtForm = this.returnMovementForm(movementsList);
         this.form.insertBefore(mvtForm, endHrElt);
     }.bind(this));
 
@@ -239,6 +230,34 @@ function csrfSafeMethod(method) {
 // ---------------------------------------------------------------
 // Ajax Interactions
 // ---------------------------------------------------------------
+
+// Ajax with Promise
+
+function getAjaxJson(url) {
+    return new Promise(function (resolve, reject) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url);
+        xhr.onload = function() {
+            if (this.status >= 200 && this.status < 300) {
+                resolve(JSON.parse(xhr.response));
+            }
+            else {
+                reject({
+                    status: this.status,
+                    statusText: this.statusText
+                });
+            }
+        };
+        xhr.onerror = function () {
+            reject({
+                status: this.status,
+                statusText: this.statusText
+            });
+        };
+        xhr.open("GET", url);
+        xhr.send();
+    });
+}
 
 // Ajax Get function
 function ajaxGet(url, callback) {

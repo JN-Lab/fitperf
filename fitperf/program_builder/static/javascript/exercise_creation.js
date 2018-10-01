@@ -28,14 +28,27 @@ modalStep1.form.addEventListener("submit", function(e) {
     modalStep2.changeTitle(exercise.name);
     modalStep2.addFormSection("Type: " + exercise.exerciseType);
     if (exercise.exerciseType != "RUNNING") {
-        movementsList = new ObjectsList("movements", "/app/get-all-movements/");
         modalStep2.addFormTextInput("modalStep2Performance", exercise.performanceType, "number");
-        modalStep2.addMovementBlock();
+        
+        // We get all the movements and when we have them, we generate the movement blocks + end of the form
+        getAjaxJson("/app/get-all-movements/", "GET")
+        .then(function (response) {
+            modalStep2.addMovementBlock(response);
+            modalStep2.addSplittedLine();
+            modalStep2.addSubmitButton("Suivant");
+        })
+        .catch(function (error) {
+            console.log(error.status);
+            console.log(error.statusText);
+        })
     } else {
+        // This is to manage the exercise it if is running type
+            // No need movement block
+            // Need decimal in performance value
         modalStep2.addFormTextInput("modalStep2Performance", exercise.performanceType, "number", true);
+        modalStep2.addSplittedLine();
+        modalStep2.addSubmitButton("Suivant");
     }
-    modalStep2.addSplittedLine();
-    modalStep2.addSubmitButton("Suivant");
     // -----------
     // -> Premiere etape: definir formulaire pour récuperer la performance value 
     // -> Si performance type impose le choix de mouvement alors:
