@@ -6,13 +6,9 @@
 
 var exercise = new Exercise();
 var modalStep1 = new Modal('exerciseModalStep1');
-var modalStep2 = new Modal('exerciseModalStep2');
+var modalStep2 = new ModalBuilder('exerciseModalStep2');
 
 // ---- Step 1 -----
-
-var exercise = new Exercise();
-var modalStep1 = new Modal('exerciseModalStep1');
-var modalStep2 = new ModalBuilder('exerciseModalStep2');
 
 modalStep1.form.addEventListener("submit", function(e) {
     // Remove form component
@@ -35,7 +31,7 @@ modalStep1.form.addEventListener("submit", function(e) {
         .then(function (response) {
             modalStep2.addMovementBlock(response);
             modalStep2.addSplittedLine();
-            modalStep2.addSubmitButton("Suivant");
+            modalStep2.addSubmitButton("Créer");
         })
         .catch(function (error) {
             console.log(error.status);
@@ -47,19 +43,41 @@ modalStep1.form.addEventListener("submit", function(e) {
             // Need decimal in performance value
         modalStep2.addFormTextInput("modalStep2Performance", exercise.performanceType, "number", true);
         modalStep2.addSplittedLine();
-        modalStep2.addSubmitButton("Suivant");
+        modalStep2.addSubmitButton("Créer");
     }
-    // -----------
-    // -> Premiere etape: definir formulaire pour récuperer la performance value 
-    // -> Si performance type impose le choix de mouvement alors:
-        // -> Recupérer tous les mouvements disponibles ainsi que leurs settings
-        // -> Rajouter le bloc pour les mouvements les éléments au formulaire 
-    // -----------
 
     // Hide Modal for Step1 and show Modal for Step 2 
     modalStep1.pushOptions('hide');
     modalStep2.pushOptions('show');
     e.preventDefault();
-})
+});
 
 // ---- Step 2 -----
+
+modalStep2.form.addEventListener("submit", function(e) {
+    e.preventDefault();
+    // We get all informations from the form
+    exercise.performanceValue = modalStep2.getFormTextInput("modalStep2Performance");
+    var movements = modalStep2.getSelectInputs();
+    for (i = 0; i < movements.length; i++) {
+        let mvtNumber = i + 1;
+        var name = modalStep2.getFormSelectInput("select" + mvtNumber);
+        var movement = new Movement(name, mvtNumber);
+        // We need to get Settings
+        var settingsDiv = document.getElementById("settings" + mvtNumber);
+        var settingsInputElt = settingsDiv.getElementsByTagName("INPUT");
+        console.log(settingsInputElt);
+        var settingsNumb = settingsInputElt.length;
+        console.log("numb settings: " + settingsNumb);
+        for (x = 0; x < settingsInputElt.length; x++) {
+            let name = settingsInputElt[x].name;
+            let value = settingsInputElt[x].value;
+            let setting = new Setting(name, value);
+            movement.settings.push(setting);
+        }
+        exercise.movements.push(movement);
+    }
+    // We post exercise object
+
+    
+});
