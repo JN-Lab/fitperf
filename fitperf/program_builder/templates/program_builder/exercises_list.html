@@ -54,7 +54,6 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item active" aria-current="page">Etape 1</li>
                 <li class="breadcrumb-item">Etape 2</li>
-                <li class="breadcrumb-item">Recapitulatif</li>
             </ol>
         </nav>
         <div class="modal-body">
@@ -92,7 +91,6 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">Etape 1</li>
                 <li class="breadcrumb-item active" aria-current="page">Etape 2</li>
-                <li class="breadcrumb-item">Recapitulatif</li>
             </ol>
         </nav>
         <div class="modal-body">
@@ -104,34 +102,6 @@
     </div>
     </div>
 </div>
-
-<!-- Form Modal Exercise Creation Step3 -->
-<div class="modal fade" id="exerciseModalStep3" tabindex="-1" role="dialog" aria-labelledby="exerciseModalStep3Label" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exerciseModalStep3Label">Nouvel Exercice</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            </div>
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">Etape 1</li>
-                    <li class="breadcrumb-item" >Etape 2</li>
-                    <li class="breadcrumb-item active" aria-current="page">Recapitulatif</li>
-                </ol>
-            </nav>
-            <div class="modal-body">
-                <form action="" method="post" id="exerciseModalStep3Form">
-                    {% csrf_token %}
-                    {# The form is managed by the front #}
-                    <button type="submit" class="btn btn-block btn-primary">Créer</button> 
-                </form>
-            </div>
-        </div>
-        </div>
-    </div>
 
 {% endblock %}
 {% block custom_js %}

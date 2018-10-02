@@ -160,6 +160,7 @@ ModalBuilder.prototype.addFormTextInput = function(id, labelName, type, is_decim
     inputElt.setAttribute("required", "true");
     inputElt.classList.add("form-control");
     inputElt.setAttribute("type", type);
+    inputElt.setAttribute("min", "0");
     if (type === "number" && is_decimal) {
         inputElt.setAttribute("step", "0.1");
     }
@@ -210,15 +211,15 @@ ModalBuilder.prototype.returnMovementForm = function(movementsList, mvtFormIndex
     // ModalBuilder.prototype.addMovementBlock method
 
     var formElt = document.createElement("div");
-    formElt.classList.add("form-group","row", "mb-2", "d-flex", "justify-content-end");
+    formElt.classList.add("form-group","row", "mb-2", "d-flex", "justify-content-end", "align-items-center");
 
     var labelElt = document.createElement("label");
     labelElt.setAttribute("for", "select" + mvtFormIndex);
     labelElt.textContent = mvtFormIndex + ". ";
-    labelElt.classList.add("col-2", "col-form-label", "text-right");
+    labelElt.classList.add("col-1", "col-form-label", "text-right");
 
     var divSelectElt = document.createElement("div");
-    divSelectElt.classList.add("col-10", "mb-2");
+    divSelectElt.classList.add("col-9");
 
     var selectElt = document.createElement("select");
     selectElt.classList.add("form-control");
@@ -237,8 +238,24 @@ ModalBuilder.prototype.returnMovementForm = function(movementsList, mvtFormIndex
         optionElt.value = movementsList[i].name;
         selectElt.appendChild(optionElt);
     }
-    
+
     divSelectElt.appendChild(selectElt);
+
+    if (mvtFormIndex > 1) {
+        // Test close Button
+        var delBtnElt = document.createElement("button");
+        delBtnElt.classList.add("close", 'col-2');
+        delBtnElt.setAttribute("type", "button");
+        delBtnElt.setAttribute("arial-label", "Close");
+
+        var delSpanElt = document.createElement("span");
+        delSpanElt.setAttribute("aria-hidden", "true");
+        delSpanElt.textContent = "×";
+
+        delBtnElt.appendChild(delSpanElt);
+        formElt.appendChild(delBtnElt);
+    }
+    
     formElt.appendChild(labelElt);
     formElt.appendChild(divSelectElt);
     
@@ -286,7 +303,7 @@ ModalBuilder.prototype.returnSettingsMovementForm = function (movementSelected, 
     
     for (i=0; i < movementSelected.settings.length; i++) {
         var formElt = document.createElement("div");
-        formElt.classList.add("form-group", "d-flex", "justify-content-end");
+        formElt.classList.add("form-group", "d-flex", "mt-2", "justify-content-end");
     
         var labelElt = document.createElement("label");
         labelElt.setAttribute("for", movementSelected.settings[i] + mvtFormIndex);
@@ -299,6 +316,7 @@ ModalBuilder.prototype.returnSettingsMovementForm = function (movementSelected, 
         var inputElt = document.createElement("input");
         inputElt.id = movementSelected.settings[i] + mvtFormIndex;
         inputElt.setAttribute("type", "number");
+        inputElt.setAttribute("min", "0");
         inputElt.setAttribute("required", "true");
         inputElt.setAttribute("name", movementSelected.settings[i]);
         inputElt.classList.add("form-control", "form-control-sm");
