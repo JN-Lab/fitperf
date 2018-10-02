@@ -68,8 +68,8 @@ Modal.prototype.getFormSelectInput = function(selectId) {
 };
 
 Modal.prototype.getSelectInputs = function() {
-    // Get the number of Select Input in a modal
-    return this.modal.getElementsByTagName("SELECT");
+    // Return all the selects from a modal
+    return this.form.getElementsByTagName("SELECT");
 };
 
 Modal.prototype.getFormCheckboxClicked = function(inputName) {
@@ -104,10 +104,23 @@ ModalBuilder.prototype = Object.create(Modal.prototype);
 ModalBuilder.prototype.constructor = ModalBuilder;
 
 ModalBuilder.prototype.cleanFormElt = function() {
+    // This is a method to remove all child elements from a form
+    // EXCEPT the csrf token
     if (this.form.hasChildNodes()) {
         var formElts = this.form.childNodes;
-        while (formElts.length > 0) {
-            this.form.removeChild(formElts[0]);
+        // We just need to keep csrf token
+        for (i = 0; i < formElts.length; i++) {
+            if (formElts[i].nodeType !== Node.ELEMENT_NODE) {
+                this.form.removeChild(formElts[i]);
+                i--;
+            } else {
+                if (formElts[i].hasAttribute("name") && formElts[i].name === "csrfmiddlewaretoken") {
+                    //pass
+                } else {
+                    this.form.removeChild(formElts[i]);
+                    i--;
+                }
+            }
         }
     }
 }
@@ -157,8 +170,8 @@ ModalBuilder.prototype.addFormTextInput = function(id, labelName, type, is_decim
 };
 
 ModalBuilder.prototype.addMovementBlock = function(movementsList) {
-    // This the prototype to build a movement block in a modal
-    // In this prototypes, ModalBuilder.prototype.returnMovementForm is used
+    // This is the method to build a movement block in a modal
+    // In this method, ModalBuilder.prototype.returnMovementForm is used
 
     var startHrElt = this.returnSplittedLine();
     this.form.appendChild(startHrElt);
@@ -189,12 +202,12 @@ ModalBuilder.prototype.addMovementBlock = function(movementsList) {
 };
 
 ModalBuilder.prototype.returnMovementForm = function(movementsList, mvtFormIndex) {
-    // This is the prototype to return a movement div selection with its settings
+    // This is the method to return a movement div selection with its settings
     // in a movement block
-    // In this prototype, ModalBuilder.prototype.returnSettingsMovementForm is used
+    // In this method, ModalBuilder.prototype.returnSettingsMovementForm is used
     // to manage settings selection.
-    // This prototype can be considered as a private method. It is only used in
-    // ModalBuilder.prototype.addMovementBlock prototype
+    // This method can be considered as a private method. It is only used in
+    // ModalBuilder.prototype.addMovementBlock method
 
     var formElt = document.createElement("div");
     formElt.classList.add("form-group","row", "mb-2", "d-flex", "justify-content-end");
@@ -249,7 +262,7 @@ ModalBuilder.prototype.returnMovementForm = function(movementsList, mvtFormIndex
             }
         }
         // We need to remove a previous settings block before pushing another one
-        // These blocks have the id equal to "Settings" + mvtFormIndex : see returnMovementForm prototype
+        // These blocks have the id equal to "Settings" + mvtFormIndex : see returnMovementForm method
         var settingElt = document.getElementById("settings" + mvtFormIndex); 
         if (settingElt != null) {
             settingElt.parentNode.removeChild(settingElt);
@@ -264,9 +277,9 @@ ModalBuilder.prototype.returnMovementForm = function(movementsList, mvtFormIndex
 };
 
 ModalBuilder.prototype.returnSettingsMovementForm = function (movementSelected, mvtFormIndex) {
-    // This is the prototype to return settings movement forms in a movement div.
-    // This prototype can be considered as a private method. It is only used in
-    // ModalBuilder.prototype.returnMovementForm prototype
+    // This is the method to return settings movement forms in a movement div.
+    // This method can be considered as a private method. It is only used in
+    // ModalBuilder.prototype.returnMovementForm method
 
     var allSettingsElt = document.createElement("div")
     allSettingsElt.id = "settings" + mvtFormIndex;
@@ -299,7 +312,7 @@ ModalBuilder.prototype.returnSettingsMovementForm = function (movementSelected, 
 }
 
 ModalBuilder.prototype.addSubmitButton = function(buttonText) {
-    // This is a prototype to generate a submit button in a modal
+    // This is a method to generate a submit button in a modal
 
     var buttonElt = document.createElement("button");
     buttonElt.setAttribute("type", "submit");

@@ -61,14 +61,11 @@ modalStep2.form.addEventListener("submit", function(e) {
     var movements = modalStep2.getSelectInputs();
     for (i = 0; i < movements.length; i++) {
         let mvtNumber = i + 1;
-        var name = modalStep2.getFormSelectInput("select" + mvtNumber);
-        var movement = new Movement(name, mvtNumber);
+        let name = modalStep2.getFormSelectInput("select" + mvtNumber);
+        let movement = new Movement(name, mvtNumber);
         // We need to get Settings
-        var settingsDiv = document.getElementById("settings" + mvtNumber);
-        var settingsInputElt = settingsDiv.getElementsByTagName("INPUT");
-        console.log(settingsInputElt);
-        var settingsNumb = settingsInputElt.length;
-        console.log("numb settings: " + settingsNumb);
+        let settingsDiv = document.getElementById("settings" + mvtNumber);
+        let settingsInputElt = settingsDiv.getElementsByTagName("INPUT");
         for (x = 0; x < settingsInputElt.length; x++) {
             let name = settingsInputElt[x].name;
             let value = settingsInputElt[x].value;
