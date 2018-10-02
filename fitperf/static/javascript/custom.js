@@ -150,25 +150,24 @@ ModalBuilder.prototype.returnSettingsMovementForm = function (movementSelected, 
 
     var allSettingsElt = document.createElement("div")
     allSettingsElt.id = "Settings" + mvtFormIndex;
-    allSettingsElt.classList.add("mt-2", "ml-5");
     
     for (i=0; i < movementSelected.settings.length; i++) {
         var formElt = document.createElement("div");
-        formElt.classList.add("form-group", "row");
+        formElt.classList.add("form-group", "d-flex", "justify-content-end");
     
         var labelElt = document.createElement("label");
         labelElt.setAttribute("for", movementSelected.name + movementSelected.settings[i] + mvtFormIndex);
-        labelElt.classList.add("col-sm-2", "col-form-label", "mr-4");
+        labelElt.classList.add("col-4", "col-form-label", "text-right");
         labelElt.textContent = movementSelected.settings[i];
 
         var divInputElt = document.createElement("div");
-        divInputElt.classList.add("col-sm-4");
+        divInputElt.classList.add("col-4");
 
         var inputElt = document.createElement("input");
         inputElt.id = movementSelected.name + movementSelected.settings[i] + mvtFormIndex;
         inputElt.setAttribute("type", "number");
         inputElt.setAttribute("required", "true");
-        inputElt.classList.add("form-control");
+        inputElt.classList.add("form-control", "form-control-sm");
 
         divInputElt.appendChild(inputElt);
         formElt.appendChild(labelElt);
@@ -180,11 +179,15 @@ ModalBuilder.prototype.returnSettingsMovementForm = function (movementSelected, 
 
 ModalBuilder.prototype.returnMovementForm = function(movementsList, mvtFormIndex) {
     var formElt = document.createElement("div");
-    formElt.classList.add("form-group", "mb-2");
+    formElt.classList.add("form-group","row", "mb-2", "d-flex", "justify-content-end");
 
     var labelElt = document.createElement("label");
     labelElt.setAttribute("for", "select" + mvtFormIndex);
-    labelElt.textContent = "mouvement " + mvtFormIndex;
+    labelElt.textContent = mvtFormIndex + ". ";
+    labelElt.classList.add("col-2", "col-form-label", "text-right");
+
+    var divSelectElt = document.createElement("div");
+    divSelectElt.classList.add("col-10", "mb-2");
 
     var selectElt = document.createElement("select");
     selectElt.classList.add("form-control");
@@ -202,10 +205,11 @@ ModalBuilder.prototype.returnMovementForm = function(movementsList, mvtFormIndex
         optionElt.value = movementsList[i].name;
         selectElt.appendChild(optionElt);
     }
-
+    
+    divSelectElt.appendChild(selectElt);
     formElt.appendChild(labelElt);
-    formElt.appendChild(selectElt);
-
+    formElt.appendChild(divSelectElt);
+    
     //addEventListener change on selectElt element
     selectElt.addEventListener("change", function() {
 
