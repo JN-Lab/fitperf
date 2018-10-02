@@ -193,13 +193,16 @@ ModalBuilder.prototype.addMovementBlock = function(movementsList) {
     var mvtForm = this.returnMovementForm(movementsList, mvtFormIndex);
     this.form.insertBefore(mvtForm, endHrElt);
 
+    this.form.appendChild(buttonElt);
+
+
+    // Working on different buttons event
+
     buttonElt.addEventListener("click", function() {
         mvtFormIndex = mvtFormIndex + 1;
         var mvtForm = this.returnMovementForm(movementsList, mvtFormIndex);
         this.form.insertBefore(mvtForm, endHrElt);
     }.bind(this));
-
-    this.form.appendChild(buttonElt);
 };
 
 ModalBuilder.prototype.returnMovementForm = function(movementsList, mvtFormIndex) {
@@ -244,6 +247,7 @@ ModalBuilder.prototype.returnMovementForm = function(movementsList, mvtFormIndex
     if (mvtFormIndex > 1) {
         // Test close Button
         var delBtnElt = document.createElement("button");
+        delBtnElt.id = "close-button-" + mvtFormIndex;
         delBtnElt.classList.add("close", 'col-2');
         delBtnElt.setAttribute("type", "button");
         delBtnElt.setAttribute("arial-label", "Close");
@@ -258,6 +262,7 @@ ModalBuilder.prototype.returnMovementForm = function(movementsList, mvtFormIndex
     
     formElt.appendChild(labelElt);
     formElt.appendChild(divSelectElt);
+    
     
     //addEventListener change on selectElt element
     selectElt.addEventListener("change", function() {
@@ -300,10 +305,11 @@ ModalBuilder.prototype.returnSettingsMovementForm = function (movementSelected, 
 
     var allSettingsElt = document.createElement("div")
     allSettingsElt.id = "settings" + mvtFormIndex;
+    allSettingsElt.classList.add("mt-2");
     
     for (i=0; i < movementSelected.settings.length; i++) {
         var formElt = document.createElement("div");
-        formElt.classList.add("form-group", "d-flex", "mt-2", "justify-content-end");
+        formElt.classList.add("form-group", "d-flex", "justify-content-end");
     
         var labelElt = document.createElement("label");
         labelElt.setAttribute("for", movementSelected.settings[i] + mvtFormIndex);
