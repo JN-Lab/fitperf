@@ -82,3 +82,123 @@ class TestDataTreatment(TestCase):
         ]
 
         self.assertEqual(mvts_list, result)
+
+    def test_register_exercise_from_dict_success(self):
+        """
+        This test checks if the method register_exercise_from_dict
+        registers well the exercise in the database withh all its
+        associations.
+        """
+
+        # We get the user
+        founder = User.objects.get(username="admin_user")
+
+        # We set up some exercise features
+        name = "angie"
+        exercise_type = "FORTIME"
+        description = "workout de test"
+        perf_type = "Nombre de tours"
+        perf_value = 5
+        
+        # We get the movements
+        squat = Movement.objects.get(name="squat")
+        pushup = Movement.objects.get(name="pushup")
+        wallball = Movement.objects.get(name="wallball")
+
+        # We get the settings implicated in the test
+        rep = MovementSettings.objects.get(name="Repetitions")
+        weight = MovementSettings.objects.get(name="Poids")
+
+        # We create the dict
+        exercise_dict = {
+            "name": name,
+            "exerciseType": exercise_type,
+            "description": description,
+            "performanceType": perf_type,
+            "performanceValue": perf_value,
+            "movements" : [
+                {
+                    "name": squat.name,
+                    "order": 1,
+                    "settings": [
+                        {
+                            "name": "Repetitions",
+                            "value": 10,
+                        },
+                        {
+                            "name": "Poids",
+                            "value": 5,
+                        }
+
+                    ]
+                },
+                {
+                    "name": pushup.name,
+                    "order": 2,
+                    "settings": [
+                        {
+                            "name": "Repetitions",
+                            "value": 15,
+                        },
+                    ]
+                },
+                {
+                    "name": wallball.name,
+                    "order": 3,
+                    "settings": [
+                        {
+                            "name": "Repetitions",
+                            "value": 20,
+                        },
+                        {
+                            "name": "Poids",
+                            "value": 18,
+                        },
+                    ]
+                },
+            ]
+        }
+
+        # We apply the method
+        exercise = self.treatment.register_exercise_from_dict(exercise_dict, founder)
+
+        # We test
+        self.assertEqual(exercise.name, "angie")
+        self.assertEqual(exercise.movements.all().count(), 3)
+
+        angie_squat = MovementsPerExercise.objects.get(exercise=exercise, movement=squat)
+        self.assertEqual(angie_squat.movement_number, 1)
+        self.assertEqual(angie_squat.movement_settings.all().count(), 2)
+
+        angie_squat_settings = MovementSettingsPerMovementsPerExercise.objects.filter(exercise_movement=angie_squat)
+        self.assertEqual(angie_squat_settings.count(), 2)
+        angie_squat_rep = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=angie_squat, setting=rep)
+        self.assertEqual(angie_squat_rep.setting_value, 10)
+        angie_squat_weight = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=angie_squat, setting=weight)
+        self.assertEqual(angie_squat_weight.setting_value, 5)
+        
+        angie_pushup = MovementsPerExercise.objects.get(exercise=exercise, movement=pushup)
+        self.assertEqual(angie_pushup.movement_number, 2)
+        self.assertEqual(angie_pushup.movement_settings.all().count(), 1)
+        angie_pushup_settings = MovementSettingsPerMovementsPerExercise.objects.filter(exercise_movement=angie_pushup)
+        self.assertEqual(angie_pushup_settings.count(), 1)
+        angie_pushup_rep = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=angie_pushup, setting=rep)
+        self.assertEqual(angie_pushup_rep.setting_value, 15)
+
+        angie_wallball = MovementsPerExercise.objects.get(exercise=exercise, movement=wallball)
+        self.assertEqual(angie_wallball.movement_number, 3)
+        self.assertEqual(angie_wallball.movement_settings.all().count(), 2)
+
+        angie_wallball_settings = MovementSettingsPerMovementsPerExercise.objects.filter(exercise_movement=angie_wallball)
+        self.assertEqual(angie_wallball_settings.count(), 2)
+        angie_wallball_rep = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=angie_wallball, setting=rep)
+        self.assertEqual(angie_wallball_rep.setting_value, 20)
+        angie_wallball_weight = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=angie_wallball, setting=weight)
+        self.assertEqual(angie_wallball_weight.setting_value, 18)
+
+
+    def test_register_exercise_from_dict_fail_already_exist(self):
+        pass
+
+    def test_register_exercise_from_dict_fail_data_type_problem(self):
+        pass

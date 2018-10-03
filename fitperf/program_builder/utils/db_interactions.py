@@ -93,6 +93,10 @@ class DBMovement:
         
         return Movement.objects.get(pk=movement_pk).delete()
 
+    def get_one_movement_setting(self, name):
+
+        return MovementSettings.objects.get(name=name)
+
 class DBExercise:
     """
     This class manages all the interactions with the database concerning Exercise:
@@ -134,7 +138,7 @@ class DBExercise:
                                             founder=founder)
         return exercise
 
-    def set_movement_to_exercise(self, exercise, movement):
+    def set_movement_to_exercise(self, exercise, movement, movement_number):
         """
         This method associates and returns movements to an exercise.
         To associate one or several settings to a movement, the movement must have been created before
@@ -145,11 +149,9 @@ class DBExercise:
         same movement_number(= order)
         """
 
-        movements_number = exercise.movements.all().count()
-
         movement_exercise = MovementsPerExercise.objects.create(exercise=exercise,
                                                                 movement=movement,
-                                                                movement_number=movements_number + 1)
+                                                                movement_number=movement_number)
         
         return movement_exercise
 

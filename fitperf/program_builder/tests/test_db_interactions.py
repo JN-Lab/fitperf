@@ -298,7 +298,7 @@ class TestDBExercise(TestCase):
         movement = self.db_mvt.set_movement("russian swing kettlebell", founder, equipment)
 
         # We associate this two movements to the exercise
-        exercise_mvt = self.db_exo.set_movement_to_exercise(exercise, movement)
+        exercise_mvt = self.db_exo.set_movement_to_exercise(exercise, movement, 1)
 
         # We test
         self.assertEqual(exercise.movements.all().count(), 1)
@@ -326,8 +326,8 @@ class TestDBExercise(TestCase):
         second_mvt = self.db_mvt.set_movement("american swing kettlebell", founder, equipment)
 
         # We associate this two movements to the exercise
-        exercise_first_mvt = self.db_exo.set_movement_to_exercise(exercise, first_mvt)
-        exercise_second_mvt = self.db_exo.set_movement_to_exercise(exercise, second_mvt)
+        exercise_first_mvt = self.db_exo.set_movement_to_exercise(exercise, first_mvt, 1)
+        exercise_second_mvt = self.db_exo.set_movement_to_exercise(exercise, second_mvt, 2)
 
         # We test
         self.assertEqual(exercise.movements.all().count(), 2)
@@ -356,7 +356,7 @@ class TestDBExercise(TestCase):
         movement_settings = self.db_mvt.set_settings_to_movement(movement, repetitions, weight)
 
         # We associate the movement to the exercise
-        exercise_mvt = self.db_exo.set_movement_to_exercise(exercise, movement)
+        exercise_mvt = self.db_exo.set_movement_to_exercise(exercise, movement, 1)
 
         ## TEST ##
         # We set some values for each settings linked to the movement of the exercise

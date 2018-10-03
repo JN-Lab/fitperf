@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 # coding: utf-8
-from .db_interactions import DBMovement
+from .db_interactions import DBMovement, DBExercise
 
 class DataTreatment:
     """
@@ -12,6 +12,7 @@ class DataTreatment:
 
     def __init__(self):
         self.db_mvt = DBMovement()
+        self.db_exercise = DBExercise()
 
     def get_all_movements_in_dict(self):
         """
@@ -66,4 +67,20 @@ class DataTreatment:
         }
         """
         
-        pass
+        exercise = self.db_exercise.set_exercise(exercise_dict["name"],
+                                                exercise_dict["exerciseType"],
+                                                exercise_dict["description"],
+                                                user)
+        if exercise:
+            for movement_dict in exercise_dict["movements"]:
+                movement = self.db_mvt.get_one_movement(movement_dict["name"])
+                movement_associated = self.db_exercise.set_movement_to_exercise(exercise, 
+                                                          movement,
+                                                          movement_dict["order"])
+                for setting_dict in movement_dict["settings"]:
+                    setting = self.db_mvt.get_one_movement_setting(setting_dict["name"])
+                    setting_associated = self.db_exercise.set_settings_value_to_movement_linked_to_exercise(movement_associated,
+                                                                                                            setting,
+                                                                                                            setting_dict["value"])
+
+        return exercise
