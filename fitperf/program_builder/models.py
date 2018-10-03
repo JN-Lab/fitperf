@@ -104,7 +104,6 @@ class Exercise(models.Model):
                             verbose_name="Nom")
     description = models.TextField(null=True,
                                     verbose_name="Description")
-    completed = models.BooleanField(default=False)
     exercise_type = models.CharField(max_length=20, 
                                      choices=EXERCISE_TYPE,
                                      verbose_name="Type")

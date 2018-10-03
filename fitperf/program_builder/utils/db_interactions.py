@@ -123,7 +123,7 @@ class DBExercise:
         return performance_type
 
 
-    def set_exercise(self, exercise_name, exercise_type, description, founder):
+    def set_exercise(self, exercise_name, exercise_type, description, performance_type, performance_value, founder):
         """
         This method creates and returns an exercise.
         To create an exercise, the argument used must have been created before:
@@ -133,8 +133,9 @@ class DBExercise:
         performance_type = self._define_performance_type(exercise_type)
         exercise = Exercise.objects.create(name=exercise_name, 
                                             exercise_type=exercise_type,
-                                            performance_type=performance_type,
                                             description=description,
+                                            performance_type= performance_type,
+                                            performance_value = performance_value,
                                             founder=founder)
         return exercise
 

@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import JsonResponse
@@ -88,49 +89,51 @@ def exercises_list(request):
         - create an exercise and redirect on the exercise page to finalize
     """
     db = DBExercise()
-    if request.method == "POST":
-        new_exercise_form = RegisterExerciseStep1(request.POST)
-        if new_exercise_form.is_valid():
-            name = new_exercise_form.cleaned_data["name"]
-            exercise_type = new_exercise_form.cleaned_data["exercise_type"]
-            description = new_exercise_form.cleaned_data["description"]
+    # if request.method == "POST":
+    #     new_exercise_form = RegisterExerciseStep1(request.POST)
+    #     if new_exercise_form.is_valid():
+    #         name = new_exercise_form.cleaned_data["name"]
+    #         exercise_type = new_exercise_form.cleaned_data["exercise_type"]
+    #         description = new_exercise_form.cleaned_data["description"]
 
-            new_exercise = db.set_exercise(name, exercise_type, description, request.user)
-            if new_exercise:
-                messages.success(request, """L'exercice a bien été créé. Afin de le finaliser,
-                                 veuillez construire votre entraînement. """)
-                return redirect('program_builder:exercise_page', exercise_pk=str(new_exercise.pk))
-            else:
-                messages.error(request, """Un problème a eu lieu lors de la création de l'exercice.
-                               Veuillez recommencer s'il vous plaît.""")
-                return render(request, 'exercises_list.html', locals)
-        else:
-            messages.error(request, """Les informations que vous avez indiqué semblent présenter
-                           des erreurs.""")
-            return render(request, 'exercises_list.html', locals)
-    else:
-        exercises = db.get_all_exercises()
-        new_exercise_form = RegisterExerciseStep1()
-        return render(request, 'exercises_list.html', locals())
+    #         new_exercise = db.set_exercise(name, exercise_type, description, request.user)
+    #         if new_exercise:
+    #             messages.success(request, """L'exercice a bien été créé. Afin de le finaliser,
+    #                              veuillez construire votre entraînement. """)
+    #             return redirect('program_builder:exercise_page', exercise_pk=str(new_exercise.pk))
+    #         else:
+    #             messages.error(request, """Un problème a eu lieu lors de la création de l'exercice.
+    #                            Veuillez recommencer s'il vous plaît.""")
+    #             return render(request, 'exercises_list.html', locals)
+    #     else:
+    #         messages.error(request, """Les informations que vous avez indiqué semblent présenter
+    #                        des erreurs.""")
+    #         return render(request, 'exercises_list.html', locals)
+    # else:
+    exercises = db.get_all_exercises()
+    new_exercise_form = RegisterExerciseStep1()
+    return render(request, 'exercises_list.html', locals())
 
 @login_required
-def add_exercise(request):
-    pass
-    # if request.body:
-    #     treatment = DataTreatment()
-    #     exercise_dict = json.loads(request.body)
-    #     new_exercise = treatment.register_exercise_from_dict(exercise_dict, request.user)
-    #     if movement:
-    #         messages.success(request, """Le mouvement a bien été ajouté.""")
-    #         return redirect('program_builder:exercise_page', exercise_pk=str(new_exercise.pk))
-    #     else:
-    #         messages.error(request, """Un problème a été rencontré.""")
-    #         referer = request.META.get("HTTP_REFERER")
-    #         return redirect(referer, locals())
-    # else:
-    #     messages.error(request, """Un problème a été rencontré.""")
-    #     referer = request.META.get("HTTP_REFERER")
-    #     return redirect(referer, locals())
+def add_exercise(request): 
+    if request.body:
+        treatment = DataTreatment()
+        exercise_dict = json.loads(request.body)
+        print(exercise_dict)
+        print(exercise_dict["performanceValue"])
+        print(type(exercise_dict["performanceValue"]))
+        new_exercise = treatment.register_exercise_from_dict(exercise_dict, request.user)
+        if new_exercise:
+            messages.success(request, """Le mouvement a bien été ajouté.""")
+            return redirect('program_builder:exercise_page', exercise_pk=str(new_exercise.pk))
+        else:
+            messages.error(request, """Un problème a été rencontré.""")
+            referer = request.META.get("HTTP_REFERER")
+            return redirect(referer, locals())
+    else:
+        messages.error(request, """Un problème a été rencontré.""")
+        referer = request.META.get("HTTP_REFERER")
+        return redirect(referer, locals())
 
 @login_required
 def exercise_page(request, exercise_pk):

@@ -266,9 +266,11 @@ class TestDBExercise(TestCase):
         exercise_name = 'Angie'
         exercise_type = "RUNNING"
         description = "test exo"
+        performance_type = "Distance"
+        performance_value = "8000"
         founder = User.objects.get(username='admin_user')
 
-        exercise = self.db_exo.set_exercise(exercise_name, exercise_type, description, founder)
+        exercise = self.db_exo.set_exercise(exercise_name, exercise_type, description, performance_type, performance_value, founder)
 
         exercise_exists = Exercise.objects.filter(name=exercise_name).exists()
         self.assertTrue(exercise_exists)
@@ -291,7 +293,9 @@ class TestDBExercise(TestCase):
         exercise_name = 'Angie'
         exercise_type = "RUNNING"
         description = "test exo"
-        exercise = self.db_exo.set_exercise(exercise_name, exercise_type, description, founder)
+        performance_type = "Distance"
+        performance_value = "8000"
+        exercise = self.db_exo.set_exercise(exercise_name, exercise_type, description, performance_type, performance_value, founder)
 
         # We create one movement
         equipment = self.db_mvt.set_equipment("kettlebell", founder)
@@ -318,7 +322,9 @@ class TestDBExercise(TestCase):
         exercise_name = 'Angie'
         exercise_type = "RUNNING"
         description = "test exo"
-        exercise = self.db_exo.set_exercise(exercise_name, exercise_type, description, founder)
+        performance_type = "Distance"
+        performance_value = "8000"
+        exercise = self.db_exo.set_exercise(exercise_name, exercise_type, description, performance_type, performance_value, founder)
 
         # We create one movement
         equipment = self.db_mvt.set_equipment("kettlebell", founder)
@@ -344,7 +350,9 @@ class TestDBExercise(TestCase):
         exercise_name = 'Angie'
         exercise_type = "RUNNING"
         description = "test exo"
-        exercise = self.db_exo.set_exercise(exercise_name, exercise_type, description, founder)
+        performance_type = "Distance"
+        performance_value = "8000"
+        exercise = self.db_exo.set_exercise(exercise_name, exercise_type, description, performance_type, performance_value, founder)
 
         # We create one movement
         equipment = self.db_mvt.set_equipment("kettlebell", founder)

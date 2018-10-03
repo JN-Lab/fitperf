@@ -57,7 +57,7 @@ modalStep1.form.addEventListener("submit", function(e) {
 modalStep2.form.addEventListener("submit", function(e) {
     e.preventDefault();
     // We get all informations from the form
-    exercise.performanceValue = modalStep2.getFormTextInput("modalStep2Performance");
+    exercise.performanceValue = Number(modalStep2.getFormTextInput("modalStep2Performance"));
     var movements = modalStep2.getSelectInputs();
     for (i = 0; i < movements.length; i++) {
         let mvtNumber = i + 1;
@@ -75,6 +75,8 @@ modalStep2.form.addEventListener("submit", function(e) {
         exercise.movements.push(movement);
     }
     // We post exercise object
+    postAjaxJson("/app/add-exercise/", exercise, true, function() {console.log("OK")} );
+    modalStep2.pushOptions('hide');
 
-    
+    // focntion return ajaxpost : window.location.replace(‘ma nouvelle url); ou window.location.href = 'newPage.html';
 });
