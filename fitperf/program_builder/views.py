@@ -114,6 +114,25 @@ def exercises_list(request):
         return render(request, 'exercises_list.html', locals())
 
 @login_required
+def add_exercise(request):
+    pass
+    # if request.body:
+    #     treatment = DataTreatment()
+    #     exercise_dict = json.loads(request.body)
+    #     new_exercise = treatment.register_exercise_from_dict(exercise_dict, request.user)
+    #     if movement:
+    #         messages.success(request, """Le mouvement a bien été ajouté.""")
+    #         return redirect('program_builder:exercise_page', exercise_pk=str(new_exercise.pk))
+    #     else:
+    #         messages.error(request, """Un problème a été rencontré.""")
+    #         referer = request.META.get("HTTP_REFERER")
+    #         return redirect(referer, locals())
+    # else:
+    #     messages.error(request, """Un problème a été rencontré.""")
+    #     referer = request.META.get("HTTP_REFERER")
+    #     return redirect(referer, locals())
+
+@login_required
 def exercise_page(request, exercise_pk):
     
     db = DBExercise()

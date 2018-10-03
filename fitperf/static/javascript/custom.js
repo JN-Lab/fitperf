@@ -445,3 +445,26 @@ function ajaxPost(url, data, callback, isJson) {
     }
     req.send(data);
 }
+
+// Ajax without response
+function postAjaxJson(url, data, is_csrf) {
+    if (is_csrf) {
+        var csrftoken = getCookie('csrftoken');
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+    }
+    $.ajax({
+        url: url,
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(data),
+        error: function () {
+            console.error("Erreur réseau avec l'url" + url);
+        }
+    })
+}

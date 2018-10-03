@@ -38,3 +38,32 @@ class DataTreatment:
             mvts_list.append(mvt_dict)
         
         return mvts_list
+
+    def register_exercise_from_dict(self, exercise_dict, user):
+        """
+        This method registers an exercise and all its links with movements in database
+        from a dictionnary:
+        {
+            "name": "exercise_name",
+            "exerciseType": "exercise_type",
+            "description": "description",
+            "performanceType", "performance_type",
+            "performanceValue", "performance_value",
+            "movements" : [
+                {
+                    "name" : "movement_name",
+                    "order": "movement_order",
+                    "settings": [
+                        {
+                            "name": "setting_name",
+                            "value": "setting_value,
+                        },
+                        ...
+                    ]
+                },
+                ...
+            ]
+        }
+        """
+        
+        pass
