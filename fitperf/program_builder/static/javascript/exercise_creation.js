@@ -75,7 +75,9 @@ modalStep2.form.addEventListener("submit", function(e) {
         exercise.movements.push(movement);
     }
     // We post exercise object
-    postAjaxJson("/app/add-exercise/", exercise, true, function() {console.log("OK")} );
+    postAjaxJson("/app/add-exercise/", exercise, true, function(response) {
+        window.location.href = "/app/exercise/" + response + "/";
+    });
     modalStep2.pushOptions('hide');
 
     // focntion return ajaxpost : window.location.replace(‘ma nouvelle url); ou window.location.href = 'newPage.html';

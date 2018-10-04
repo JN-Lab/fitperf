@@ -446,7 +446,7 @@ function ajaxPost(url, data, callback, isJson) {
     req.send(data);
 }
 
-// Ajax without response
+// Ajax post in JQUERY
 function postAjaxJson(url, data, is_csrf, callback) {
     if (is_csrf) {
         var csrftoken = getCookie('csrftoken');
@@ -463,7 +463,9 @@ function postAjaxJson(url, data, is_csrf, callback) {
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify(data),
-        success: callback(responseText),
+        success: function(response) {
+            callback(response);
+        },
         error: function () {
             console.error("Erreur réseau avec l'url" + url);
         }

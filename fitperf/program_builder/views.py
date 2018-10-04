@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_protect
 from .forms import RegisterMovement, RegisterExerciseStep1, RegisterExerciseStep2, RegisterMovementToExercise
 from .utils.db_interactions import DBMovement, DBExercise
 from .utils.treatments import DataTreatment
@@ -80,7 +81,7 @@ def ajax_all_movements(request):
 
     return JsonResponse(movements, safe=False)
 
-
+@csrf_protect
 @login_required
 def exercises_list(request):
     """
@@ -114,22 +115,15 @@ def exercises_list(request):
     new_exercise_form = RegisterExerciseStep1()
     return render(request, 'exercises_list.html', locals())
 
+@csrf_protect
 @login_required
 def add_exercise(request): 
     if request.body:
         treatment = DataTreatment()
         exercise_dict = json.loads(request.body)
-        print(exercise_dict)
-        print(exercise_dict["performanceValue"])
-        print(type(exercise_dict["performanceValue"]))
+
         new_exercise = treatment.register_exercise_from_dict(exercise_dict, request.user)
-        if new_exercise:
-            messages.success(request, """Le mouvement a bien été ajouté.""")
-            return redirect('program_builder:exercise_page', exercise_pk=str(new_exercise.pk))
-        else:
-            messages.error(request, """Un problème a été rencontré.""")
-            referer = request.META.get("HTTP_REFERER")
-            return redirect(referer, locals())
+        return JsonResponse(new_exercise.pk, safe=False)
     else:
         messages.error(request, """Un problème a été rencontré.""")
         referer = request.META.get("HTTP_REFERER")
