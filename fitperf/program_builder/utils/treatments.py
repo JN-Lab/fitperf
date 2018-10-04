@@ -53,6 +53,7 @@ class DataTreatment:
             "performanceValue", "performance_value",
             "movements" : [
                 {
+                    "id": "movement_id",
                     "name" : "movement_name",
                     "order": "movement_order",
                     "settings": [

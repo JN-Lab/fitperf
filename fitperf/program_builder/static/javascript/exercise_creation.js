@@ -60,12 +60,12 @@ modalStep2.form.addEventListener("submit", function(e) {
     exercise.performanceValue = Number(modalStep2.getFormTextInput("modalStep2Performance"));
     var movements = modalStep2.getSelectInputs();
     for (i = 0; i < movements.length; i++) {
-        let mvtNumber = i + 1;
-        let name = modalStep2.getFormSelectInput("select" + mvtNumber);
-        let movement = new Movement(name, mvtNumber);
+        var mvtNumber = i + 1;
+        var name = modalStep2.getFormSelectInput("select" + mvtNumber);
+        var movement = new Movement(name, mvtNumber);
         // We need to get Settings
-        let settingsDiv = document.getElementById("settings" + mvtNumber);
-        let settingsInputElt = settingsDiv.getElementsByTagName("INPUT");
+        var settingsDiv = document.getElementById("settings" + mvtNumber);
+        var settingsInputElt = settingsDiv.getElementsByTagName("INPUT");
         for (x = 0; x < settingsInputElt.length; x++) {
             let name = settingsInputElt[x].name;
             let value = settingsInputElt[x].value;
@@ -79,6 +79,4 @@ modalStep2.form.addEventListener("submit", function(e) {
         window.location.href = "/app/exercise/" + response + "/";
     });
     modalStep2.pushOptions('hide');
-
-    // focntion return ajaxpost : window.location.replace(‘ma nouvelle url); ou window.location.href = 'newPage.html';
 });
