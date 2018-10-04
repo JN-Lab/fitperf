@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 # coding: utf-8
 from django.contrib.auth.models import User
-from ..models import Profile, Session, ExercisesPerSession, Program, Training, Exercise, MovementsPerExercise, MovementSettingsPerMovementsPerExercise, Movement, MovementSettings, Equipment
+from ..models import Session, ExercisesPerSession, Program, Training, Exercise, MovementsPerExercise, MovementSettingsPerMovementsPerExercise, Movement, MovementSettings, Equipment
 
 class DBMovement:
     """
@@ -11,33 +11,6 @@ class DBMovement:
         - all change_* methods modify information in the database
         - all del_* methods delete information from the database
     """
-   
-    def set_movement_setting(self, setting_name, founder):
-        """
-        This method registers and returns a new movement settings only if:
-            - it is in a predetermined list. Just to ensure it had been thinked before on models
-            - if it doesn't exist in the table. If it already exists, it returns the string
-            "already_exists"
-        """
-
-        try:
-            movement_setting = MovementSettings.objects.create(name=setting_name.lower(), founder=founder)
-            return movement_setting
-        except:
-            return "already_exists"
-
-    def set_equipment(self, equipment_name, founder):
-        """
-        This method registers and returns a new equipment only if it does not already exist
-        in the database.
-        If the equipment already exists, it returns the string "already_exists"
-        """
-
-        try:
-            equipment = Equipment.objects.create(name=equipment_name.lower(), founder=founder)
-            return equipment
-        except:
-            return "already_exists"
 
     def set_movement(self, movement_name, founder, equipment):
         """
@@ -137,6 +110,11 @@ class DBExercise:
                                             performance_type= performance_type,
                                             performance_value = performance_value,
                                             founder=founder)
+
+        if founder.is_superuser:
+            exercise.is_default = True
+            exercise.save()
+            
         return exercise
 
     def set_movement_to_exercise(self, exercise, movement, movement_number):
@@ -172,6 +150,22 @@ class DBExercise:
 
         return Exercise.objects.all()
 
+    def get_all_default_exercises(self):
+        """
+        Gets all the exercise created by an administrator
+        TO TEST
+        """
+
+
+
+    def get_all_user_exercises(self, user):
+        """
+        Gets all the exercises created by a user
+        TO TEST
+        """
+
+        return Exercise.objects.filter(founder=user)
+
     def get_one_exercise_by_pk(self, exercise_pk):
 
         return Exercise.objects.get(pk=exercise_pk)
@@ -185,6 +179,20 @@ class DBExercise:
         """
         
         return Exercise.objects.get(pk=exercise_pk).delete()
+
+    def get_all_movements_linked_to_exercise(self, exercise):
+        """
+        NO TEST YET
+        """
+        
+        return MovementsPerExercise.objects.filter(exercise=exercise)
+
+    def get_all_settings_linked_to_movement_linked_to_exercise(self, movement_linked):
+        """
+        NO TEST YET
+        """
+
+        return MovementSettingsPerMovementsPerExercise.objects.filter(exercise_movement=movement_linked)
 
 class DBInteractions:
     """

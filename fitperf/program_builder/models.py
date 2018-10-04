@@ -2,17 +2,6 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 
-class Profile(models.Model):
-    """
-    This class inherits from User model.
-    It adds the different relations between the user and his programs, trainings
-    and exercises.
-    """
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
- 
-    def __str__(self):
-        return self.user.username
-
 class Session(models.Model):
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE,
@@ -114,6 +103,7 @@ class Exercise(models.Model):
     founder = models.ForeignKey(User, 
                                 on_delete=models.CASCADE,
                                 verbose_name="the execise's creator")
+    is_default = models.BooleanField(default=False)
     movements = models.ManyToManyField('Movement',
                                       through='MovementsPerExercise', 
                                       related_name='exercises',

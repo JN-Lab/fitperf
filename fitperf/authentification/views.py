@@ -11,7 +11,6 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_text
 from django.core.mail import EmailMessage
 from .forms import LoginForm, RegisterForm, PasswordResetMail, PasswordResetNew
-from program_builder.models import Profile
 from .tokens import account_activation_token
 
 def log_in(request):
@@ -50,8 +49,6 @@ def register(request):
             mail_already_exist = User.objects.filter(email=mail).exists()
             if not username_already_exist and not mail_already_exist and password == password_check:
                 user = User.objects.create_user(username, mail, password, is_active=False)
-                user_profile = Profile(user=user)
-                user_profile.save()
 
                 current_site = get_current_site(request)
                 mail_subject = "Activez votre compte"
