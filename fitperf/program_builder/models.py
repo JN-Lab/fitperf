@@ -109,6 +109,9 @@ class Exercise(models.Model):
                                       related_name='exercises',
                                       verbose_name="list of movements per exercise")
 
+    class Meta:
+        verbose_name = 'exercice'
+
     def __str__(self):
         return self.name
 
@@ -171,6 +174,9 @@ class Movement(models.Model):
                                      related_name='movements',
                                      verbose_name="Caracteristiques")
 
+    class Meta:
+        verbose_name = 'mouvement'
+
     def __str__(self):
         return self.name
 
@@ -197,6 +203,9 @@ class MovementSettings(models.Model):
                                             related_name="exercise_settings",
                                             verbose_name="all the values linked to a setting")
 
+    class Meta:
+        verbose_name = 'configuration des mouvements'
+
     def __str__(self):
         return self.name
 
@@ -207,6 +216,9 @@ class Equipment(models.Model):
     founder = models.ForeignKey(User,
                                 on_delete=models.CASCADE,
                                 verbose_name="the movement's creator")
+
+    class Meta:
+        verbose_name = 'equipement'
 
     def __str__(self):
         return self.name
