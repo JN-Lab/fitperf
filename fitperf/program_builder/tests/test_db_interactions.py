@@ -31,7 +31,7 @@ class TestDBMovement(TestCase):
         """
 
         movement = Movement.objects.get(name="squat")
-        cal = MovementSettings.objects.get(name="Calories")
+        cal = MovementSettings.objects.get(name=MovementSettings.CALORIES)
 
         # Two are already associated in the database test
         self.assertEqual(movement.settings.all().count(), 2)
@@ -44,8 +44,8 @@ class TestDBMovement(TestCase):
         """
 
         movement = Movement.objects.get(name="squat")
-        cal = MovementSettings.objects.get(name="Calories")
-        dist = MovementSettings.objects.get(name="Distance")
+        cal = MovementSettings.objects.get(name=MovementSettings.CALORIES)
+        dist = MovementSettings.objects.get(name=MovementSettings.DISTANCE)
 
         # Two are already associated in the database test
         self.assertEqual(movement.settings.all().count(), 2)
@@ -59,10 +59,10 @@ class TestDBMovement(TestCase):
         """
 
         movement = Movement.objects.get(name="squat")
-        cal = MovementSettings.objects.get(name="Calories")
-        dist = MovementSettings.objects.get(name="Distance")
-        rep = MovementSettings.objects.get(name="Repetitions")
-        weight = MovementSettings.objects.get(name="Poids")
+        cal = MovementSettings.objects.get(name=MovementSettings.CALORIES)
+        dist = MovementSettings.objects.get(name=MovementSettings.DISTANCE)
+        rep = MovementSettings.objects.get(name=MovementSettings.REPETITIONS)
+        weight = MovementSettings.objects.get(name=MovementSettings.WEIGHT)
 
         # Two are already associated in the database test
         self.assertEqual(movement.settings.all().count(), 2)
@@ -172,7 +172,7 @@ class TestDBExercise(TestCase):
         connie = Exercise.objects.get(name="connie")
 
         # We get a setting
-        rep = MovementSettings.objects.get(name="Repetitions")
+        rep = MovementSettings.objects.get(name=Exercise.REPETITIONS)
 
         # We get one movement
         pushup = Movement.objects.get(name="pushup")

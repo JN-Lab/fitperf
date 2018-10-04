@@ -92,8 +92,8 @@ class TestDataTreatment(TestCase):
         wallball = Movement.objects.get(name="wallball")
 
         # We get the settings implicated in the test
-        rep = MovementSettings.objects.get(name="Repetitions")
-        weight = MovementSettings.objects.get(name="Poids")
+        rep = MovementSettings.objects.get(name=MovementSettings.REPETITIONS)
+        weight = MovementSettings.objects.get(name=MovementSettings.WEIGHT)
 
         # We create the dict
         exercise_dict = {
@@ -108,11 +108,11 @@ class TestDataTreatment(TestCase):
                     "order": 1,
                     "settings": [
                         {
-                            "name": "Repetitions",
+                            "name": "repetitions",
                             "value": 10,
                         },
                         {
-                            "name": "Poids",
+                            "name": "poids",
                             "value": 5,
                         }
 
@@ -123,7 +123,7 @@ class TestDataTreatment(TestCase):
                     "order": 2,
                     "settings": [
                         {
-                            "name": "Repetitions",
+                            "name": "repetitions",
                             "value": 15,
                         },
                     ]
@@ -133,11 +133,11 @@ class TestDataTreatment(TestCase):
                     "order": 3,
                     "settings": [
                         {
-                            "name": "Repetitions",
+                            "name": "repetitions",
                             "value": 20,
                         },
                         {
-                            "name": "Poids",
+                            "name": "poids",
                             "value": 18,
                         },
                     ]
@@ -230,10 +230,10 @@ class TestDataTreatment(TestCase):
         wallball = Movement.objects.get(name="wallball")
 
         # We get the settings 
-        rep = MovementSettings.objects.get(name="Repetitions")
-        weight = MovementSettings.objects.get(name="Poids")
-        dist = MovementSettings.objects.get(name="Distance")
-        cal = MovementSettings.objects.get(name="Calories")
+        rep = MovementSettings.objects.get(name=MovementSettings.REPETITIONS)
+        weight = MovementSettings.objects.get(name=MovementSettings.WEIGHT)
+        dist = MovementSettings.objects.get(name=MovementSettings.DISTANCE)
+        cal = MovementSettings.objects.get(name=MovementSettings.CALORIES)
 
         # We get the workouts
         

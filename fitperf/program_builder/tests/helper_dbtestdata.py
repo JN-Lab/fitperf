@@ -13,10 +13,10 @@ class TestDatabase:
         new_user = User.objects.create_user(username='new_user', password='new_user')
 
         # We create some settings
-        rep = MovementSettings.objects.create(name="Repetitions", founder=admin_user)
-        weight = MovementSettings.objects.create(name="Poids", founder=admin_user)
-        dist = MovementSettings.objects.create(name="Distance", founder=admin_user)
-        cal = MovementSettings.objects.create(name="Calories", founder=admin_user)
+        rep = MovementSettings.objects.create(name=MovementSettings.REPETITIONS, founder=admin_user)
+        weight = MovementSettings.objects.create(name=MovementSettings.WEIGHT, founder=admin_user)
+        dist = MovementSettings.objects.create(name=MovementSettings.DISTANCE, founder=admin_user)
+        cal = MovementSettings.objects.create(name=MovementSettings.CALORIES, founder=admin_user)
 
         # We create some equipments
         kb = Equipment.objects.create(name="kettlebell", founder=admin_user)
@@ -38,9 +38,9 @@ class TestDatabase:
 
         # 1. Chelsea Workout created by ordinary_user
         o_chelsea = Exercise.objects.create(name="chelsea",
-                                         exercise_type="EMOM",
+                                         exercise_type=Exercise.EMOM,
                                          description="test chelsea",
-                                         performance_type="duree",
+                                         performance_type=Exercise.TIME,
                                          performance_value=30,
                                          founder=ordinary_user)
         o_chelsea_pullup = MovementsPerExercise.objects.create(exercise=o_chelsea,
@@ -67,9 +67,9 @@ class TestDatabase:
 
         # 2. Chelsea Workout created by admin_user
         a_chelsea = Exercise.objects.create(name="chelsea",
-                                         exercise_type="EMOM",
+                                         exercise_type=Exercise.EMOM,
                                          description="test chelsea",
-                                         performance_type="duree",
+                                         performance_type=Exercise.TIME,
                                          performance_value=30,
                                          founder=admin_user)
         a_chelsea_pullup = MovementsPerExercise.objects.create(exercise=a_chelsea,
@@ -96,9 +96,9 @@ class TestDatabase:
 
         # 3. Connie Workout created by new_user
         connie = Exercise.objects.create(name="connie",
-                                    exercise_type="FORTIME",
+                                    exercise_type=Exercise.FORTIME,
                                     description="test connie",
-                                    performance_type="Nombre de tours",
+                                    performance_type=Exercise.ROUND,
                                     performance_value=5,
                                     founder=new_user)
         connie_pullup = MovementsPerExercise.objects.create(exercise=connie,

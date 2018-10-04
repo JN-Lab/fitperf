@@ -73,21 +73,34 @@ class Exercise(models.Model):
     """
     This class represents the exercises created
     """
+    RUNNING = 'RUNNING'
+    FORTIME = 'FORTIME'
+    AMRAP = 'AMRAP'
+    WARMUP = 'WARMUP'
+    STRENGTH = 'STRENGTH'
+    EMOM = 'EMOM'
+    CONDITIONNING = "CONDITIONNING"
+    MAX_REP = "MAX_REP"
     EXERCISE_TYPE = (
-        ('RUNNING', 'RUNNING'),
-        ('FORTIME', 'FORTIME'),
-        ('AMRAP', 'AMRAP'),
-        ('ECHAUFFEMENT', 'ECHAUFFEMENT'),
-        ('FORCE', 'FORCE'),
-        ('EMOM', 'EMOM'),
-        ('CONDITIONNEMENY', 'CONDITIONNEMENT'),
-        ('MAXIMUM DE REPETITIONS', 'MAXIMUM DE REPETITIONS')
+        (RUNNING, 'RUNNING'),
+        (FORTIME, 'FORTIME'),
+        (AMRAP, 'AMRAP'),
+        (WARMUP, 'ECHAUFFEMENT'),
+        (STRENGTH, 'FORCE'),
+        (EMOM, 'EMOM'),
+        (CONDITIONNING, 'CONDITIONNEMENT'),
+        (MAX_REP, 'MAXIMUM DE REPETITIONS')
     )
+
+    TIME = 'duree'
+    ROUND = "round"
+    REPETITIONS = "repetitions"
+    DISTANCE = "distance"
     PERFORMANCE_TYPE = (
-        ('Temps', 'Temps'),
-        ('Nombre de tours', 'Nombre de tours'),
-        ('Nombre de répétitions', 'Nombre de répétitions'),
-        ('Distance', 'Distance'),
+        (TIME, 'duree'),
+        (ROUND, 'round'),
+        (REPETITIONS, 'repetitions'),
+        (DISTANCE, 'distance'),
     )
     name = models.CharField(max_length=200,
                             verbose_name="Nom")
@@ -185,11 +198,15 @@ class MovementSettings(models.Model):
     This class represents the different settings a movement can be
     associated with.
     """
+    REPETITIONS = "repetitions"
+    WEIGHT = "poids"
+    DISTANCE = "distance"
+    CALORIES = "calories"
     MOVEMENTS_SETTINGS = (
-        ('REP', 'Repetitions'),
-        ('WEIGTH', 'Poids'),
-        ('DISTANCE', 'Distance'),
-        ('CAL', 'Calories')
+        (REPETITIONS, 'repetitions'),
+        (WEIGHT, 'poids'),
+        (DISTANCE, 'distance'),
+        (CALORIES, 'calories')
     )
     name = models.CharField(max_length=20,
                             choices=MOVEMENTS_SETTINGS,
