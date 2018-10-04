@@ -9,7 +9,7 @@
         <p class="lead">Retrouvez l'ensemble des mouvements disponibles avec lesquels vous pouvez composez vos exercices.</p>
         <hr class="my-4">
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#movementModalForm">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#movementModal">
             Nouveau Mouvement
         </button>
     </div>
@@ -33,46 +33,44 @@
     </div>
 </main>
 
-    <!-- Form Modal -->
-    <div class="modal fade" id="movementModalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Nouveau Mouvement</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            </div>
-            <div class="modal-body">
-                <form action="" method="post">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        {{ new_movement_form.name.label }}
-                        {{ new_movement_form.name }}
-                    </div>
-                    <div class="form-group">
-                        {{ new_movement_form.equipment.label }}
-                        {{ new_movement_form.equipment }}
-                    </div>
-                    <div class="form-group">
-                        {{ new_movement_form.founder.label }}
-                        {{ new_movement_form.founder }}
-                    </div>
-                    <div class="form-group">
-                        {{ new_movement_form.settings.label }}
-                        {% for setting in new_movement_form.settings %}
-                        <div class="form-check">
-                            {{ setting.label }}
-                            {{ setting }}
-                        </div>
-                        {% endfor %}
-                    </div>
-                    <button type="submit" class="btn btn-block btn-primary">Enregistrer</button> 
-                </form>
-            </div>
+<!-- Form Modal -->
+<div class="modal fade" id="movementModal" tabindex="-1" role="dialog" aria-labelledby="movementModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="movementModalLabel">Nouveau Mouvement</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
         </div>
+        <div class="modal-body">
+            <form action="" method="post" id="movementModalForm">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ new_movement_form.name.label }}
+                    {{ new_movement_form.name }}
+                </div>
+                <div class="form-group">
+                    {{ new_movement_form.equipment.label }}
+                    {{ new_movement_form.equipment }}
+                </div>
+                <div class="form-group">
+                    {{ new_movement_form.founder.label }}
+                    {{ new_movement_form.founder }}
+                </div>
+                <div class="form-group">
+                    {{ new_movement_form.settings.label }}
+                    {% for setting in new_movement_form.settings %}
+                    <div class="form-check">
+                        {{ setting.label }}
+                        {{ setting }}
+                    </div>
+                    {% endfor %}
+                </div>
+                <button type="submit" class="btn btn-block btn-primary">Enregistrer</button> 
+            </form>
         </div>
     </div>
+    </div>
+</div>
 {% endblock %}
-
-<!-- Movement List -->

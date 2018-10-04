@@ -12,7 +12,7 @@ class DBMovement:
         - all del_* methods delete information from the database
     """
    
-    def set_movement_setting(self, setting_value, founder):
+    def set_movement_setting(self, setting_name, founder):
         """
         This method registers and returns a new movement settings only if:
             - it is in a predetermined list. Just to ensure it had been thinked before on models
@@ -21,7 +21,7 @@ class DBMovement:
         """
 
         try:
-            movement_setting = MovementSettings.objects.create(name=setting_value, founder=founder)
+            movement_setting = MovementSettings.objects.create(name=setting_name.lower(), founder=founder)
             return movement_setting
         except:
             return "already_exists"
@@ -34,7 +34,7 @@ class DBMovement:
         """
 
         try:
-            equipment = Equipment.objects.create(name=equipment_name, founder=founder)
+            equipment = Equipment.objects.create(name=equipment_name.lower(), founder=founder)
             return equipment
         except:
             return "already_exists"
@@ -50,12 +50,12 @@ class DBMovement:
         """
 
         try:
-            movement = Movement.objects.create(name=movement_name,
+            movement = Movement.objects.create(name=movement_name.lower(),
                                                founder=founder,
                                                equipment=equipment)
             return movement
         except:
-            return "already_exists"
+            return None
 
     def set_settings_to_movement(self, movement, *settings):
         """
@@ -93,6 +93,10 @@ class DBMovement:
         
         return Movement.objects.get(pk=movement_pk).delete()
 
+    def get_one_movement_setting(self, name):
+
+        return MovementSettings.objects.get(name=name)
+
 class DBExercise:
     """
     This class manages all the interactions with the database concerning Exercise:
@@ -102,22 +106,40 @@ class DBExercise:
         - all del_* methods delete information from the database
     """
 
-    def set_exercise(self, exercise_name, exercise_type, performance_type, founder):
+    def _define_performance_type(self, exercise_type):
+        """
+        This method defines the adequate value of performance type accoding
+        the exercise type (see possibilities in model Exercise)
+        """
+        performance_type = ''
+        if exercise_type == 'MAXIMUM DE REPETITIONS':
+            performance_type = 'repetitions'
+        elif exercise_type == 'AMRAP' or exercise_type == "EMOM":
+            performance_type = 'duree'
+        elif exercise_type == 'RUNNING':
+            performance_type = 'distance'
+        else:
+            performance_type = 'tours'
+        return performance_type
+
+
+    def set_exercise(self, exercise_name, exercise_type, description, performance_type, performance_value, founder):
         """
         This method creates and returns an exercise.
         To create an exercise, the argument used must have been created before:
-            - the exercise type
-            - the performance type
             - the founder
         """
-        
+
+        performance_type = self._define_performance_type(exercise_type)
         exercise = Exercise.objects.create(name=exercise_name, 
                                             exercise_type=exercise_type,
-                                            performance_type=performance_type,
+                                            description=description,
+                                            performance_type= performance_type,
+                                            performance_value = performance_value,
                                             founder=founder)
         return exercise
 
-    def set_movement_to_exercise(self, exercise, movement):
+    def set_movement_to_exercise(self, exercise, movement, movement_number):
         """
         This method associates and returns movements to an exercise.
         To associate one or several settings to a movement, the movement must have been created before
@@ -128,11 +150,9 @@ class DBExercise:
         same movement_number(= order)
         """
 
-        movements_number = exercise.movements.all().count()
-
         movement_exercise = MovementsPerExercise.objects.create(exercise=exercise,
                                                                 movement=movement,
-                                                                movement_number=movements_number + 1)
+                                                                movement_number=movement_number)
         
         return movement_exercise
 
@@ -147,6 +167,24 @@ class DBExercise:
         
         return exercise_movement
 
+
+    def get_all_exercises(self):
+
+        return Exercise.objects.all()
+
+    def get_one_exercise_by_pk(self, exercise_pk):
+
+        return Exercise.objects.get(pk=exercise_pk)
+
+    def del_exercise(self, exercise_pk):
+        """
+        This method deletes an exercise only if the exercise is not associated
+        to a training
+        NEED TO BE IMPROVED TO MANAGE THE CASE WHERE THE EXERCISE IS ASSOCIATED
+        TO ONE OR SEVERAL TRAININGS
+        """
+        
+        return Exercise.objects.get(pk=exercise_pk).delete()
 
 class DBInteractions:
     """

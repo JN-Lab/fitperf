@@ -1,3 +1,5 @@
+#! /usr/bin/env python3
+# coding: utf-8
 from django.test import TestCase, TransactionTestCase
 from django.contrib.auth.models import User
 from ..models import Profile, Session, ExercisesPerSession, Program, Training, Exercise, MovementsPerExercise, Movement, MovementSettings, Equipment, MovementSettingsPerMovementsPerExercise
@@ -37,11 +39,11 @@ class TestDBMovement(TestCase):
 
         movement_setting = self.db_mvt.set_movement_setting(setting_value, founder)
 
-        movement_setting_exists = MovementSettings.objects.filter(name=setting_value).exists()
+        movement_setting_exists = MovementSettings.objects.filter(name='repetitions').exists()
         self.assertTrue(movement_setting_exists)
 
-        movement_registered = MovementSettings.objects.get(name=setting_value)
-        self.assertEqual(movement_registered.name, 'Repetitions') 
+        movement_registered = MovementSettings.objects.get(name=setting_value.lower())
+        self.assertEqual(movement_registered.name, 'repetitions') 
 
     def test_set_movement_settings_not_unique(self):
         """
@@ -54,7 +56,7 @@ class TestDBMovement(TestCase):
         founder = User.objects.get(username='admin_user')
 
         first_movement_setting = self.db_mvt.set_movement_setting(setting_value, founder)
-        movement_setting_exists = MovementSettings.objects.filter(name=setting_value).exists()
+        movement_setting_exists = MovementSettings.objects.filter(name='repetitions').exists()
         self.assertTrue(movement_setting_exists)
 
         second_movement_setting = self.db_mvt.set_movement_setting(setting_value, founder)
@@ -66,15 +68,15 @@ class TestDBMovement(TestCase):
         a new equipment
         """
 
-        equipment_name = 'barre de traction'
+        equipment_name = 'Barre de traction'
         founder = User.objects.get(username='admin_user')
 
         new_equipment = self.db_mvt.set_equipment(equipment_name, founder)
 
-        equipment_exists = Equipment.objects.filter(name=equipment_name).exists()
+        equipment_exists = Equipment.objects.filter(name='barre de traction').exists()
         self.assertTrue(equipment_exists)
 
-        equipment_registered = Equipment.objects.get(name=equipment_name)
+        equipment_registered = Equipment.objects.get(name=equipment_name.lower())
         self.assertEqual(equipment_registered.name, 'barre de traction')
 
     def test_set_equipment_not_unique(self):
@@ -88,7 +90,7 @@ class TestDBMovement(TestCase):
         founder = User.objects.get(username='admin_user')
 
         first_equipment = self.db_mvt.set_equipment(equipment_name, founder)
-        equipment_exists = Equipment.objects.filter(name=equipment_name).exists()
+        equipment_exists = Equipment.objects.filter(name='barre de traction').exists()
         self.assertTrue(equipment_exists)
 
         second_equipment = self.db_mvt.set_equipment(equipment_name, founder)
@@ -100,16 +102,16 @@ class TestDBMovement(TestCase):
         a new movement
         """
 
-        movement_name = 'squat'
+        movement_name = 'SQUAT'
         founder = User.objects.get(username='admin_user')
         equipment = self.db_mvt.set_equipment("kettlebell", founder)
 
         new_movement = self.db_mvt.set_movement(movement_name, founder, equipment)
 
-        movement_exists = Movement.objects.filter(name=movement_name).exists()
+        movement_exists = Movement.objects.filter(name='squat').exists()
         self.assertTrue(movement_exists)
 
-        movement_registered = Movement.objects.get(name=movement_name)
+        movement_registered = Movement.objects.get(name=movement_name.lower())
         self.assertEqual(movement_registered.name, 'squat')
 
     def test_set_movement_not_unique(self):
@@ -119,16 +121,16 @@ class TestDBMovement(TestCase):
         already in the table
         """
 
-        movement_name = 'squat'
+        movement_name = 'Squat'
         founder = User.objects.get(username='admin_user')
         equipment = self.db_mvt.set_equipment("kettlebell", founder)
 
         first_movement = self.db_mvt.set_movement(movement_name, founder, equipment)
-        movement_exists = Movement.objects.filter(name=movement_name).exists()
+        movement_exists = Movement.objects.filter(name='squat').exists()
         self.assertTrue(movement_exists)
 
         second_movement = self.db_mvt.set_movement(movement_name, founder, equipment)
-        self.assertEqual(second_movement, "already_exists")
+        self.assertEqual(second_movement, None)
 
     def test_set_settings_movement_one_setting_success(self):
         """
@@ -225,6 +227,36 @@ class TestDBExercise(TestCase):
         self.db_mvt = DBMovement()
         self.db_exo = DBExercise()
 
+    def test_define_performance_type(self):
+        """
+        This test only checks if the method _define_performance_type associates correctly
+        the exercise_type with the adequate performance_type
+        """
+
+        performance_type = self.db_exo._define_performance_type('MAXIMUM DE REPETITIONS')
+        self.assertEqual(performance_type, 'repetitions')
+
+        performance_type = self.db_exo._define_performance_type('AMRAP')
+        self.assertEqual(performance_type, 'duree')
+
+        performance_type = self.db_exo._define_performance_type('EMOM')
+        self.assertEqual(performance_type, 'duree')
+
+        performance_type = self.db_exo._define_performance_type('RUNNING')
+        self.assertEqual(performance_type, 'distance')
+
+        performance_type = self.db_exo._define_performance_type('FORTIME')
+        self.assertEqual(performance_type, 'tours')
+
+        performance_type = self.db_exo._define_performance_type('ECHAUFFEMENT')
+        self.assertEqual(performance_type, 'tours')
+
+        performance_type = self.db_exo._define_performance_type('FORCE')
+        self.assertEqual(performance_type, 'tours')
+
+        performance_type = self.db_exo._define_performance_type('CONDITIONNEMENT')
+        self.assertEqual(performance_type, 'tours')
+
     def test_set_exercise_success(self):
         """
         This test checks if the method set_exercise registers well
@@ -233,10 +265,12 @@ class TestDBExercise(TestCase):
 
         exercise_name = 'Angie'
         exercise_type = "RUNNING"
-        performance_value = "TIME"
+        description = "test exo"
+        performance_type = "Distance"
+        performance_value = "8000"
         founder = User.objects.get(username='admin_user')
 
-        exercise = self.db_exo.set_exercise(exercise_name, exercise_type, performance_value, founder)
+        exercise = self.db_exo.set_exercise(exercise_name, exercise_type, description, performance_type, performance_value, founder)
 
         exercise_exists = Exercise.objects.filter(name=exercise_name).exists()
         self.assertTrue(exercise_exists)
@@ -244,7 +278,7 @@ class TestDBExercise(TestCase):
         exercise_registered = Exercise.objects.get(name=exercise_name)
         self.assertEqual(exercise_registered.name, 'Angie')
         self.assertEqual(exercise_registered.exercise_type, 'RUNNING')
-        self.assertEqual(exercise_registered.performance_type, 'TIME')
+        self.assertEqual(exercise_registered.performance_type, 'distance')
 
     def test_set_movement_to_exercise_success(self):
         """
@@ -258,15 +292,17 @@ class TestDBExercise(TestCase):
         # We create an exercise
         exercise_name = 'Angie'
         exercise_type = "RUNNING"
-        performance_value = "TIME"
-        exercise = self.db_exo.set_exercise(exercise_name, exercise_type, performance_value, founder)
+        description = "test exo"
+        performance_type = "Distance"
+        performance_value = "8000"
+        exercise = self.db_exo.set_exercise(exercise_name, exercise_type, description, performance_type, performance_value, founder)
 
         # We create one movement
         equipment = self.db_mvt.set_equipment("kettlebell", founder)
         movement = self.db_mvt.set_movement("russian swing kettlebell", founder, equipment)
 
         # We associate this two movements to the exercise
-        exercise_mvt = self.db_exo.set_movement_to_exercise(exercise, movement)
+        exercise_mvt = self.db_exo.set_movement_to_exercise(exercise, movement, 1)
 
         # We test
         self.assertEqual(exercise.movements.all().count(), 1)
@@ -285,8 +321,10 @@ class TestDBExercise(TestCase):
         # We create an exercise
         exercise_name = 'Angie'
         exercise_type = "RUNNING"
-        performance_value = "TIME"
-        exercise = self.db_exo.set_exercise(exercise_name, exercise_type, performance_value, founder)
+        description = "test exo"
+        performance_type = "Distance"
+        performance_value = "8000"
+        exercise = self.db_exo.set_exercise(exercise_name, exercise_type, description, performance_type, performance_value, founder)
 
         # We create one movement
         equipment = self.db_mvt.set_equipment("kettlebell", founder)
@@ -294,8 +332,8 @@ class TestDBExercise(TestCase):
         second_mvt = self.db_mvt.set_movement("american swing kettlebell", founder, equipment)
 
         # We associate this two movements to the exercise
-        exercise_first_mvt = self.db_exo.set_movement_to_exercise(exercise, first_mvt)
-        exercise_second_mvt = self.db_exo.set_movement_to_exercise(exercise, second_mvt)
+        exercise_first_mvt = self.db_exo.set_movement_to_exercise(exercise, first_mvt, 1)
+        exercise_second_mvt = self.db_exo.set_movement_to_exercise(exercise, second_mvt, 2)
 
         # We test
         self.assertEqual(exercise.movements.all().count(), 2)
@@ -311,8 +349,10 @@ class TestDBExercise(TestCase):
         # We create an exercise
         exercise_name = 'Angie'
         exercise_type = "RUNNING"
-        performance_value = "TIME"
-        exercise = self.db_exo.set_exercise(exercise_name, exercise_type, performance_value, founder)
+        description = "test exo"
+        performance_type = "Distance"
+        performance_value = "8000"
+        exercise = self.db_exo.set_exercise(exercise_name, exercise_type, description, performance_type, performance_value, founder)
 
         # We create one movement
         equipment = self.db_mvt.set_equipment("kettlebell", founder)
@@ -324,7 +364,7 @@ class TestDBExercise(TestCase):
         movement_settings = self.db_mvt.set_settings_to_movement(movement, repetitions, weight)
 
         # We associate the movement to the exercise
-        exercise_mvt = self.db_exo.set_movement_to_exercise(exercise, movement)
+        exercise_mvt = self.db_exo.set_movement_to_exercise(exercise, movement, 1)
 
         ## TEST ##
         # We set some values for each settings linked to the movement of the exercise

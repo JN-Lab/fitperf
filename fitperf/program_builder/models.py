@@ -85,26 +85,32 @@ class Exercise(models.Model):
     This class represents the exercises created
     """
     EXERCISE_TYPE = (
-        ('RUN', 'RUNNING'),
+        ('RUNNING', 'RUNNING'),
         ('FORTIME', 'FORTIME'),
         ('AMRAP', 'AMRAP'),
-        ('WARMUP', 'ECHAUFFEMENT'),
-        ('STRENGTH', 'FORCE'),
+        ('ECHAUFFEMENT', 'ECHAUFFEMENT'),
+        ('FORCE', 'FORCE'),
         ('EMOM', 'EMOM'),
-        ('CONDITIONNING', 'CONDITIONNEMENT'),
-        ('MAX_REP', 'MAXIMUM DE REPETITION')
+        ('CONDITIONNEMENY', 'CONDITIONNEMENT'),
+        ('MAXIMUM DE REPETITIONS', 'MAXIMUM DE REPETITIONS')
     )
     PERFORMANCE_TYPE = (
-        ('TIME', 'Temps'),
-        ('NB_ROUNDS', 'Nombre de tours'),
-        ('NB_REP', 'Nombre de repetitions'),
+        ('Temps', 'Temps'),
+        ('Nombre de tours', 'Nombre de tours'),
+        ('Nombre de répétitions', 'Nombre de répétitions'),
+        ('Distance', 'Distance'),
     )
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200,
+                            verbose_name="Nom")
+    description = models.TextField(null=True,
+                                    verbose_name="Description")
     exercise_type = models.CharField(max_length=20, 
-                                     choices=EXERCISE_TYPE)
+                                     choices=EXERCISE_TYPE,
+                                     verbose_name="Type")
     performance_type = models.CharField(max_length=20, 
                                         null=True,
                                         choices=PERFORMANCE_TYPE)
+    performance_value = models.IntegerField(null=True)
     founder = models.ForeignKey(User, 
                                 on_delete=models.CASCADE,
                                 verbose_name="the execise's creator")
