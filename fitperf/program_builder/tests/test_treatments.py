@@ -275,6 +275,7 @@ class TestDataTreatment(TestCase):
                 "description": o_chelsea.description,
                 "performanceType": o_chelsea.performance_type,
                 "performanceValue": o_chelsea.performance_value,
+                "is_default": o_chelsea.is_default,
                 "movements": [
                     {
                         "id": o_chelsea_pullup.movement.pk,
@@ -322,6 +323,7 @@ class TestDataTreatment(TestCase):
                 "description": a_chelsea.description,
                 "performanceType": a_chelsea.performance_type,
                 "performanceValue": a_chelsea.performance_value,
+                "is_default": a_chelsea.is_default,
                 "movements": [
                     {
                         "id": a_chelsea_pullup.movement.pk,
@@ -369,6 +371,7 @@ class TestDataTreatment(TestCase):
                 "description": connie.description,
                 "performanceType": connie.performance_type,
                 "performanceValue": connie.performance_value,
+                "is_default": connie.is_default,
                 "movements": [
                     {
                         "id": connie_pullup.movement.pk,
@@ -465,6 +468,7 @@ class TestDataTreatment(TestCase):
                 "description": o_chelsea.description,
                 "performanceType": o_chelsea.performance_type,
                 "performanceValue": o_chelsea.performance_value,
+                "is_default": o_chelsea.is_default,
                 "movements": [
                     {
                         "id": o_chelsea_pullup.movement.pk,
@@ -512,6 +516,7 @@ class TestDataTreatment(TestCase):
                 "description": a_chelsea.description,
                 "performanceType": a_chelsea.performance_type,
                 "performanceValue": a_chelsea.performance_value,
+                "is_default": a_chelsea.is_default,
                 "movements": [
                     {
                         "id": a_chelsea_pullup.movement.pk,
@@ -563,6 +568,7 @@ class TestDataTreatment(TestCase):
                 "description": a_chelsea.description,
                 "performanceType": a_chelsea.performance_type,
                 "performanceValue": a_chelsea.performance_value,
+                "is_default": a_chelsea.is_default,
                 "movements": [
                     {
                         "id": a_chelsea_pullup.movement.pk,
@@ -610,6 +616,7 @@ class TestDataTreatment(TestCase):
                 "description": connie.description,
                 "performanceType": connie.performance_type,
                 "performanceValue": connie.performance_value,
+                "is_default": connie.is_default,
                 "movements": [
                     {
                         "id": connie_pullup.movement.pk,
@@ -641,10 +648,87 @@ class TestDataTreatment(TestCase):
             },
         ]
 
-        print(a_chelsea.is_default)
         # We apply the method
         ordinary_user_exercise = self.treatment.get_all_exercises_in_dict_for_user(ordinary_founder)
         self.assertEqual(ordinary_user_exercise, ordinary_user_result)
 
         new_user_exercise = self.treatment.get_all_exercises_in_dict_for_user(new_user)
         self.assertEqual(new_user_exercise, new_user_result)
+
+    def test_get_one_exercise_in_dict(self):
+        # We get the user
+        ordinary_founder = User.objects.get(username="ordinary_user")
+        
+        # We get the movements
+        pullup = Movement.objects.get(name="pullup")
+        pushup = Movement.objects.get(name="pushup")
+        squat = Movement.objects.get(name="squat")
+
+        # We get the settings 
+        rep = MovementSettings.objects.get(name=MovementSettings.REPETITIONS)
+        weight = MovementSettings.objects.get(name=MovementSettings.WEIGHT)
+
+        # We get one movement
+
+        o_chelsea = Exercise.objects.get(name="chelsea", founder=ordinary_founder)
+        o_chelsea_pullup = MovementsPerExercise.objects.get(exercise=o_chelsea, movement=pullup)
+        o_chelsea_pullup_rep = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=o_chelsea_pullup, setting=rep)
+        o_chelsea_pushup = MovementsPerExercise.objects.get(exercise=o_chelsea, movement=pushup)
+        o_chelsea_pushup_rep = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=o_chelsea_pushup, setting=rep)
+        o_chelsea_squat = MovementsPerExercise.objects.get(exercise=o_chelsea, movement=squat)
+        o_chelsea_squat_rep = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=o_chelsea_squat, setting=rep)
+        o_chelsea_squat_weight = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=o_chelsea_squat, setting=weight)
+
+        # Result
+        result = {
+            "id": o_chelsea.pk,
+            "name": o_chelsea.name,
+            "exerciseType": o_chelsea.exercise_type,
+            "description": o_chelsea.description,
+            "performanceType": o_chelsea.performance_type,
+            "performanceValue": o_chelsea.performance_value,
+            "is_default": o_chelsea.is_default,
+            "movements": [
+                {
+                    "id": o_chelsea_pullup.movement.pk,
+                    "name": o_chelsea_pullup.movement.name,
+                    "order": o_chelsea_pullup.movement_number,
+                    "settings": [
+                        {
+                            "name": o_chelsea_pullup_rep.setting.name,
+                            "value": o_chelsea_pullup_rep.setting_value,
+                        },
+                    ]
+                },
+                {
+                    "id": o_chelsea_pushup.movement.pk,
+                    "name": o_chelsea_pushup.movement.name,
+                    "order": o_chelsea_pushup.movement_number,
+                    "settings": [
+                        {
+                            "name": o_chelsea_pushup_rep.setting.name,
+                            "value": o_chelsea_pushup_rep.setting_value,
+                        },
+                    ]
+                },
+                {
+                    "id": o_chelsea_squat.movement.pk,
+                    "name": o_chelsea_squat.movement.name,
+                    "order": o_chelsea_squat.movement_number,
+                    "settings": [
+                        {
+                            "name": o_chelsea_squat_rep.setting.name,
+                            "value": o_chelsea_squat_rep.setting_value,
+                        },
+                        {
+                            "name": o_chelsea_squat_weight.setting.name,
+                            "value": o_chelsea_squat_weight.setting_value,
+                        },
+                    ]
+                },
+            ],
+        }
+
+        # We test
+        o_chelsea_dict = self.treatment.get_one_exercise_in_dict(o_chelsea.pk)
+        self.assertEqual(o_chelsea_dict, result)

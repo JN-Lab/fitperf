@@ -89,10 +89,11 @@ def exercises_list(request):
         - print a list of exercise
         - create an exercise and redirect on the exercise page to finalize
     """
-    db = DBExercise()
-    exercises = db.get_all_exercises()
+    db = DataTreatment()
+    exercises = db.get_all_exercises_in_dict_for_user(request.user)
     new_exercise_form = RegisterExerciseStep1()
-    return render(request, 'exercises_list.html', locals())
+    if exercises:
+        return render(request, 'exercises_list.html', locals())
 
 @csrf_protect
 @login_required

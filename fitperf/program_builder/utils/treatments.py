@@ -130,8 +130,9 @@ class DataTreatment:
                 "name": "exercise.name",
                 "exerciseType": "exercise_type",
                 "description": "description",
-                "performanceType", "performance_type",
-                "performanceValue", "performance_value",
+                "performanceType": "performance_type",
+                "performanceValue": "performance_value",
+                "is_default": False,
                 "movements" : [
                     {
                         "name" : "movement_name",
@@ -161,6 +162,7 @@ class DataTreatment:
                 "description": "",
                 "performanceType": "",
                 "performanceValue": "",
+                "is_default": False,
                 "movements": []
             }
 
@@ -192,6 +194,11 @@ class DataTreatment:
 
             try:
                 exercise_dict["performanceValue"] = exercise.performance_value
+            except:
+                completed = False
+
+            try:
+                exercise_dict["is_default"] = exercise.is_default
             except:
                 completed = False
 
@@ -264,5 +271,93 @@ class DataTreatment:
             
         if completed:
             return movements_list
+        else:
+            return None
+
+    def get_one_exercise_in_dict(self, exercise_pk):
+        """
+        This method returns all the information linked to an exercise in a dictionnary.
+        The method uses the primary key to get the targeted exercise
+            {
+                "id": "exercise primary_key",
+                "name": "exercise.name",
+                "exerciseType": "exercise_type",
+                "description": "description",
+                "performanceType": "performance_type",
+                "performanceValue": "performance_value",
+                "is_default": False,
+                "movements" : [
+                    {
+                        "name" : "movement_name",
+                        "order": "movement_order",
+                        "settings": [
+                            {
+                                "name": "setting_name",
+                                "value": "setting_value,
+                            },
+                            ...
+                        ]
+                    },
+                    ...
+                ]
+            }
+        """
+
+        completed = True
+        exercise = self.db_exercise.get_one_exercise_by_pk(exercise_pk)
+        exercise_dict = {
+            "id": "",
+            "name": "",
+            "exerciseType": "",
+            "description": "",
+            "performanceType": "",
+            "performanceValue": "",
+            "is_default": False,
+            "movements": []
+        }
+
+        # We push all informations from exercise except movements
+        try:
+            exercise_dict["id"] = exercise.pk
+        except:
+            completed = False
+        
+        try:
+            exercise_dict["name"] = exercise.name
+        except:
+            completed = False
+
+        try:
+            exercise_dict["description"] = exercise.description
+        except:
+            exercise_dict["description"] = ""
+
+        try:
+            exercise_dict["exerciseType"] = exercise.exercise_type
+        except:
+            completed = False
+
+        try:
+            exercise_dict["performanceType"] = exercise.performance_type
+        except:
+            completed = False
+
+        try:
+            exercise_dict["performanceValue"] = exercise.performance_value
+        except:
+            completed = False
+
+        try:
+            exercise_dict["is_default"] = exercise.is_default
+        except:
+            completed = False
+
+        try:
+            exercise_dict["movements"] = self._get_movements_dict_linked_to_exercise(exercise) 
+        except:
+            completed = False
+
+        if completed:
+            return exercise_dict
         else:
             return None
