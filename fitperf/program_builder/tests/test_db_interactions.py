@@ -92,9 +92,6 @@ class TestDBExercise(TestCase):
         the exercise_type with the adequate performance_type
         """
 
-        performance_type = self.db_exo._define_performance_type('MAXIMUM DE REPETITIONS')
-        self.assertEqual(performance_type, 'repetitions')
-
         performance_type = self.db_exo._define_performance_type('AMRAP')
         self.assertEqual(performance_type, 'duree')
 
@@ -105,16 +102,16 @@ class TestDBExercise(TestCase):
         self.assertEqual(performance_type, 'distance')
 
         performance_type = self.db_exo._define_performance_type('FORTIME')
-        self.assertEqual(performance_type, 'tours')
+        self.assertEqual(performance_type, 'round')
 
         performance_type = self.db_exo._define_performance_type('ECHAUFFEMENT')
-        self.assertEqual(performance_type, 'tours')
+        self.assertEqual(performance_type, 'round')
 
         performance_type = self.db_exo._define_performance_type('FORCE')
-        self.assertEqual(performance_type, 'tours')
+        self.assertEqual(performance_type, 'round')
 
         performance_type = self.db_exo._define_performance_type('CONDITIONNEMENT')
-        self.assertEqual(performance_type, 'tours')
+        self.assertEqual(performance_type, 'round')
 
     def test_set_exercise_success(self):
         """
@@ -172,7 +169,7 @@ class TestDBExercise(TestCase):
         connie = Exercise.objects.get(name="connie")
 
         # We get a setting
-        rep = MovementSettings.objects.get(name=Exercise.REPETITIONS)
+        rep = MovementSettings.objects.get(name=MovementSettings.REPETITIONS)
 
         # We get one movement
         pushup = Movement.objects.get(name="pushup")

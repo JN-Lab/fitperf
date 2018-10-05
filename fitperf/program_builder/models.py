@@ -80,7 +80,6 @@ class Exercise(models.Model):
     STRENGTH = 'STRENGTH'
     EMOM = 'EMOM'
     CONDITIONNING = "CONDITIONNING"
-    MAX_REP = "MAX_REP"
     EXERCISE_TYPE = (
         (RUNNING, 'RUNNING'),
         (FORTIME, 'FORTIME'),
@@ -89,17 +88,14 @@ class Exercise(models.Model):
         (STRENGTH, 'FORCE'),
         (EMOM, 'EMOM'),
         (CONDITIONNING, 'CONDITIONNEMENT'),
-        (MAX_REP, 'MAXIMUM DE REPETITIONS')
     )
 
     TIME = 'duree'
-    ROUND = "round"
-    REPETITIONS = "repetitions"
-    DISTANCE = "distance"
+    ROUND = 'round'
+    DISTANCE = 'distance'
     PERFORMANCE_TYPE = (
         (TIME, 'duree'),
         (ROUND, 'round'),
-        (REPETITIONS, 'repetitions'),
         (DISTANCE, 'distance'),
     )
     name = models.CharField(max_length=200,
@@ -110,7 +106,7 @@ class Exercise(models.Model):
                                      choices=EXERCISE_TYPE,
                                      verbose_name="Type")
     performance_type = models.CharField(max_length=20, 
-                                        null=True,
+                                        null=False,
                                         choices=PERFORMANCE_TYPE)
     performance_value = models.IntegerField(null=True)
     founder = models.ForeignKey(User, 

@@ -8,7 +8,7 @@ class TestDatabase:
     @staticmethod
     def create():
         # We create a users
-        admin_user = User.objects.create_user(username='admin_user', password='admin_password')
+        admin_user = User.objects.create_superuser(username='admin_user', password='admin_password', email="test@test.com")
         ordinary_user = User.objects.create_user(username='ordinary_user', password='ordinary_user')
         new_user = User.objects.create_user(username='new_user', password='new_user')
 
@@ -71,6 +71,7 @@ class TestDatabase:
                                          description="test chelsea",
                                          performance_type=Exercise.TIME,
                                          performance_value=30,
+                                         is_default=True,
                                          founder=admin_user)
         a_chelsea_pullup = MovementsPerExercise.objects.create(exercise=a_chelsea,
                                                             movement=pullup,

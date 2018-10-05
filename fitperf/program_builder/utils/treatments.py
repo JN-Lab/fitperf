@@ -103,7 +103,27 @@ class DataTreatment:
 
     def get_all_exercises_in_dict(self):
         """
-        This method gets all the exercises from the database and set them in a list of dictionnaries:
+        This method gets all the exercises and returns them in a list of dictionnary
+        -> see _build_exercises_list_of_dict method
+        """
+        exercises = self.db_exercise.get_all_exercises()
+        exercises_list = self._build_exercises_list_of_dict(exercises)
+        if exercises_list:
+            return exercises_list
+
+    def get_all_exercises_in_dict_for_user(self, user):
+        """
+        This method gets all the exercises by default + exercise created by a specific user
+        and returns them in a list of dictionnary -> see _build_exercises_list_of_dict method
+        """
+        exercises = self.db_exercise.get_all_user_exercises(user)
+        exercises_list = self._build_exercises_list_of_dict(exercises)
+        if exercises_list:
+            return exercises_list
+
+    def _build_exercises_list_of_dict(self, exercises):
+        """
+        This method returns all the exercises from the queryset into a list of dictionnaries:
         [
             {
                 "id": "exercise primary_key",
@@ -129,9 +149,10 @@ class DataTreatment:
             }
         ]
         """
+
         completed = True
         exercise_list = []
-        exercises = self.db_exercise.get_all_exercises()
+
         for exercise in exercises:
             exercise_dict = {
                 "id": "",
@@ -174,71 +195,74 @@ class DataTreatment:
             except:
                 completed = False
 
-            # We Get all movements linked to the exercise
-            movements_linked = self.db_exercise.get_all_movements_linked_to_exercise(exercise)
-            # For each movement in exercise:
-            for movement_linked in movements_linked:
-                # We create a movement_dict:
-                movement_dict = {
-                    "id": "",
-                    "name": "",
-                    "order": "",
-                    "settings": [],
-                }
+            try:
+                exercise_dict["movements"] = self._get_movements_dict_linked_to_exercise(exercise) 
+            except:
+                completed = False
 
-                # We fill the info linked to the movement
-                try:
-                    movement_dict["id"] = movement_linked.movement.pk
-                except:
-                    completed = False
-                
-                try:
-                    movement_dict["name"] = movement_linked.movement.name
-                except:
-                    completed = False
-
-                try:
-                    movement_dict["order"] = movement_linked.movement_number
-                except:
-                    completed = False
-                
-                settings_linked = self.db_exercise.get_all_settings_linked_to_movement_linked_to_exercise(movement_linked)
-                # For each settings linked to the movement:
-                for setting_linked in settings_linked:
-                    # We create a setting_dict
-                    setting_dict = {
-                        "name": "",
-                        "value": "",
-                    }
-                    # We fill the name and the value
-                    try:
-                        setting_dict["name"] = setting_linked.setting.name
-                    except:
-                        completed = False
-
-                    try:
-                        setting_dict["value"] = setting_linked.setting_value
-                    except:
-                        completed = False
-
-                    movement_dict["settings"].append(setting_dict)                
-                exercise_dict["movements"].append(movement_dict)
             exercise_list.append(exercise_dict)
-
-
-            # We push all informations from exercise except movements
-            # We Get all movements linked to the exercise
-            # For each movement in exercise:
-                # We create a movement_dict:
-                # We fill the info linked to the movement
-                # For each settings linked to the movement:
-                    # We create a setting_dict
-                    # We fill the name and the value
-                    # We append the setting_dict in movement_dict
-                # We append the movement_dict in exercise["movements"]
-            # We append the exercise_dict in exercise_list
 
         if completed:
             return exercise_list
+        else:
+            return None
+
+
+    def _get_movements_dict_linked_to_exercise(self,exercise):
+        """
+        This private method gets all the movements linked to an exercise,
+        transforms them into dict and push them in a list
+        """
+        
+        completed = True
+        movements_list = []
+        # We Get all movements linked to the exercise
+        movements_linked = self.db_exercise.get_all_movements_linked_to_exercise(exercise)
+        for movement_linked in movements_linked:
+            movement_dict = {
+                "id": "",
+                "name": "",
+                "order": "",
+                "settings": [],
+            }
+
+            try:
+                movement_dict["id"] = movement_linked.movement.pk
+            except:
+                completed = False
+            
+            try:
+                movement_dict["name"] = movement_linked.movement.name
+            except:
+                completed = False
+
+            try:
+                movement_dict["order"] = movement_linked.movement_number
+            except:
+                completed = False
+            
+            # We get all settings linked to a movement
+            settings_linked = self.db_exercise.get_all_settings_linked_to_movement_linked_to_exercise(movement_linked)
+            for setting_linked in settings_linked:
+                setting_dict = {
+                    "name": "",
+                    "value": "",
+                }
+
+                try:
+                    setting_dict["name"] = setting_linked.setting.name
+                except:
+                    completed = False
+
+                try:
+                    setting_dict["value"] = setting_linked.setting_value
+                except:
+                    completed = False
+
+                movement_dict["settings"].append(setting_dict)                
+            movements_list.append(movement_dict)
+            
+        if completed:
+            return movements_list
         else:
             return None

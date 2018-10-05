@@ -14,17 +14,17 @@ function Exercise() {
 };
 
 Exercise.prototype.definePerformanceType = function(exerciseType) {
-    // To define performanceType according exerciseType
+    // To define performanceType according exerciseType only for 
+    // Modal Label
+    // A treatment id done on backend from exercise type value
     performanceType = String();
 
-    if (exerciseType === 'MAXIMUM DE REPETITION') {
-        performanceType = 'Nombre de répétitions';
-    } else if (exerciseType === 'AMRAP' || exerciseType === 'EMOM') {
-        performanceType = 'Temps';
-    } else if (exerciseType === 'RUNNING') {
+    if (exerciseType === 'RUNNING') {
         performanceType = 'Distance';
+    } else if (exerciseType === 'AMRAP' || exerciseType === 'EMOM') {
+        performanceType = 'Duree';
     } else {
-        performanceType = 'Nombre de tours';
+        performanceType = 'Nombre de rounds';
     }
     return performanceType;
 };

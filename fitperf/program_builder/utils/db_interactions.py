@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 # coding: utf-8
+from django.db.models import Q
 from django.contrib.auth.models import User
 from ..models import Session, ExercisesPerSession, Program, Training, Exercise, MovementsPerExercise, MovementSettingsPerMovementsPerExercise, Movement, MovementSettings, Equipment
 
@@ -85,14 +86,12 @@ class DBExercise:
         the exercise type (see possibilities in model Exercise)
         """
         performance_type = ''
-        if exercise_type == 'MAXIMUM DE REPETITIONS':
-            performance_type = 'repetitions'
+        if exercise_type == 'RUNNING':
+            performance_type = 'distance'
         elif exercise_type == 'AMRAP' or exercise_type == "EMOM":
             performance_type = 'duree'
-        elif exercise_type == 'RUNNING':
-            performance_type = 'distance'
         else:
-            performance_type = 'tours'
+            performance_type = 'round'
         return performance_type
 
 
@@ -107,8 +106,8 @@ class DBExercise:
         exercise = Exercise.objects.create(name=exercise_name, 
                                             exercise_type=exercise_type,
                                             description=description,
-                                            performance_type= performance_type,
-                                            performance_value = performance_value,
+                                            performance_type=performance_type,
+                                            performance_value=performance_value,
                                             founder=founder)
 
         if founder.is_superuser:
@@ -156,15 +155,15 @@ class DBExercise:
         TO TEST
         """
 
-
+        return Exercise.objects.filter(is_default=True)
 
     def get_all_user_exercises(self, user):
         """
-        Gets all the exercises created by a user
+        Gets all the exercises created by a user + the default exercise
         TO TEST
         """
 
-        return Exercise.objects.filter(founder=user)
+        return Exercise.objects.filter(Q(founder=user) | Q(is_default=True))
 
     def get_one_exercise_by_pk(self, exercise_pk):
 
