@@ -49,8 +49,8 @@ class DataTreatment:
             "name": "exercise_name",
             "exerciseType": "exercise_type",
             "description": "description",
-            "performanceType", "performance_type",
-            "performanceValue", "performance_value",
+            "goalType", "goal_type",
+            "goalValue", "goal_value",
             "movements" : [
                 {
                     "id": "movement_id",
@@ -68,12 +68,12 @@ class DataTreatment:
             ]
         }
         """
-        performance_value_converted = self._manage_performance_value(exercise_dict["performanceType"], exercise_dict["performanceValue"])
+        goal_value_converted = self._manage_goal_value(exercise_dict["goalType"], exercise_dict["goalValue"])
         exercise = self.db_exercise.set_exercise(exercise_dict["name"],
                                                 exercise_dict["exerciseType"],
                                                 exercise_dict["description"],
-                                                exercise_dict["performanceType"],
-                                                performance_value_converted,
+                                                exercise_dict["goalType"],
+                                                goal_value_converted,
                                                 user)
         if exercise:
             for movement_dict in exercise_dict["movements"]:
@@ -89,17 +89,17 @@ class DataTreatment:
 
         return exercise
 
-    def _manage_performance_value(self, performance_type, performance_value):
+    def _manage_goal_value(self, goal_type, goal_value):
         """
         This private method ensure securiy and logic before registering numerical
         value in performance_value field in Exercise model.
         To be sure to integrate the good integer in db
         """
         
-        if performance_type == "Distance" and performance_value < 100:
-            performance_value = performance_value * 1000
+        if goal_type == "Distance" and goal_value < 100:
+            goal_value = goal_value * 1000
 
-        return int(performance_value)
+        return int(goal_value)
 
     def get_all_exercises_in_dict(self):
         """
@@ -130,8 +130,8 @@ class DataTreatment:
                 "name": "exercise.name",
                 "exerciseType": "exercise_type",
                 "description": "description",
-                "performanceType": "performance_type",
-                "performanceValue": "performance_value",
+                "goalType": "goal_type",
+                "goalValue": "goal_value",
                 "is_default": False,
                 "movements" : [
                     {
@@ -160,8 +160,8 @@ class DataTreatment:
                 "name": "",
                 "exerciseType": "",
                 "description": "",
-                "performanceType": "",
-                "performanceValue": "",
+                "goalType": "",
+                "goalValue": "",
                 "is_default": False,
                 "movements": []
             }
@@ -188,12 +188,12 @@ class DataTreatment:
                 completed = False
 
             try:
-                exercise_dict["performanceType"] = exercise.performance_type
+                exercise_dict["goalType"] = exercise.goal_type
             except:
                 completed = False
 
             try:
-                exercise_dict["performanceValue"] = exercise.performance_value
+                exercise_dict["goalValue"] = exercise.goal_value
             except:
                 completed = False
 
@@ -283,8 +283,8 @@ class DataTreatment:
                 "name": "exercise.name",
                 "exerciseType": "exercise_type",
                 "description": "description",
-                "performanceType": "performance_type",
-                "performanceValue": "performance_value",
+                "goalType": "goal_type",
+                "goalValue": "goal_value",
                 "is_default": False,
                 "movements" : [
                     {
@@ -310,8 +310,8 @@ class DataTreatment:
             "name": "",
             "exerciseType": "",
             "description": "",
-            "performanceType": "",
-            "performanceValue": "",
+            "goalType": "",
+            "goalValue": "",
             "is_default": False,
             "movements": []
         }
@@ -338,12 +338,12 @@ class DataTreatment:
             completed = False
 
         try:
-            exercise_dict["performanceType"] = exercise.performance_type
+            exercise_dict["goalType"] = exercise.goal_type
         except:
             completed = False
 
         try:
-            exercise_dict["performanceValue"] = exercise.performance_value
+            exercise_dict["goalValue"] = exercise.goal_value
         except:
             completed = False
 

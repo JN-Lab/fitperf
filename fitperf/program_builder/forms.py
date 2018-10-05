@@ -24,9 +24,9 @@ class RegisterExerciseStep1(forms.ModelForm):
 class RegisterExerciseStep2(forms.ModelForm):
     class Meta:
         model = Exercise
-        fields = ['performance_value']
+        fields = ['goal_value']
         widgets = {
-            'performance_value' : forms.NumberInput(attrs={'class': 'form-control', 'required':True}),
+            'goal_value' : forms.NumberInput(attrs={'class': 'form-control', 'required':True}),
         }
 
 class RegisterMovementToExercise(forms.Form):

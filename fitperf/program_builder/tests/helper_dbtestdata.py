@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 # coding: utf-8
 from django.contrib.auth.models import User
-from ..models import Session, ExercisesPerSession, Program, Training, Exercise, MovementsPerExercise, Movement, MovementSettings, Equipment, MovementSettingsPerMovementsPerExercise
+from ..models import Training, Exercise, MovementsPerExercise, Movement, MovementSettings, Equipment, MovementSettingsPerMovementsPerExercise
 
 class TestDatabase:
     
@@ -40,8 +40,8 @@ class TestDatabase:
         o_chelsea = Exercise.objects.create(name="chelsea",
                                          exercise_type=Exercise.EMOM,
                                          description="test chelsea",
-                                         performance_type=Exercise.TIME,
-                                         performance_value=30,
+                                         goal_type=Exercise.TIME,
+                                         goal_value=30,
                                          founder=ordinary_user)
         o_chelsea_pullup = MovementsPerExercise.objects.create(exercise=o_chelsea,
                                                             movement=pullup,
@@ -69,8 +69,8 @@ class TestDatabase:
         a_chelsea = Exercise.objects.create(name="chelsea",
                                          exercise_type=Exercise.EMOM,
                                          description="test chelsea",
-                                         performance_type=Exercise.TIME,
-                                         performance_value=30,
+                                         goal_type=Exercise.TIME,
+                                         goal_value=30,
                                          is_default=True,
                                          founder=admin_user)
         a_chelsea_pullup = MovementsPerExercise.objects.create(exercise=a_chelsea,
@@ -99,8 +99,8 @@ class TestDatabase:
         connie = Exercise.objects.create(name="connie",
                                     exercise_type=Exercise.FORTIME,
                                     description="test connie",
-                                    performance_type=Exercise.ROUND,
-                                    performance_value=5,
+                                    goal_type=Exercise.ROUND,
+                                    goal_value=5,
                                     founder=new_user)
         connie_pullup = MovementsPerExercise.objects.create(exercise=connie,
                                                             movement=pullup,

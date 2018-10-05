@@ -18,13 +18,13 @@ modalStep1.form.addEventListener("submit", function(e) {
     exercise.name = modalStep1.getFormTextInput("id_name");
     exercise.exerciseType = modalStep1.getFormSelectInput("id_exercise_type");
     exercise.description = modalStep1.getFormTextInput("id_description");
-    exercise.performanceType = exercise.definePerformanceType(exercise.exerciseType);
+    exercise.goalType = exercise.defineGoalType(exercise.exerciseType);
 
     // Build Modal for Step2 according first exercise elements
     modalStep2.changeTitle(exercise.name);
     modalStep2.addFormSection("Type: " + exercise.exerciseType);
     if (exercise.exerciseType != "RUNNING") {
-        modalStep2.addFormTextInput("modalStep2Performance", exercise.performanceType, "number", false);
+        modalStep2.addFormTextInput("modalStep2Goal", exercise.goalType, "number", false);
         
         // We get all the movements and when we have them, we generate the movement blocks + end of the form
         getAjaxJson("/app/get-all-movements/", "GET")
@@ -41,7 +41,7 @@ modalStep1.form.addEventListener("submit", function(e) {
         // This is to manage the exercise it if is running type
             // No need movement block
             // Need decimal in performance value
-        modalStep2.addFormTextInput("modalStep2Performance", exercise.performanceType, "number", true);
+        modalStep2.addFormTextInput("modalStep2Goal", exercise.goalType, "number", true);
         modalStep2.addSplittedLine();
         modalStep2.addSubmitButton("Créer");
     }
@@ -57,7 +57,7 @@ modalStep1.form.addEventListener("submit", function(e) {
 modalStep2.form.addEventListener("submit", function(e) {
     e.preventDefault();
     // We get all informations from the form
-    exercise.performanceValue = Number(modalStep2.getFormTextInput("modalStep2Performance"));
+    exercise.goalValue = Number(modalStep2.getFormTextInput("modalStep2Goal"));
     var movements = modalStep2.getSelectInputs();
     for (i = 0; i < movements.length; i++) {
         var mvtNumber = i + 1;

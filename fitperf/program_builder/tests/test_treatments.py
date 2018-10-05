@@ -3,7 +3,7 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 from .helper_dbtestdata import TestDatabase
-from ..models import Session, ExercisesPerSession, Program, Training, Exercise, MovementsPerExercise, MovementSettingsPerMovementsPerExercise, Movement, MovementSettings, Equipment
+from ..models import Training, Exercise, MovementsPerExercise, MovementSettingsPerMovementsPerExercise, Movement, MovementSettings, Equipment
 from ..utils.treatments import DataTreatment
 from ..utils.db_interactions import DBMovement
 
@@ -83,8 +83,8 @@ class TestDataTreatment(TestCase):
         name = "angie"
         exercise_type = "FORTIME"
         description = "workout de test"
-        perf_type = "Nombre de tours"
-        perf_value = 5
+        goal_type = "Nombre de tours"
+        goal_value = 5
         
         # We get the movements
         squat = Movement.objects.get(name="squat")
@@ -100,8 +100,8 @@ class TestDataTreatment(TestCase):
             "name": name,
             "exerciseType": exercise_type,
             "description": description,
-            "performanceType": perf_type,
-            "performanceValue": perf_value,
+            "goalType": goal_type,
+            "goalValue": goal_value,
             "movements" : [
                 {
                     "name": squat.name,
@@ -151,7 +151,7 @@ class TestDataTreatment(TestCase):
         # We test
         self.assertEqual(exercise.name, "angie")
         self.assertEqual(exercise.exercise_type, "FORTIME")
-        self.assertEqual(exercise.performance_value, 5)
+        self.assertEqual(exercise.goal_value, 5)
         self.assertEqual(exercise.movements.all().count(), 3)
 
         angie_squat = MovementsPerExercise.objects.get(exercise=exercise, movement=squat)
@@ -193,8 +193,8 @@ class TestDataTreatment(TestCase):
         name = "run 7.5"
         exercise_type = "RUNNING"
         description = "running test"
-        perf_type = "Distance"
-        perf_value = 7.5
+        goal_type = "Distance"
+        goal_value = 7.5
 
 
         # We create the dict
@@ -202,8 +202,8 @@ class TestDataTreatment(TestCase):
             "name": name,
             "exerciseType": exercise_type,
             "description": description,
-            "performanceType": perf_type,
-            "performanceValue": perf_value,
+            "goalType": goal_type,
+            "goalValue": goal_value,
             "movements" : []
         }
 
@@ -213,7 +213,7 @@ class TestDataTreatment(TestCase):
         # We Test
         self.assertEqual(exercise.name, "run 7.5")
         self.assertEqual(exercise.exercise_type, "RUNNING")
-        self.assertEqual(exercise.performance_value, 7500)
+        self.assertEqual(exercise.goal_value, 7500)
         self.assertEqual(exercise.movements.all().count(), 0)
 
     def test_get_all_exercises_in_dict(self):
@@ -273,8 +273,8 @@ class TestDataTreatment(TestCase):
                 "name": o_chelsea.name,
                 "exerciseType": o_chelsea.exercise_type,
                 "description": o_chelsea.description,
-                "performanceType": o_chelsea.performance_type,
-                "performanceValue": o_chelsea.performance_value,
+                "goalType": o_chelsea.goal_type,
+                "goalValue": o_chelsea.goal_value,
                 "is_default": o_chelsea.is_default,
                 "movements": [
                     {
@@ -321,8 +321,8 @@ class TestDataTreatment(TestCase):
                 "name": a_chelsea.name,
                 "exerciseType": a_chelsea.exercise_type,
                 "description": a_chelsea.description,
-                "performanceType": a_chelsea.performance_type,
-                "performanceValue": a_chelsea.performance_value,
+                "goalType": a_chelsea.goal_type,
+                "goalValue": a_chelsea.goal_value,
                 "is_default": a_chelsea.is_default,
                 "movements": [
                     {
@@ -369,8 +369,8 @@ class TestDataTreatment(TestCase):
                 "name": connie.name,
                 "exerciseType": connie.exercise_type,
                 "description": connie.description,
-                "performanceType": connie.performance_type,
-                "performanceValue": connie.performance_value,
+                "goalType": connie.goal_type,
+                "goalValue": connie.goal_value,
                 "is_default": connie.is_default,
                 "movements": [
                     {
@@ -466,8 +466,8 @@ class TestDataTreatment(TestCase):
                 "name": o_chelsea.name,
                 "exerciseType": o_chelsea.exercise_type,
                 "description": o_chelsea.description,
-                "performanceType": o_chelsea.performance_type,
-                "performanceValue": o_chelsea.performance_value,
+                "goalType": o_chelsea.goal_type,
+                "goalValue": o_chelsea.goal_value,
                 "is_default": o_chelsea.is_default,
                 "movements": [
                     {
@@ -514,8 +514,8 @@ class TestDataTreatment(TestCase):
                 "name": a_chelsea.name,
                 "exerciseType": a_chelsea.exercise_type,
                 "description": a_chelsea.description,
-                "performanceType": a_chelsea.performance_type,
-                "performanceValue": a_chelsea.performance_value,
+                "goalType": a_chelsea.goal_type,
+                "goalValue": a_chelsea.goal_value,
                 "is_default": a_chelsea.is_default,
                 "movements": [
                     {
@@ -566,8 +566,8 @@ class TestDataTreatment(TestCase):
                 "name": a_chelsea.name,
                 "exerciseType": a_chelsea.exercise_type,
                 "description": a_chelsea.description,
-                "performanceType": a_chelsea.performance_type,
-                "performanceValue": a_chelsea.performance_value,
+                "goalType": a_chelsea.goal_type,
+                "goalValue": a_chelsea.goal_value,
                 "is_default": a_chelsea.is_default,
                 "movements": [
                     {
@@ -614,8 +614,8 @@ class TestDataTreatment(TestCase):
                 "name": connie.name,
                 "exerciseType": connie.exercise_type,
                 "description": connie.description,
-                "performanceType": connie.performance_type,
-                "performanceValue": connie.performance_value,
+                "goalType": connie.goal_type,
+                "goalValue": connie.goal_value,
                 "is_default": connie.is_default,
                 "movements": [
                     {
@@ -685,8 +685,8 @@ class TestDataTreatment(TestCase):
             "name": o_chelsea.name,
             "exerciseType": o_chelsea.exercise_type,
             "description": o_chelsea.description,
-            "performanceType": o_chelsea.performance_type,
-            "performanceValue": o_chelsea.performance_value,
+            "goalType": o_chelsea.goal_type,
+            "goalValue": o_chelsea.goal_value,
             "is_default": o_chelsea.is_default,
             "movements": [
                 {

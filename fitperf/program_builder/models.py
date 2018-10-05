@@ -2,69 +2,34 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 
-class Session(models.Model):
-    user = models.ForeignKey(User,
-                             on_delete=models.CASCADE,
-                             verbose_name="user who does the session")
-    program = models.ForeignKey('Program', 
-                                on_delete=models.CASCADE,
-                                null=True,
-                                verbose_name="program linked to the session if exists")
-    training = models.ForeignKey('Training',
-                                on_delete=models.CASCADE,
-                                verbose_name="training associated to the session")
-    date = models.DateTimeField(default=timezone.now)
-    done = models.BooleanField(default=False)
-
-    exercises = models.ManyToManyField('Exercise',
-                                        through='ExercisesPerSession',
-                                        related_name='sessions',
-                                        verbose_name="list of exercises per session")
-    
-    def __str__(self):
-        return self.training + "-"  + self.date
-
-class ExercisesPerSession(models.Model):
-    exercise = models.ForeignKey('Exercise',
-                                 on_delete=models.CASCADE)
-    session = models.ForeignKey('Session',
-                                 on_delete=models.CASCADE)
-    challenge = models.BooleanField(default=False)
-    performance = models.DecimalField(max_digits=5, 
-                                     decimal_places=1,
-                                     null=True)
-
-    def __str__(self):
-        return self.session + "-" + self.exercise
-
-class Program(models.Model):
-    """
-    This class represents the programs created.
-    """
-    name = models.CharField(max_length=200)
-    description = models.TextField(null=True)
-    start_date = models.DateTimeField(default=timezone.now)
-    end_date = models.DateTimeField(default=timezone.now)
-    founder = models.ForeignKey(User, 
-                                on_delete=models.CASCADE,
-                                 verbose_name="the program's creator")
-    trainings = models.ManyToManyField('Training',
-                                        related_name='programs',
-                                        verbose_name='list of trainings per program')
-    def __str__(self):
-        return self.name
-
 class Training(models.Model):
     """
     This class represents the trainings created
     """
+    TIME = 'duree'
+    ROUND = 'round'
+    DISTANCE = 'distance'
+    PERFORMANCE_TYPE = (
+        (TIME, 'duree'),
+        (ROUND, 'round'),
+        (DISTANCE, 'distance'),
+    )
+
     name = models.CharField(max_length=200)
     founder = models.ForeignKey(User, 
                                 on_delete=models.CASCADE, 
                                 verbose_name="the training's creator")
-    exercises = models.ManyToManyField('Exercise',
-                                        related_name='trainings',
-                                        verbose_name='list of exercises per training')
+    exercise = models.ForeignKey('Exercise',
+                                on_delete=models.CASCADE)
+
+    date = models.DateTimeField(default=timezone.now)
+
+    done = models.BooleanField(default=False)
+
+    performance_type = models.CharField(max_length=20, 
+                                        null=False,
+                                        choices=PERFORMANCE_TYPE)
+    performance_value = models.IntegerField(null=True)
 
     def __str__(self):
         return self.name
@@ -105,10 +70,10 @@ class Exercise(models.Model):
     exercise_type = models.CharField(max_length=20, 
                                      choices=EXERCISE_TYPE,
                                      verbose_name="Type")
-    performance_type = models.CharField(max_length=20, 
+    goal_type = models.CharField(max_length=20, 
                                         null=False,
                                         choices=PERFORMANCE_TYPE)
-    performance_value = models.IntegerField(null=True)
+    goal_value = models.IntegerField(null=True)
     founder = models.ForeignKey(User, 
                                 on_delete=models.CASCADE,
                                 verbose_name="the execise's creator")
@@ -198,11 +163,13 @@ class MovementSettings(models.Model):
     WEIGHT = "poids"
     DISTANCE = "distance"
     CALORIES = "calories"
+    LEST = "lestes"
     MOVEMENTS_SETTINGS = (
         (REPETITIONS, 'repetitions'),
         (WEIGHT, 'poids'),
         (DISTANCE, 'distance'),
-        (CALORIES, 'calories')
+        (CALORIES, 'calories'),
+        (LEST, 'lestes')
     )
     name = models.CharField(max_length=20,
                             choices=MOVEMENTS_SETTINGS,

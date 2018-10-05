@@ -92,8 +92,7 @@ def exercises_list(request):
     db = DataTreatment()
     exercises = db.get_all_exercises_in_dict_for_user(request.user)
     new_exercise_form = RegisterExerciseStep1()
-    if exercises:
-        return render(request, 'exercises_list.html', locals())
+    return render(request, 'exercises_list.html', locals())
 
 @csrf_protect
 @login_required
@@ -112,11 +111,11 @@ def add_exercise(request):
 @login_required
 def exercise_page(request, exercise_pk):
     
-    db = DBExercise()
+    db = DataTreatment()
 
     exercise_form = RegisterExerciseStep2()
     movement_form = RegisterMovementToExercise()
-    exercise = db.get_one_exercise_by_pk(exercise_pk)
+    exercise = db.get_one_exercise_in_dict(exercise_pk)
     return render(request, 'exercise_page.html', locals())
 
 @login_required

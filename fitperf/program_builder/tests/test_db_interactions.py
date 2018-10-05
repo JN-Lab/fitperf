@@ -3,7 +3,7 @@
 from django.test import TestCase, TransactionTestCase
 from django.contrib.auth.models import User
 from .helper_dbtestdata import TestDatabase
-from ..models import Session, ExercisesPerSession, Program, Training, Exercise, MovementsPerExercise, Movement, MovementSettings, Equipment, MovementSettingsPerMovementsPerExercise
+from ..models import Training, Exercise, MovementsPerExercise, Movement, MovementSettings, Equipment, MovementSettingsPerMovementsPerExercise
 from ..utils.db_interactions import DBInteractions, DBMovement, DBExercise
 
 from django.db.models import Q
@@ -86,32 +86,32 @@ class TestDBExercise(TestCase):
     def setUp(self):
         self.db_exo = DBExercise()
 
-    def test_define_performance_type(self):
+    def test_define_goal_type(self):
         """
         This test only checks if the method _define_performance_type associates correctly
         the exercise_type with the adequate performance_type
         """
 
-        performance_type = self.db_exo._define_performance_type('AMRAP')
-        self.assertEqual(performance_type, 'duree')
+        goal_type = self.db_exo._define_goal_type('AMRAP')
+        self.assertEqual(goal_type, 'duree')
 
-        performance_type = self.db_exo._define_performance_type('EMOM')
-        self.assertEqual(performance_type, 'duree')
+        goal_type = self.db_exo._define_goal_type('EMOM')
+        self.assertEqual(goal_type, 'duree')
 
-        performance_type = self.db_exo._define_performance_type('RUNNING')
-        self.assertEqual(performance_type, 'distance')
+        goal_type = self.db_exo._define_goal_type('RUNNING')
+        self.assertEqual(goal_type, 'distance')
 
-        performance_type = self.db_exo._define_performance_type('FORTIME')
-        self.assertEqual(performance_type, 'round')
+        goal_type = self.db_exo._define_goal_type('FORTIME')
+        self.assertEqual(goal_type, 'round')
 
-        performance_type = self.db_exo._define_performance_type('ECHAUFFEMENT')
-        self.assertEqual(performance_type, 'round')
+        goal_type = self.db_exo._define_goal_type('ECHAUFFEMENT')
+        self.assertEqual(goal_type, 'round')
 
-        performance_type = self.db_exo._define_performance_type('FORCE')
-        self.assertEqual(performance_type, 'round')
+        goal_type = self.db_exo._define_goal_type('FORCE')
+        self.assertEqual(goal_type, 'round')
 
-        performance_type = self.db_exo._define_performance_type('CONDITIONNEMENT')
-        self.assertEqual(performance_type, 'round')
+        goal_type = self.db_exo._define_goal_type('CONDITIONNEMENT')
+        self.assertEqual(goal_type, 'round')
 
     def test_set_exercise_success(self):
         """
@@ -122,11 +122,11 @@ class TestDBExercise(TestCase):
         exercise_name = 'Angie'
         exercise_type = "RUNNING"
         description = "test exo"
-        performance_type = "Distance"
-        performance_value = "8000"
+        goal_type = "Distance"
+        goal_value = "8000"
         founder = User.objects.get(username='admin_user')
 
-        exercise = self.db_exo.set_exercise(exercise_name, exercise_type, description, performance_type, performance_value, founder)
+        exercise = self.db_exo.set_exercise(exercise_name, exercise_type, description, goal_type, goal_value, founder)
 
         exercise_exists = Exercise.objects.filter(name=exercise_name).exists()
         self.assertTrue(exercise_exists)
@@ -134,7 +134,7 @@ class TestDBExercise(TestCase):
         exercise_registered = Exercise.objects.get(name=exercise_name)
         self.assertEqual(exercise_registered.name, 'Angie')
         self.assertEqual(exercise_registered.exercise_type, 'RUNNING')
-        self.assertEqual(exercise_registered.performance_type, 'distance')
+        self.assertEqual(exercise_registered.goal_type, 'distance')
 
     def test_set_movement_to_exercise_success(self):
         """

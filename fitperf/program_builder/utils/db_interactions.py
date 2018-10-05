@@ -2,7 +2,7 @@
 # coding: utf-8
 from django.db.models import Q
 from django.contrib.auth.models import User
-from ..models import Session, ExercisesPerSession, Program, Training, Exercise, MovementsPerExercise, MovementSettingsPerMovementsPerExercise, Movement, MovementSettings, Equipment
+from ..models import Training, Exercise, MovementsPerExercise, MovementSettingsPerMovementsPerExercise, Movement, MovementSettings, Equipment
 
 class DBMovement:
     """
@@ -80,34 +80,34 @@ class DBExercise:
         - all del_* methods delete information from the database
     """
 
-    def _define_performance_type(self, exercise_type):
+    def _define_goal_type(self, exercise_type):
         """
         This method defines the adequate value of performance type accoding
         the exercise type (see possibilities in model Exercise)
         """
-        performance_type = ''
+        goal_type = ''
         if exercise_type == 'RUNNING':
-            performance_type = 'distance'
+            goal_type = 'distance'
         elif exercise_type == 'AMRAP' or exercise_type == "EMOM":
-            performance_type = 'duree'
+            goal_type = 'duree'
         else:
-            performance_type = 'round'
-        return performance_type
+            goal_type = 'round'
+        return goal_type
 
 
-    def set_exercise(self, exercise_name, exercise_type, description, performance_type, performance_value, founder):
+    def set_exercise(self, exercise_name, exercise_type, description, goal_type, goal_value, founder):
         """
         This method creates and returns an exercise.
         To create an exercise, the argument used must have been created before:
             - the founder
         """
 
-        performance_type = self._define_performance_type(exercise_type)
+        goal_type = self._define_goal_type(exercise_type)
         exercise = Exercise.objects.create(name=exercise_name, 
                                             exercise_type=exercise_type,
                                             description=description,
-                                            performance_type=performance_type,
-                                            performance_value=performance_value,
+                                            goal_type=goal_type,
+                                            goal_value=goal_value,
                                             founder=founder)
 
         if founder.is_superuser:

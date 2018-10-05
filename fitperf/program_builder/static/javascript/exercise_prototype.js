@@ -8,25 +8,25 @@ function Exercise() {
     this.exerciseType = String();
     this.description = String();
     this.founder = String();
-    this.performanceType = String();
-    this.performanceValue = Number();
+    this.goalType = String();
+    this.goalValue = Number();
     this.movements = Array();
 };
 
-Exercise.prototype.definePerformanceType = function(exerciseType) {
+Exercise.prototype.defineGoalType = function(exerciseType) {
     // To define performanceType according exerciseType only for 
     // Modal Label
     // A treatment id done on backend from exercise type value
-    performanceType = String();
+    goalType = String();
 
     if (exerciseType === 'RUNNING') {
-        performanceType = 'Distance';
+        goalType = 'Distance';
     } else if (exerciseType === 'AMRAP' || exerciseType === 'EMOM') {
-        performanceType = 'Duree';
+        goalType = 'Duree';
     } else {
-        performanceType = 'Nombre de rounds';
+        goalType = 'Nombre de rounds';
     }
-    return performanceType;
+    return goalType;
 };
 
 // ---------------------------------------------------------------

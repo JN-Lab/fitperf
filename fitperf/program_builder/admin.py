@@ -17,7 +17,7 @@ class MovementAdmin(admin.ModelAdmin):
     search_fields = ('name',)
 
 class ExerciseAdmin(admin.ModelAdmin):
-    list_display = ('name', 'founder', 'is_default', 'exercise_type', 'performance_type')
+    list_display = ('name', 'founder', 'is_default', 'exercise_type', 'goal_type')
     list_filter = ('founder', 'exercise_type', 'is_default')
     search_fields = ('name',)
 
