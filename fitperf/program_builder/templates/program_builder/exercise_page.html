@@ -9,8 +9,8 @@
         <p class="lead">{{ exercise.description }}</p>
         <hr class="my-4">
         <!-- Button trigger modal for exercise composition -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exerciseModificationModalForm">
-            Modifiez votre exercise
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exerciseStartModal">
+            Démarrer un Entrainement
         </button>
     </div>
     <div class="row">
@@ -37,17 +37,32 @@
 </main>
 
 <!-- Form Modal - Modification Creation -->
-<div class="modal fade" id="exerciseModificationModalForm" tabindex="-1" role="dialog" aria-labelledby="exerciseModificationModalLabel" aria-hidden="true">
+<div class="modal fade" id="exerciseStartModal" tabindex="-1" role="dialog" aria-labelledby="exerciseStartModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-            <h5 class="modal-title" id="exerciseModificationModalLabel">A CONSTRUIRE</h5>
+            <h5 class="modal-title" id="exerciseStartModalLabel">{{ exercise.name }}</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
             </div>
             <div class="modal-body">
-    
+                <p>Prêt à se lancer?</p>
+                <hr>
+                <form action="" method="post" id="exerciseStartModalForm">
+                    {% csrf_token %}
+                    <div class="form-group row">
+                        <label for="startDate" class="col-2 col-form-label">Date</label>
+                        <div class="col-10">
+                            <input type="date" class="form-control" id="startDate">
+                        </div>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" class="form-check-input position-static" id="checkboxNow" value="now" aria-label="nowDate">
+                        <label for="checkboxNow" class="form-check-label">Maintenant</label>
+                    </div>
+                    <button type="submit" class="btn btn-block btn-primary">Commencer</button>
+                </form>
             </div>
         </div>
         </div>

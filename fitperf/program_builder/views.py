@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
-from .forms import RegisterMovement, RegisterExerciseStep1, RegisterExerciseStep2, RegisterMovementToExercise
+from .forms import RegisterMovement, RegisterExerciseStep1
 from .utils.db_interactions import DBMovement, DBExercise
 from .utils.treatments import DataTreatment
 
@@ -112,9 +112,6 @@ def add_exercise(request):
 def exercise_page(request, exercise_pk):
     
     db = DataTreatment()
-
-    exercise_form = RegisterExerciseStep2()
-    movement_form = RegisterMovementToExercise()
     exercise = db.get_one_exercise_in_dict(exercise_pk)
     return render(request, 'exercise_page.html', locals())
 

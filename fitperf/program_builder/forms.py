@@ -20,14 +20,3 @@ class RegisterExerciseStep1(forms.ModelForm):
             'exercise_type': forms.Select(attrs={'class': 'form-control', 'required': True}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows':3})
         }
-
-class RegisterExerciseStep2(forms.ModelForm):
-    class Meta:
-        model = Exercise
-        fields = ['goal_value']
-        widgets = {
-            'goal_value' : forms.NumberInput(attrs={'class': 'form-control', 'required':True}),
-        }
-
-class RegisterMovementToExercise(forms.Form):
-    pass
