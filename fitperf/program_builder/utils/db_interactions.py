@@ -223,6 +223,12 @@ class DBTraining:
 
         return performance_type
 
+    def get_all_trainings_from_one_user(self, user):
+        pass
+    
+    def get_all_trainings_from_one_user_from_one_exercise(self, exercise, user):
+        pass
+
 class DBInteractions:
     """
     This class manages all the interactions with the database:
