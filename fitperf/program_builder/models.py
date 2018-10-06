@@ -9,13 +9,14 @@ class Training(models.Model):
     TIME = 'duree'
     ROUND = 'round'
     DISTANCE = 'distance'
+    ANYONE = "anyone"
     PERFORMANCE_TYPE = (
         (TIME, 'duree'),
         (ROUND, 'round'),
         (DISTANCE, 'distance'),
+        (ANYONE, 'anyone')
     )
 
-    name = models.CharField(max_length=200)
     founder = models.ForeignKey(User, 
                                 on_delete=models.CASCADE, 
                                 verbose_name="the training's creator")

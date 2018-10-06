@@ -6,8 +6,8 @@ fitperf/authentification/__pycache__/
 fitperf/authentification/tests/__pycache__/
 fitperf/authentification/migrations/__pycache__/
 fitperf/program_builder/__pycache__/
-fitperf/program_builder//management/__pycache__/
-fitperf/program_builder//management/commands/__pycache__/
+fitperf/program_builder/management/__pycache__/
+fitperf/program_builder/management/commands/__pycache__/
 fitperf/program_builder/tests/__pycache__/
 fitperf/program_builder/migrations/__pycache__/
 fitperf/program_builder/utils/__pycache__/

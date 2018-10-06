@@ -193,6 +193,36 @@ class DBExercise:
 
         return MovementSettingsPerMovementsPerExercise.objects.filter(exercise_movement=movement_linked)
 
+class DBTraining:
+
+    def set_training(self, exercise, founder):
+        """
+        This method set a training from an exercise
+        """
+
+        performance_type = self._set_performance_type(exercise)
+        training = Training.objects.create(exercise=exercise,
+                                            founder=founder,
+                                            performance_type=performance_type)
+
+        return training
+
+    def _set_performance_type(self, exercise):
+        """
+        This method defines the performance type for a training
+        according to the exercise type of the associated exercise
+        """
+
+        performance_type = ""
+        if exercise.exercise_type == Exercise.FORTIME or exercise.exercise_type == Exercise.RUNNING:
+            performance_type = Training.TIME
+        elif exercise.exercise_type == Exercise.AMRAP or exercise.exercise_type == Exercise.EMOM:
+            performance_type = Training.ROUND
+        else:
+            performance_type = Training.ANYONE
+
+        return performance_type
+
 class DBInteractions:
     """
     This class manages all the interactions with the database:

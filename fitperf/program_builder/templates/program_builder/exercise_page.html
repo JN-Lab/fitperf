@@ -41,7 +41,7 @@
         <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-            <h5 class="modal-title" id="exerciseStartModalLabel">{{ exercise.name }}</h5>
+            <h5 class="modal-title" id="exerciseStartModalLabel">Nouvel Entraînement : {{ exercise.name }}</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -52,14 +52,16 @@
                 <form action="" method="post" id="exerciseStartModalForm">
                     {% csrf_token %}
                     <div class="form-group row">
-                        <label for="startDate" class="col-2 col-form-label">Date</label>
+                        <label for="exerciseId" class="col-2 col-form-label">PK</label>
                         <div class="col-10">
-                            <input type="date" class="form-control" id="startDate">
+                            <input type="text" readonly class="form-control-plaintext" id="exerciseId" value="{{ exercise.id }}">
                         </div>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input type="checkbox" class="form-check-input position-static" id="checkboxNow" value="now" aria-label="nowDate">
-                        <label for="checkboxNow" class="form-check-label">Maintenant</label>
+                    <div class="form-group row">
+                        <label for="startDate" class="col-2 col-form-label">Date</label>
+                        <div class="col-10">
+                            <input type="startDate" readonly class="form-control-plaintext" id="exerciseId" value="{{ date }}">
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-block btn-primary">Commencer</button>
                 </form>

@@ -1,17 +1,18 @@
 #! /usr/bin/env python3
 # coding: utf-8
+from django.utils import timezone
 from django.test import TestCase, TransactionTestCase
 from django.contrib.auth.models import User
 from .helper_dbtestdata import TestDatabase
 from ..models import Training, Exercise, MovementsPerExercise, Movement, MovementSettings, Equipment, MovementSettingsPerMovementsPerExercise
-from ..utils.db_interactions import DBInteractions, DBMovement, DBExercise
+from ..utils.db_interactions import DBMovement, DBExercise, DBTraining
 
 from django.db.models import Q
 
 class TestDBMovement(TestCase):
     """
-    This class tests all the set_* methods
-    from DBInteractions
+    This class tests all the methods
+    from DBMovement
     """
 
     @classmethod
@@ -72,8 +73,8 @@ class TestDBMovement(TestCase):
 
 class TestDBExercise(TestCase):
     """
-    This class tests all the set_* methods
-    from DBInteractions
+    This class tests all the methods
+    from DBExercise
     """
 
     @classmethod
@@ -161,6 +162,9 @@ class TestDBExercise(TestCase):
         self.assertEqual(connie_pushup.movement_number, 3)
 
     def test_set_settings_value_to_movement_linked_to_exercise_success(self):
+        """
+        This method tests the method set_settings_value_to_movement_linked_to_exercise
+        """
 
         #We get the user
         founder = User.objects.get(username='admin_user')
@@ -185,3 +189,36 @@ class TestDBExercise(TestCase):
         self.assertEqual(rep_value.setting, rep)
         self.assertEqual(rep_value.exercise_movement.exercise, connie)
         self.assertEqual(rep_value.exercise_movement.movement, pushup)
+
+class TestDBTraining(TestCase):
+    """
+    This class tests all the methods
+    from DBTraining
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        """
+        Create a database for test with TestDatabase helper
+        """
+        TestDatabase.create()
+
+    def setUp(self):
+        self.db_training = DBTraining()
+
+    def test_set_training_success(self):
+        """
+        This method tests the set_training method
+        """
+        # We get a founder
+        founder = User.objects.get(username="ordinary_user")
+        # We get an exercise
+        chelsea = Exercise.objects.get(name="chelsea", founder=founder)
+
+        # We apply the method
+        training = self.db_training.set_training(chelsea, founder)
+
+        # We test
+        self.assertEqual(training.performance_type, Training.ROUND)
+        self.assertEqual(training.exercise.name, chelsea.name)
+        self.assertFalse(training.done)

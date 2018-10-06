@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import JsonResponse
@@ -113,6 +114,7 @@ def exercise_page(request, exercise_pk):
     
     db = DataTreatment()
     exercise = db.get_one_exercise_in_dict(exercise_pk)
+    date = datetime.now
     return render(request, 'exercise_page.html', locals())
 
 @login_required
