@@ -228,7 +228,7 @@ class DBTraining:
         This method gets all the trainings from one user in the database
         """
         
-        return Training.objects.filter(founder=user)
+        return Training.objects.filter(founder=user).order_by('date')
     
     def get_all_trainings_from_one_user_from_one_exercise(self, exercise, user):
         """
@@ -236,7 +236,7 @@ class DBTraining:
         to a specific exercise
         """
         
-        return Training.objects.filter(exercise=exercise, founder=user)
+        return Training.objects.filter(exercise=exercise, founder=user).order_by('date')
 
     def get_one_training_from_pk(self, training_pk):
 

@@ -443,3 +443,97 @@ class DataTreatment:
             return training_dict
         else:
             return None
+
+    def get_all_trainings_per_user_in_dict(self, user):    
+        """
+        This method returns all the trainings realized from a user in a list
+        of dict:
+            [
+                {
+                    "id": "training primary_key",
+                    "date": "training date",
+                    "done": "training boolean",
+                    "performanceType": "training perf_type",
+                    "performanceValue": "training perf_value",
+                    "exercise": {
+                        "id": "exercise primary_key",
+                        "name": "exercise.name",
+                        "exerciseType": "exercise_type",
+                        "description": "description",
+                        "goalType": "goal_type",
+                        "goalValue": "goal_value",
+                        "is_default": False,
+                        "movements" : [
+                            {
+                                "name" : "movement_name",
+                                "order": "movement_order",
+                                "settings": [
+                                    {
+                                        "name": "setting_name",
+                                        "value": "setting_value,
+                                    },
+                                    ...
+                                ]
+                            },
+                            ...
+                        ]
+                    }
+                },
+                ...
+            ]
+        """
+        training_list= []
+        trainings = self.db_training.get_all_trainings_from_one_user(user)
+        for training in trainings:
+            training_dict = self.get_one_training_in_dict(training.pk)
+            if training_dict:
+                training_list.append(training_dict)
+
+        return training_list
+
+    def get_all_trainings_per_user_linked_to_an_exercise(self, exercise, user):
+        """
+        This method returns all the trainings realized from a user in a list
+        of dict:
+            [
+                {
+                    "id": "training primary_key",
+                    "date": "training date",
+                    "done": "training boolean",
+                    "performanceType": "training perf_type",
+                    "performanceValue": "training perf_value",
+                    "exercise": {
+                        "id": "exercise primary_key",
+                        "name": "exercise.name",
+                        "exerciseType": "exercise_type",
+                        "description": "description",
+                        "goalType": "goal_type",
+                        "goalValue": "goal_value",
+                        "is_default": False,
+                        "movements" : [
+                            {
+                                "name" : "movement_name",
+                                "order": "movement_order",
+                                "settings": [
+                                    {
+                                        "name": "setting_name",
+                                        "value": "setting_value,
+                                    },
+                                    ...
+                                ]
+                            },
+                            ...
+                        ]
+                    }
+                },
+                ...
+            ]
+        """
+        training_list= []
+        trainings = self.db_training.get_all_trainings_from_one_user_from_one_exercise(exercise, user)
+        for training in trainings:
+            training_dict = self.get_one_training_in_dict(training.pk)
+            if training_dict:
+                training_list.append(training_dict)
+
+        return training_list

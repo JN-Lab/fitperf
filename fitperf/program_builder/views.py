@@ -25,6 +25,18 @@ def homepage(request):
     """
     return render(request, 'homepage.html', locals())
 
+@login_required
+def ajax_all_movements(request):
+    """
+    This view returns all the movements in JSON
+    For JSON structure -> see JSONTreatments class > def get_all_movements
+    in utils.treatments.py
+    """
+    treatment = DataTreatment()
+    movements = treatment.get_all_movements_in_dict()
+
+    return JsonResponse(movements, safe=False)
+
 @csrf_protect
 @login_required
 def exercises_list(request):
@@ -52,6 +64,7 @@ def add_exercise(request):
         referer = request.META.get("HTTP_REFERER")
         return redirect(referer, locals())
 
+@csrf_protect
 @login_required
 def exercise_page(request, exercise_pk):
     

@@ -19,19 +19,37 @@
                 {% include 'messages.html' %}
             {% endif %}
         </div>
-        {% for exercise in exercises %}
-        <div class="col-md-6 col-lg-4">
-            <div class="card mb-4">
-                <div class="card-body shadow">
-                    <h5 class="card-title">{{ exercise.name }}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">{{ exercise.exerciseType }}</h6>     
-                    <p class="card-text">{{ exercise.description }}</p>           
-                    <a href="{% url 'program_builder:exercise_page' exercise_pk=exercise.id %}" class="card-link">Détails</a>
-                    <a href="{% url 'program_builder:delete_exercise' exercise_pk=exercise.id %}" class="card-link">Supprimer</a>
-                </div>
+        <div class="col-12">
+            <div class="row">
+                {% for exercise in exercises %}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card mb-4 shadow">
+                            <div class="card-header">
+                                <div class="row justify-content-between">
+                                    <div class="col">
+                                        <h5 class="card-title">{{ exercise.name|upper }}</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">{{ exercise.exerciseType }}</h6>
+                                    </div>
+                                    <div class="col">
+                                        <h5 class="card-title text-right text-primary">PB</h5>
+                                        <h6 class="card-subtitle mb-2 text-right text-primary">0</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">{{ exercise.description|truncatechars:100 }}</p>
+                            </div>
+                            <div class="card-body bg-light">
+                                <a href="{% url 'program_builder:exercise_page' exercise_pk=exercise.id %}" class="card-link">Détails</a>
+                                {% if exercise.is_default == False %}
+                                    <a href="{% url 'program_builder:delete_exercise' exercise_pk=exercise.id %}" class="card-link">Supprimer</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
         </div>
-        {% endfor %}
     </div>
 </main>
 
