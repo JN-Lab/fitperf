@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
 from .forms import RegisterMovement, RegisterExerciseStep1
-from .utils.db_interactions import DBMovement, DBExercise
+from .utils.db_interactions import DBMovement, DBExercise, DBTraining
 from .utils.treatments import DataTreatment
 
 def index(request):
@@ -112,10 +112,23 @@ def add_exercise(request):
 @login_required
 def exercise_page(request, exercise_pk):
     
-    db = DataTreatment()
-    exercise = db.get_one_exercise_in_dict(exercise_pk)
-    date = datetime.now
-    return render(request, 'exercise_page.html', locals())
+    treatment = DataTreatment()
+    exercise_dict = treatment.get_one_exercise_in_dict(exercise_pk)
+    if request.method == "POST":
+        db_training = DBTraining()
+        db_exercise = DBExercise()
+        exercise = db_exercise.get_one_exercise_by_pk(exercise_dict["id"])
+        training = db_training.set_training(exercise, request.user)
+        if training:
+            messages.success(request, """Votre entraînement a été créé. Donnez le maximum de vous même!""")
+            return redirect(reverse('program_builder:training_page', args=[str(training.pk)]))
+        else:
+            messages.error(request, """Un problème a été rencontré lors de la création de votre entraînement. 
+                                    Veuillez réessayer s'il vous plait.""")
+            return render(request, "exercise_page.html", locals())
+    else:
+        date = datetime.now
+        return render(request, 'exercise_page.html', locals())
 
 @login_required
 def delete_exercise(request, exercise_pk):
@@ -128,3 +141,10 @@ def delete_exercise(request, exercise_pk):
 
     referer = request.META.get("HTTP_REFERER")
     return redirect(referer, locals())
+
+@login_required
+def training_page(request, training_pk):
+
+    db = DataTreatment()
+    training = db.get_one_training_in_dict(training_pk)
+    return render(request, 'training_page.html', locals())

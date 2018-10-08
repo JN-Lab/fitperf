@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 # coding: utf-8
 import math
-from .db_interactions import DBMovement, DBExercise
+from .db_interactions import DBMovement, DBExercise, DBTraining
 
 class DataTreatment:
     """
@@ -14,6 +14,7 @@ class DataTreatment:
     def __init__(self):
         self.db_mvt = DBMovement()
         self.db_exercise = DBExercise()
+        self.db_training = DBTraining()
 
     def get_all_movements_in_dict(self):
         """
@@ -359,5 +360,86 @@ class DataTreatment:
 
         if completed:
             return exercise_dict
+        else:
+            return None
+
+    def get_one_training_in_dict(self, training_pk):
+        """
+        This method returns all the information linked to a training in a dictionnary.
+        The method uses the primary key to get the targeted training:
+            {
+                "id": "training primary_key",
+                "date": "training date",
+                "done": "training boolean",
+                "performanceType": "training perf_type",
+                "performanceValue": "training perf_value",
+                "exercise": {
+                    "id": "exercise primary_key",
+                    "name": "exercise.name",
+                    "exerciseType": "exercise_type",
+                    "description": "description",
+                    "goalType": "goal_type",
+                    "goalValue": "goal_value",
+                    "is_default": False,
+                    "movements" : [
+                        {
+                            "name" : "movement_name",
+                            "order": "movement_order",
+                            "settings": [
+                                {
+                                    "name": "setting_name",
+                                    "value": "setting_value,
+                                },
+                                ...
+                            ]
+                        },
+                        ...
+                    ]
+                }
+            }
+        """
+        completed = True
+        training = self.db_training.get_one_training_from_pk(training_pk)
+        training_dict = {
+            "id": "",
+            "date": "",
+            "done": "",
+            "performanceType": "",
+            "performanceValue": "",
+            "exercise": {},
+        }
+
+        try:
+            training_dict["id"] = training.pk
+        except:
+            completed = False
+        
+        try:
+            training_dict["date"] = training.date
+        except:
+            completed = False
+
+        try:
+            training_dict["done"] = training.done
+        except:
+            completed = False
+        
+        try:
+            training_dict["performanceType"] = training.performance_type
+        except:
+            completed = False
+        
+        try:
+            training_dict["performanceValue"] = training.performance_value
+        except:
+            completed = False
+
+        try:
+            training_dict["exercise"] = self.get_one_exercise_in_dict(training.exercise.pk)
+        except:
+            completed = False
+
+        if completed:
+            return training_dict
         else:
             return None

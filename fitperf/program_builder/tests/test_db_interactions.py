@@ -238,6 +238,10 @@ class TestDBTraining(TestCase):
         self.assertEqual(trainings.count(), 3)
 
     def test_get_all_trainings_from_one_user_from_one_exercise(self):
+        """
+        This test checks if the method get_all_trainings_from_one_user_from_one_exercise
+        works well
+        """
         # We get the founder
         founder = User.objects.get(username="new_user")
 

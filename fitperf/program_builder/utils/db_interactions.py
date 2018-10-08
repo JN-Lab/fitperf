@@ -238,6 +238,10 @@ class DBTraining:
         
         return Training.objects.filter(exercise=exercise, founder=user)
 
+    def get_one_training_from_pk(self, training_pk):
+
+        return Training.objects.get(pk=training_pk)
+
 class DBInteractions:
     """
     This class manages all the interactions with the database:

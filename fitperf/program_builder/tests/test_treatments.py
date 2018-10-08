@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 # coding: utf-8
+from datetime import datetime
 from django.test import TestCase
 from django.contrib.auth.models import User
 from .helper_dbtestdata import TestDatabase
@@ -732,3 +733,79 @@ class TestDataTreatment(TestCase):
         # We test
         o_chelsea_dict = self.treatment.get_one_exercise_in_dict(o_chelsea.pk)
         self.assertEqual(o_chelsea_dict, result)
+
+    def test_get_one_training_in_dict(self):
+        # We get the user
+        new_user = User.objects.get(username="new_user")
+        
+        # We get the movements
+        pullup = Movement.objects.get(name="pullup")
+        wallball = Movement.objects.get(name="wallball")
+
+        # We get the settings 
+        rep = MovementSettings.objects.get(name=MovementSettings.REPETITIONS)
+        weight = MovementSettings.objects.get(name=MovementSettings.WEIGHT)
+
+        # We get the training
+        connie = Exercise.objects.get(name="connie", founder=new_user)
+        connie_pullup = MovementsPerExercise.objects.get(exercise=connie, movement=pullup)
+        connie_pullup_rep = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=connie_pullup, setting=rep)
+        connie_wallball = MovementsPerExercise.objects.get(exercise=connie, movement=wallball)
+        connie_wallball_rep = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=connie_wallball, setting=rep)
+        connie_wallball_weight = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=connie_wallball, setting=weight)
+
+        # We get the training
+        date = datetime(2018, 4, 5)
+        connie_training = Training.objects.get(founder=new_user, exercise=connie, date=date)
+
+        # We apply the method
+        connie_dict = self.treatment.get_one_training_in_dict(connie_training.pk)
+
+        # We define the expected result
+        result = {
+            "id": connie_training.pk,
+            "date": connie_training.date,
+            "done": connie_training.done,
+            "performanceType": connie_training.performance_type,
+            "performanceValue": connie_training.performance_value,
+            "exercise": {
+                "id": connie_training.exercise.pk,
+                "name": connie_training.exercise.name,
+                "exerciseType": connie_training.exercise.exercise_type,
+                "description": connie_training.exercise.description,
+                "goalType": connie_training.exercise.goal_type,
+                "goalValue": connie_training.exercise.goal_value,
+                "is_default": connie_training.exercise.is_default,
+                "movements" : [
+                    {
+                        "id": connie_pullup.movement.pk,
+                        "name": connie_pullup.movement.name,
+                        "order": connie_pullup.movement_number,
+                        "settings": [
+                            {
+                                "name": connie_pullup_rep.setting.name,
+                                "value": connie_pullup_rep.setting_value,
+                            },
+                        ]
+                    },
+                    {
+                        "id": connie_wallball.movement.pk,
+                        "name": connie_wallball.movement.name,
+                        "order": connie_wallball.movement_number,
+                        "settings": [
+                            {
+                                "name": connie_wallball_rep.setting.name,
+                                "value": connie_wallball_rep.setting_value,
+                            },
+                            {
+                                "name": connie_wallball_weight.setting.name,
+                                "value": connie_wallball_weight.setting_value,
+                            },
+                        ]
+                    },
+                ],
+            },
+        }
+
+        # We test
+        self.assertEqual(connie_dict, result)
