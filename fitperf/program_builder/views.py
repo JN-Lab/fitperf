@@ -46,7 +46,10 @@ def exercises_list(request):
         - create an exercise and redirect on the exercise page to finalize
     """
     db = DataTreatment()
-    exercises = db.get_all_exercises_in_dict_for_user(request.user)
+    exercises = db.get_all_exercises_dict_linked_to_one_user(request.user)
+    exercises_number = len(exercises)
+    custom_exercises_number = len([exercise for exercise in exercises if not exercise["is_default"]])
+    pb_number = len([exercise for exercise in exercises if exercise["pb"]])
     new_exercise_form = RegisterExerciseStep1()
     return render(request, 'exercises_list.html', locals())
 
@@ -69,7 +72,7 @@ def add_exercise(request):
 def exercise_page(request, exercise_pk):
     
     treatment = DataTreatment()
-    exercise_dict = treatment.get_one_exercise_in_dict(exercise_pk)
+    exercise_dict = treatment.get_one_exercise_in_dict_linked_to_one_user(exercise_pk, request.user)
     if request.method == "POST":
         db_training = DBTraining()
         db_exercise = DBExercise()
@@ -104,3 +107,11 @@ def training_page(request, training_pk):
     db = DataTreatment()
     training = db.get_one_training_in_dict(training_pk)
     return render(request, 'training_page.html', locals())
+
+@login_required
+def trainings_list(request):
+
+    db = DataTreatment()
+    trainings = db.get_all_trainings_per_user_in_dict(request.user)
+
+    return render(request, "trainings_list.html", locals())

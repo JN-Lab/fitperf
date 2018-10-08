@@ -1,0 +1,46 @@
+{% extends "program_builder/base.html" %}
+{% block meta_description %}Liste d'exercies{% endblock %}
+{% block title %}Fitperf - Exercices{% endblock %}
+{% block content %}
+{% load static %}
+<main class="container">
+        <div class="jumbotron mt-4">
+            <h1 class="display-4">Entraînements</h1>
+            <p class="lead">Retrouvez l'ensemble de vos entrainements</p>
+            <hr class="my-4">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exerciseModalStep1">
+                Nouvel Exercice
+            </button>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                {% if messages %}
+                    {% include 'messages.html' %}
+                {% endif %}
+            </div>
+            <div class="col-12">
+                <div class="row">
+                    {% for training in trainings %}
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card mb-4 shadow">
+                                <div class="card-header">
+                                    <div class="row justify-content-between">
+                                        <div class="col">
+                                            <h5 class="card-title">{{ training.exercise.name|upper }} - {{ training.date }}</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted">{{ training.exercise.exerciseType }}</h6>
+                                        </div>
+                                        <div class="col">
+                                            <h5 class="card-title text-right text-primary">PB</h5>
+                                            <h6 class="card-subtitle mb-2 text-right text-primary">0</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
