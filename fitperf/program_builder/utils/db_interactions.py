@@ -224,10 +224,19 @@ class DBTraining:
         return performance_type
 
     def get_all_trainings_from_one_user(self, user):
-        pass
+        """
+        This method gets all the trainings from one user in the database
+        """
+        
+        return Training.objects.filter(founder=user)
     
     def get_all_trainings_from_one_user_from_one_exercise(self, exercise, user):
-        pass
+        """
+        This method gets all the trainings from one user in the database linked
+        to a specific exercise
+        """
+        
+        return Training.objects.filter(exercise=exercise, founder=user)
 
 class DBInteractions:
     """

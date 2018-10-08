@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 # coding: utf-8
+from datetime import datetime
 from django.contrib.auth.models import User
 from ..models import Training, Exercise, MovementsPerExercise, Movement, MovementSettings, Equipment, MovementSettingsPerMovementsPerExercise
 
@@ -117,3 +118,37 @@ class TestDatabase:
         connie_wallball_weight = MovementSettingsPerMovementsPerExercise.objects.create(exercise_movement=connie_wallball,
                                                                                    setting=weight,
                                                                                    setting_value=20) 
+
+        # We create some trainings
+
+        date = datetime(2018, 1, 25)
+        o_chelsea_training_o_user = Training.objects.create(exercise=o_chelsea,
+                                                    founder=ordinary_user,
+                                                    date=date,
+                                                    performance_type=Training.ROUND,
+                                                    performance_value=25,
+                                                    done=True)
+
+        date = datetime(2018, 3, 8)
+        a_chelsea_training_new_user = Training.objects.create(exercise=a_chelsea,
+                                            founder=new_user,
+                                            date=date,
+                                            performance_type=Training.ROUND,
+                                            performance_value=15,
+                                            done=True)
+
+        date = datetime(2018, 4, 5)
+        connie_training_new_user_1 = Training.objects.create(exercise=connie,
+                                            founder=new_user,
+                                            date=date,
+                                            performance_type=Training.TIME,
+                                            performance_value=10,
+                                            done=True)
+
+        date = datetime(2018, 5, 2)
+        connie_training_new_user_2 = Training.objects.create(exercise=connie,
+                                            founder=new_user,
+                                            date=date,
+                                            performance_type=Training.TIME,
+                                            performance_value=8,
+                                            done=True)

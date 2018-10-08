@@ -222,3 +222,30 @@ class TestDBTraining(TestCase):
         self.assertEqual(training.performance_type, Training.ROUND)
         self.assertEqual(training.exercise.name, chelsea.name)
         self.assertFalse(training.done)
+
+    def test_get_all_trainings_from_one_user(self):
+        """
+        This test checks if the method get all trainings from one user works
+        well
+        """
+        # We get the founder
+        founder = User.objects.get(username="new_user")
+
+        # We apply the method
+        trainings = self.db_training.get_all_trainings_from_one_user(founder)
+
+        # We test
+        self.assertEqual(trainings.count(), 3)
+
+    def test_get_all_trainings_from_one_user_from_one_exercise(self):
+        # We get the founder
+        founder = User.objects.get(username="new_user")
+
+        # We get the exercise
+        connie = Exercise.objects.get(name="connie")
+
+        # We apply the method
+        trainings = self.db_training.get_all_trainings_from_one_user_from_one_exercise(connie, founder)
+
+        # We test
+        self.assertEqual(trainings.count(), 2)
