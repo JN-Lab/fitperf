@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 # coding: utf-8
+import sys
 import math
 from .db_interactions import DBMovement, DBExercise, DBTraining
 
@@ -229,6 +230,7 @@ class DataTreatment:
         try:
             exercise_dict["pb"] = self._get_best_perf_for_one_exercise(exercise, user)
         except:
+            print(sys.exc_info())
             completed = False
 
         try:
@@ -246,14 +248,12 @@ class DataTreatment:
         This private method return a personal record if the user register a training with this exercise
         """
         trainings = self.db_training.get_all_trainings_from_one_user_from_one_exercise(exercise, user)
-        if trainings:
-            pb = 0
+        pb = 0
+        if trainings:  
             for training in trainings:
-                if training.performance_value > pb:
+                if training.performance_value and training.performance_value > pb:
                     pb = training.performance_value
-            return pb
-        else:
-            return None
+        return pb
 
     def _get_movements_dict_linked_to_exercise(self,exercise):
         """
@@ -314,7 +314,7 @@ class DataTreatment:
         else:
             return None
 
-    def get_one_training_in_dict(self, training_pk):
+    def get_one_training_in_dict(self, training_pk, user):
         """
         This method returns all the information linked to a training in a dictionnary.
         The method uses the primary key to get the targeted training:
@@ -332,6 +332,7 @@ class DataTreatment:
                     "goalType": "goal_type",
                     "goalValue": "goal_value",
                     "is_default": False,
+                    "pb": "personal best record",
                     "movements" : [
                         {
                             "name" : "movement_name",
@@ -386,7 +387,7 @@ class DataTreatment:
             completed = False
 
         try:
-            training_dict["exercise"] = self.get_one_exercise_in_dict(training.exercise.pk)
+            training_dict["exercise"] = self.get_one_exercise_in_dict_linked_to_one_user(training.exercise.pk, user)
         except:
             completed = False
 
@@ -414,6 +415,7 @@ class DataTreatment:
                         "goalType": "goal_type",
                         "goalValue": "goal_value",
                         "is_default": False,
+                        "pb": "pb",
                         "movements" : [
                             {
                                 "name" : "movement_name",
@@ -436,7 +438,7 @@ class DataTreatment:
         training_list= []
         trainings = self.db_training.get_all_trainings_from_one_user(user)
         for training in trainings:
-            training_dict = self.get_one_training_in_dict(training.pk)
+            training_dict = self.get_one_training_in_dict(training.pk, user)
             if training_dict:
                 training_list.append(training_dict)
 
@@ -461,6 +463,7 @@ class DataTreatment:
                         "goalType": "goal_type",
                         "goalValue": "goal_value",
                         "is_default": False,
+                        "pb": "personal best record",
                         "movements" : [
                             {
                                 "name" : "movement_name",
@@ -483,7 +486,7 @@ class DataTreatment:
         training_list= []
         trainings = self.db_training.get_all_trainings_from_one_user_from_one_exercise(exercise, user)
         for training in trainings:
-            training_dict = self.get_one_training_in_dict(training.pk)
+            training_dict = self.get_one_training_in_dict(training.pk, user)
             if training_dict:
                 training_list.append(training_dict)
 

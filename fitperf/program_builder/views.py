@@ -105,7 +105,7 @@ def delete_exercise(request, exercise_pk):
 def training_page(request, training_pk):
 
     db = DataTreatment()
-    training = db.get_one_training_in_dict(training_pk)
+    training = db.get_one_training_in_dict(training_pk, request.user)
     return render(request, 'training_page.html', locals())
 
 @login_required
@@ -113,5 +113,4 @@ def trainings_list(request):
 
     db = DataTreatment()
     trainings = db.get_all_trainings_per_user_in_dict(request.user)
-
     return render(request, "trainings_list.html", locals())

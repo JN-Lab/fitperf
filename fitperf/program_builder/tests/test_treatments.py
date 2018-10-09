@@ -467,7 +467,7 @@ class TestDataTreatment(TestCase):
         connie_training = Training.objects.get(founder=new_user, exercise=connie, date=date)
 
         # We apply the method
-        connie_dict = self.treatment.get_one_training_in_dict(connie_training.pk)
+        connie_dict = self.treatment.get_one_training_in_dict(connie_training.pk, new_user)
 
         # We define the expected result
         result = {
@@ -484,6 +484,7 @@ class TestDataTreatment(TestCase):
                 "goalType": connie_training.exercise.goal_type,
                 "goalValue": connie_training.exercise.goal_value,
                 "is_default": connie_training.exercise.is_default,
+                "pb": 10,
                 "movements" : [
                     {
                         "id": connie_pullup.movement.pk,
@@ -601,6 +602,7 @@ class TestDataTreatment(TestCase):
                     "goalType": a_chelsea_training.exercise.goal_type,
                     "goalValue": a_chelsea_training.exercise.goal_value,
                     "is_default": a_chelsea_training.exercise.is_default,
+                    "pb": 15,
                     "movements": [
                         {
                             "id": a_chelsea_pullup.movement.pk,
@@ -656,6 +658,7 @@ class TestDataTreatment(TestCase):
                     "goalType": connie_first_training.exercise.goal_type,
                     "goalValue": connie_first_training.exercise.goal_value,
                     "is_default": connie_first_training.exercise.is_default,
+                    "pb": 10,
                     "movements" : [
                         {
                             "id": connie_pullup.movement.pk,
@@ -700,6 +703,7 @@ class TestDataTreatment(TestCase):
                     "goalType": connie_second_training.exercise.goal_type,
                     "goalValue": connie_second_training.exercise.goal_value,
                     "is_default": connie_second_training.exercise.is_default,
+                    "pb": 10,
                     "movements" : [
                         {
                             "id": connie_pullup.movement.pk,
@@ -787,6 +791,7 @@ class TestDataTreatment(TestCase):
                     "goalType": connie_first_training.exercise.goal_type,
                     "goalValue": connie_first_training.exercise.goal_value,
                     "is_default": connie_first_training.exercise.is_default,
+                    "pb": 10,
                     "movements" : [
                         {
                             "id": connie_pullup.movement.pk,
@@ -831,6 +836,7 @@ class TestDataTreatment(TestCase):
                     "goalType": connie_second_training.exercise.goal_type,
                     "goalValue": connie_second_training.exercise.goal_value,
                     "is_default": connie_second_training.exercise.is_default,
+                    "pb": 10,
                     "movements" : [
                         {
                             "id": connie_pullup.movement.pk,

@@ -33,7 +33,7 @@ class Training(models.Model):
     performance_value = models.IntegerField(null=True)
 
     def __str__(self):
-        return self.name
+        return "{} - {}".format(self.exercise.name, self.date)
 
 class Exercise(models.Model):
     """

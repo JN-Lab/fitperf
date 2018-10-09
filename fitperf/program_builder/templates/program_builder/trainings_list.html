@@ -19,28 +19,45 @@
                     {% include 'messages.html' %}
                 {% endif %}
             </div>
-            <div class="col-12">
-                <div class="row">
-                    {% for training in trainings %}
-                        <div class="col-md-6 col-lg-4">
-                            <div class="card mb-4 shadow">
-                                <div class="card-header">
-                                    <div class="row justify-content-between">
-                                        <div class="col">
-                                            <h5 class="card-title">{{ training.exercise.name|upper }} - {{ training.date }}</h5>
-                                            <h6 class="card-subtitle mb-2 text-muted">{{ training.exercise.exerciseType }}</h6>
-                                        </div>
-                                        <div class="col">
-                                            <h5 class="card-title text-right text-primary">PB</h5>
-                                            <h6 class="card-subtitle mb-2 text-right text-primary">0</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+        </div>
+        <div class="row">
+                <div class="col-12">
+                    <div class="card mb-4 shadow">
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Exercice</th>
+                                        <th scope="col">Performance</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for training in trainings %}
+                                        <tr>
+                                            <td>{{ training.date }}</td>
+                                            <td>{{ training.exercise.name|upper }}</td>
+                                            {% if training.performanceValue %}
+                                                <td>{{ training.performanceValue }}</td>
+                                            {% else %}
+                                                <td>
+                                                    <form action="">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" placeholder="Votre score" aria-label="Votre score" aria-describedby="enregistrement du score">
+                                                            <div class="input-group-append">
+                                                                <button class="btn btn-outline-secondary" type="button">Envoyer</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </td>
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
-                    {% endfor %}
+                    </div>
                 </div>
             </div>
-        </div>
     </main>
 {% endblock %}
