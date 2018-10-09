@@ -106,11 +106,23 @@ def training_page(request, training_pk):
 
     db = DataTreatment()
     training = db.get_one_training_in_dict(training_pk, request.user)
+    
     return render(request, 'training_page.html', locals())
 
 @login_required
 def trainings_list(request):
 
-    db = DataTreatment()
-    trainings = db.get_all_trainings_per_user_in_dict(request.user)
-    return render(request, "trainings_list.html", locals())
+    if request.method == "POST":
+        db_training = DBTraining()
+        training_pk = request.POST.get("training_pk")
+        performance_value = request.POST.get("performance_value")
+        training = db_training.get_one_training_from_pk(training_pk)
+        training.performance_value = performance_value
+        training.save()
+        db = DataTreatment()
+        trainings = db.get_all_trainings_per_user_in_dict(request.user)
+        return render(request, "trainings_list.html", locals())
+    else:
+        db = DataTreatment()
+        trainings = db.get_all_trainings_per_user_in_dict(request.user)
+        return render(request, "trainings_list.html", locals())

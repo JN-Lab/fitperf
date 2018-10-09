@@ -24,7 +24,7 @@
                 <div class="col-12">
                     <div class="card mb-4 shadow">
                         <div class="card-body">
-                            <table class="table">
+                            <table class="table" id="trainings-table">
                                 <thead>
                                     <tr>
                                         <th scope="col">Date</th>
@@ -35,17 +35,19 @@
                                 <tbody>
                                     {% for training in trainings %}
                                         <tr>
-                                            <td>{{ training.date }}</td>
-                                            <td>{{ training.exercise.name|upper }}</td>
+                                            <td class="align-middle">{{ training.date }}</td>
+                                            <td class="align-middle">{{ training.exercise.name|upper }}</td>
                                             {% if training.performanceValue %}
-                                                <td>{{ training.performanceValue }}</td>
+                                                <td class="align-middle">{{ training.performanceValue }}</td>
                                             {% else %}
                                                 <td>
-                                                    <form action="">
+                                                    <form action="" method="post">
+                                                        {% csrf_token %}
+                                                        <input type="text" name="training_pk" value="{{ training.id }}" hidden>
                                                         <div class="input-group">
-                                                            <input type="text" class="form-control" placeholder="Votre score" aria-label="Votre score" aria-describedby="enregistrement du score">
+                                                            <input type="text" name="performance_value" class="form-control" placeholder="Votre score" aria-label="Votre score" aria-describedby="enregistrement du score">
                                                             <div class="input-group-append">
-                                                                <button class="btn btn-outline-secondary" type="button">Envoyer</button>
+                                                                <button class="btn btn-outline-secondary" type="submit">Envoyer</button>
                                                             </div>
                                                         </div>
                                                     </form>
