@@ -80,13 +80,14 @@ def exercise_page(request, exercise_pk):
         training = db_training.set_training(exercise, request.user)
         if training:
             messages.success(request, """Votre entraînement a été créé. Donnez le maximum de vous même!""")
-            return redirect(reverse('program_builder:training_page', args=[str(training.pk)]))
+            return redirect(reverse('program_builder:trainings_list'))
         else:
             messages.error(request, """Un problème a été rencontré lors de la création de votre entraînement. 
                                     Veuillez réessayer s'il vous plait.""")
             return render(request, "exercise_page.html", locals())
     else:
         date = datetime.now
+        print(exercise_dict)
         return render(request, 'exercise_page.html', locals())
 
 @login_required
@@ -100,14 +101,6 @@ def delete_exercise(request, exercise_pk):
 
     referer = request.META.get("HTTP_REFERER")
     return redirect(referer, locals())
-
-@login_required
-def training_page(request, training_pk):
-
-    db = DataTreatment()
-    training = db.get_one_training_in_dict(training_pk, request.user)
-    
-    return render(request, 'training_page.html', locals())
 
 @login_required
 def trainings_list(request):
@@ -124,4 +117,11 @@ def trainings_list(request):
     db = DataTreatment()
     trainings = db.get_all_trainings_per_user_in_dict(request.user)
     trainings_number = len(trainings)
+    trainings_done_number = len([training for training in trainings if training["done"]])
+    pb_number = len([training for training in trainings if training["performanceValue"] and training["performanceValue"] == training["exercise"]["pb"]])
     return render(request, "trainings_list.html", locals())
+
+@login_required
+def profile(request):
+
+    return render(request, "profile.html", locals())

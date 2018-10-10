@@ -19,20 +19,29 @@
                 {% include 'messages.html' %}
             {% endif %}
         </div>
-
-        {% for movement in exercise_dict.movements %}
-            <div class="col-12 mb-4">
-                <div class="card">
-                    <h5 class="card-header">{{movement.order}}. {{movement.name}}</h5>
-                    <div class="card-body">
-                        {% for setting in movement.settings %}
-                            <h5 class="card-title">{{ setting.name }}: {{ setting.value }}</h5>
-                        {% endfor %}
-                    </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">{{ exercise_dict.goalType|upper }} : {{ exercise_dict.goalValue }}</h5>
+                </div>
+                <div class="card-body">
+                    {% for movement in exercise_dict.movements %}
+                        <div class="col-12 mb-4">
+                            <div class="card">
+                                <h5 class="card-header">{{movement.order}}. {{movement.name}}</h5>
+                                <div class="card-body">
+                                    {% for setting in movement.settings %}
+                                        <h5 class="card-title">{{ setting.name }}: {{ setting.value }}</h5>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}            
                 </div>
             </div>
-        {% endfor %}
-            
+        </div>
     </div>
 </main>
 

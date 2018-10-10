@@ -4,15 +4,7 @@
 {% block content %}
 {% load static %}
 <main class="container">
-    <div class="jumbotron mt-4">
-        <h1 class="display-4">Entraînements</h1>
-        <p class="lead">Retrouvez l'ensemble de vos entrainements</p>
-        <hr class="my-4">
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exerciseModalStep1">
-            Nouvel Exercice
-        </button>
-    </div>
+    <h1 class="display-4">Entraînements</h1>
     <div class="row">
         <div class="col-12">
             {% if messages %}
@@ -22,12 +14,32 @@
     </div>
     <div class="row">
         <div class="col-md-6 col-lg-4">
-            <div class="card mb-4 shadow">
+            <div class="card text-center mb-4 shadow">
                 <div class="card-header">
                     <h5 class="card-title">TOTAL</h5>
                 </div>
                 <div class="card-body">
-                    <h6 class="card-subtitle">{{ trainings_number }}</h6>
+                    <h6 class="card-subtitle display-3">{{ trainings_number }}</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="card text-center mb-4 shadow">
+                <div class="card-header">
+                    <h5 class="card-title">TOTAL REALISE</h5>
+                </div>
+                <div class="card-body">
+                    <h6 class="card-subtitle display-3">{{ trainings_done_number }}</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="card text-center mb-4 shadow">
+                <div class="card-header">
+                    <h5 class="card-title">TOTAL <i class="fas fa-medal fa-lg"></i></h5>
+                </div>
+                <div class="card-body">
+                    <h6 class="card-subtitle display-3">{{ pb_number }}</h6>
                 </div>
             </div>
         </div>
@@ -49,7 +61,7 @@
                             {% for training in trainings %}
                                 <tr>
                                     {% if training.performanceValue and training.performanceValue == training.exercise.pb %}
-                                        <td class=""align-middle>PB</td>
+                                        <td class=""align-middle><i class="fas fa-medal"></i></td>
                                     {% else %}
                                     <td class=""align-middle></td>
                                     {% endif %}
