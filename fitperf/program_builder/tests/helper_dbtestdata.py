@@ -152,3 +152,9 @@ class TestDatabase:
                                             performance_type=Training.TIME,
                                             performance_value=8,
                                             done=True)
+
+        date = datetime(2018, 8, 8)
+        a_chelsea_training_ordinary_user = Training.objects.create(exercise=a_chelsea,
+                                            founder=ordinary_user,
+                                            date=date,
+                                            performance_type=Training.ROUND)

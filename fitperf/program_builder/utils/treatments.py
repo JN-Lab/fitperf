@@ -108,7 +108,7 @@ class DataTreatment:
 
     def get_all_exercises_dict_linked_to_one_user(self, user):
         """
-        This method returns all the information of the exercises associated with a user
+        This method returns all the information of the exercises associated with a user.
         in a list of dict:
             [
                 {
@@ -194,49 +194,21 @@ class DataTreatment:
         # We push all informations from exercise except movements
         try:
             exercise_dict["id"] = exercise.pk
-        except:
-            completed = False
-        
-        try:
             exercise_dict["name"] = exercise.name
-        except:
+            exercise_dict["exerciseType"] = exercise.exercise_type
+            exercise_dict["goalType"] = exercise.goal_type
+            exercise_dict["goalValue"] = exercise.goal_value
+            exercise_dict["is_default"] = exercise.is_default
+            exercise_dict["pb"] = self._get_best_perf_for_one_exercise(exercise, user)
+            exercise_dict["movements"] = self._get_movements_dict_linked_to_exercise(exercise)
+        except Exception as e:
             completed = False
+            print("type error: " + str(e))
 
         try:
             exercise_dict["description"] = exercise.description
         except:
             exercise_dict["description"] = ""
-
-        try:
-            exercise_dict["exerciseType"] = exercise.exercise_type
-        except:
-            completed = False
-
-        try:
-            exercise_dict["goalType"] = exercise.goal_type
-        except:
-            completed = False
-
-        try:
-            exercise_dict["goalValue"] = exercise.goal_value
-        except:
-            completed = False
-
-        try:
-            exercise_dict["is_default"] = exercise.is_default
-        except:
-            completed = False
-
-        try:
-            exercise_dict["pb"] = self._get_best_perf_for_one_exercise(exercise, user)
-        except:
-            print(sys.exc_info())
-            completed = False
-
-        try:
-            exercise_dict["movements"] = self._get_movements_dict_linked_to_exercise(exercise) 
-        except:
-            completed = False
 
         if completed:
             return exercise_dict
@@ -275,19 +247,12 @@ class DataTreatment:
 
             try:
                 movement_dict["id"] = movement_linked.movement.pk
-            except:
-                completed = False
-            
-            try:
                 movement_dict["name"] = movement_linked.movement.name
-            except:
-                completed = False
-
-            try:
                 movement_dict["order"] = movement_linked.movement_number
-            except:
+            except Exception as e:
                 completed = False
-            
+                print("type error: " + str(e))
+                        
             # We get all settings linked to a movement
             settings_linked = self.db_exercise.get_all_settings_linked_to_movement_linked_to_exercise(movement_linked)
             for setting_linked in settings_linked:
@@ -298,13 +263,10 @@ class DataTreatment:
 
                 try:
                     setting_dict["name"] = setting_linked.setting.name
-                except:
-                    completed = False
-
-                try:
                     setting_dict["value"] = setting_linked.setting_value
-                except:
+                except Exception as e:
                     completed = False
+                    print("type error: " + str(e))
 
                 movement_dict["settings"].append(setting_dict)                
             movements_list.append(movement_dict)
@@ -363,34 +325,15 @@ class DataTreatment:
 
         try:
             training_dict["id"] = training.pk
-        except:
-            completed = False
-        
-        try:
             training_dict["date"] = training.date
-        except:
-            completed = False
-
-        try:
             training_dict["done"] = training.done
-        except:
-            completed = False
-        
-        try:
             training_dict["performanceType"] = training.performance_type
-        except:
-            completed = False
-        
-        try:
             training_dict["performanceValue"] = training.performance_value
-        except:
-            completed = False
-
-        try:
             training_dict["exercise"] = self.get_one_exercise_in_dict_linked_to_one_user(training.exercise.pk, user)
-        except:
+        except Exception as e:
             completed = False
-
+            print("type error: " + str(e))
+        
         if completed:
             return training_dict
         else:
@@ -399,7 +342,7 @@ class DataTreatment:
     def get_all_trainings_per_user_in_dict(self, user):    
         """
         This method returns all the trainings realized from a user in a list
-        of dict:
+        of dict order by date (from the most recent to the oldest):
             [
                 {
                     "id": "training primary_key",
@@ -447,7 +390,7 @@ class DataTreatment:
     def get_all_trainings_per_user_linked_to_an_exercise(self, exercise, user):
         """
         This method returns all the trainings realized from a user in a list
-        of dict:
+        of dict ordered by date (from the most recent to the oldest):
             [
                 {
                     "id": "training primary_key",

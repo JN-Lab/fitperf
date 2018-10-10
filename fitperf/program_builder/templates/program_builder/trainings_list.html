@@ -4,62 +4,80 @@
 {% block content %}
 {% load static %}
 <main class="container">
-        <div class="jumbotron mt-4">
-            <h1 class="display-4">Entraînements</h1>
-            <p class="lead">Retrouvez l'ensemble de vos entrainements</p>
-            <hr class="my-4">
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exerciseModalStep1">
-                Nouvel Exercice
-            </button>
+    <div class="jumbotron mt-4">
+        <h1 class="display-4">Entraînements</h1>
+        <p class="lead">Retrouvez l'ensemble de vos entrainements</p>
+        <hr class="my-4">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exerciseModalStep1">
+            Nouvel Exercice
+        </button>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            {% if messages %}
+                {% include 'messages.html' %}
+            {% endif %}
         </div>
-        <div class="row">
-            <div class="col-12">
-                {% if messages %}
-                    {% include 'messages.html' %}
-                {% endif %}
-            </div>
-        </div>
-        <div class="row">
-                <div class="col-12">
-                    <div class="card mb-4 shadow">
-                        <div class="card-body">
-                            <table class="table" id="trainings-table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Date</th>
-                                        <th scope="col">Exercice</th>
-                                        <th scope="col">Performance</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for training in trainings %}
-                                        <tr>
-                                            <td class="align-middle">{{ training.date }}</td>
-                                            <td class="align-middle">{{ training.exercise.name|upper }}</td>
-                                            {% if training.performanceValue %}
-                                                <td class="align-middle">{{ training.performanceValue }}</td>
-                                            {% else %}
-                                                <td>
-                                                    <form action="" method="post">
-                                                        {% csrf_token %}
-                                                        <input type="text" name="training_pk" value="{{ training.id }}" hidden>
-                                                        <div class="input-group">
-                                                            <input type="text" name="performance_value" class="form-control" placeholder="Votre score" aria-label="Votre score" aria-describedby="enregistrement du score">
-                                                            <div class="input-group-append">
-                                                                <button class="btn btn-outline-secondary" type="submit">Envoyer</button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </td>
-                                            {% endif %}
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-lg-4">
+            <div class="card mb-4 shadow">
+                <div class="card-header">
+                    <h5 class="card-title">TOTAL</h5>
+                </div>
+                <div class="card-body">
+                    <h6 class="card-subtitle">{{ trainings_number }}</h6>
                 </div>
             </div>
-    </main>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4 shadow">
+                <div class="card-body">
+                    <table class="table" id="trainings-table">
+                        <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Exercice</th>
+                                <th scope="col">Performance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for training in trainings %}
+                                <tr>
+                                    {% if training.performanceValue and training.performanceValue == training.exercise.pb %}
+                                        <td class=""align-middle>PB</td>
+                                    {% else %}
+                                    <td class=""align-middle></td>
+                                    {% endif %}
+                                    <td class="align-middle">{{ training.date }}</td>
+                                    <td class="align-middle">{{ training.exercise.name|upper }}</td>
+                                    {% if training.performanceValue %}
+                                        <td class="align-middle">{{ training.performanceValue }}</td>
+                                    {% else %}
+                                        <td>
+                                            <form action="" method="post">
+                                                {% csrf_token %}
+                                                <input type="text" name="training_pk" value="{{ training.id }}" hidden>
+                                                <div class="input-group">
+                                                    <input type="text" name="performance_value" class="form-control" placeholder="Votre score" aria-label="Votre score" aria-describedby="enregistrement du score">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-outline-secondary" type="submit">Envoyer</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
 {% endblock %}

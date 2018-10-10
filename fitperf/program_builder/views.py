@@ -118,11 +118,10 @@ def trainings_list(request):
         performance_value = request.POST.get("performance_value")
         training = db_training.get_one_training_from_pk(training_pk)
         training.performance_value = performance_value
+        training.done = True
         training.save()
-        db = DataTreatment()
-        trainings = db.get_all_trainings_per_user_in_dict(request.user)
-        return render(request, "trainings_list.html", locals())
-    else:
-        db = DataTreatment()
-        trainings = db.get_all_trainings_per_user_in_dict(request.user)
-        return render(request, "trainings_list.html", locals())
+     
+    db = DataTreatment()
+    trainings = db.get_all_trainings_per_user_in_dict(request.user)
+    trainings_number = len(trainings)
+    return render(request, "trainings_list.html", locals())
