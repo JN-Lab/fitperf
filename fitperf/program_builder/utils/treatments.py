@@ -1,8 +1,9 @@
 #! /usr/bin/env python3
 # coding: utf-8
-import sys
 import math
+from .tools import Tools
 from .db_interactions import DBMovement, DBExercise, DBTraining
+from ..models import Training, Exercise
 
 class DataTreatment:
     """
@@ -16,6 +17,7 @@ class DataTreatment:
         self.db_mvt = DBMovement()
         self.db_exercise = DBExercise()
         self.db_training = DBTraining()
+        self.tools = Tools()
 
     def get_all_movements_in_dict(self):
         """
@@ -46,7 +48,7 @@ class DataTreatment:
     def register_exercise_from_dict(self, exercise_dict, user):
         """
         This method registers an exercise and all its links with movements in database
-        from a dictionnary:
+        from a dictionnary -> Received from Front so camelCase is used:
         {
             "name": "exercise_name",
             "exerciseType": "exercise_type",
@@ -70,7 +72,7 @@ class DataTreatment:
             ]
         }
         """
-        goal_value_converted = self._manage_goal_value(exercise_dict["goalType"], exercise_dict["goalValue"])
+        goal_value_converted = self._manage_goal_value_to_register(exercise_dict["goalType"], exercise_dict["goalValue"])
         exercise = self.db_exercise.set_exercise(exercise_dict["name"],
                                                 exercise_dict["exerciseType"],
                                                 exercise_dict["description"],
@@ -91,7 +93,7 @@ class DataTreatment:
 
         return exercise
 
-    def _manage_goal_value(self, goal_type, goal_value):
+    def _manage_goal_value_to_register(self, goal_type, goal_value):
         """
         This private method ensure securiy and logic before registering numerical
         value in performance_value field in Exercise model.
@@ -99,12 +101,9 @@ class DataTreatment:
         """
         
         if goal_type == "Distance" and goal_value < 100:
-            goal_value = goal_value * 1000
+            goal_value = self.tools.convert_km_into_meters(goal_value)
 
-        return int(goal_value)
-
-
-
+        return goal_value
 
     def get_all_exercises_dict_linked_to_one_user(self, user):
         """
@@ -114,10 +113,10 @@ class DataTreatment:
                 {
                     "id": "exercise primary_key",
                     "name": "exercise.name",
-                    "exerciseType": "exercise_type",
+                    "exercise_type": "exercise_type",
                     "description": "description",
-                    "goalType": "goal_type",
-                    "goalValue": "goal_value",
+                    "goal_type": "goal_type",
+                    "goal_value": "goal_value",
                     "is_default": False,
                     "done": "False or True",
                     "pb: "best performance_value",
@@ -153,10 +152,10 @@ class DataTreatment:
             {
                 "id": "exercise primary_key",
                 "name": "exercise.name",
-                "exerciseType": "exercise_type",
+                "exercise_type": "exercise_type",
                 "description": "description",
-                "goalType": "goal_type",
-                "goalValue": "goal_value",
+                "goal_type": "goal_type",
+                "goal_value": "goal_value",
                 "is_default": False,
                 "done": "False or True",
                 "pb: "best performance_value",
@@ -182,10 +181,10 @@ class DataTreatment:
         exercise_dict = {
             "id": "",
             "name": "",
-            "exerciseType": "",
+            "exercise_type": "",
             "description": "",
-            "goalType": "",
-            "goalValue": 0,
+            "goal_type": "",
+            "goal_value": 0,
             "is_default": False,
             "pb": 0,
             "movements": []
@@ -195,11 +194,11 @@ class DataTreatment:
         try:
             exercise_dict["id"] = exercise.pk
             exercise_dict["name"] = exercise.name
-            exercise_dict["exerciseType"] = exercise.exercise_type
-            exercise_dict["goalType"] = exercise.goal_type
-            exercise_dict["goalValue"] = exercise.goal_value
+            exercise_dict["exercise_type"] = exercise.exercise_type
+            exercise_dict["goal_type"] = exercise.goal_type
+            exercise_dict["goal_value"] = exercise.goal_value
             exercise_dict["is_default"] = exercise.is_default
-            exercise_dict["pb"] = self._get_best_perf_for_one_exercise(exercise, user)
+            exercise_dict["pb"] = self._define_pb_for_one_exercise(exercise, user)
             exercise_dict["movements"] = self._get_movements_dict_linked_to_exercise(exercise)
         except Exception as e:
             completed = False
@@ -215,16 +214,34 @@ class DataTreatment:
         else:
             return None
 
-    def _get_best_perf_for_one_exercise(self, exercise, user):
+    def _get_pb_for_one_exercise(self, exercise, user):
+
+        pb = self._define_pb_for_one_exercise(exercise, user)
+        if exercise.goal_type == Exercise.ROUND or exercise.goal_type == Exercise.DISTANCE:
+            pb = self.tools.convert_seconds_into_time_string(pb)
+        return pb
+
+    def _define_pb_for_one_exercise(self, exercise, user):
         """
         This private method return a personal record if the user register a training with this exercise
         """
         trainings = self.db_training.get_all_trainings_from_one_user_from_one_exercise(exercise, user)
         pb = 0
-        if trainings:  
+        if trainings and exercise.goal_type == Exercise.TIME:  
             for training in trainings:
                 if training.performance_value and training.performance_value > pb:
                     pb = training.performance_value
+
+        elif trainings and (exercise.goal_type == Exercise.ROUND or exercise.goal_type == Exercise.DISTANCE):
+            for training in trainings:
+                if training.performance_value and pb == 0:
+                    pb = training.performance_value
+                elif training.performance_value and training.performance_value < pb:
+                    pb = training.performance_value
+                else:
+                    pass
+        else:
+            pass
         return pb
 
     def _get_movements_dict_linked_to_exercise(self,exercise):
@@ -284,15 +301,15 @@ class DataTreatment:
                 "id": "training primary_key",
                 "date": "training date",
                 "done": "training boolean",
-                "performanceType": "training perf_type",
-                "performanceValue": "training perf_value",
+                "performance_type": "training perf_type",
+                "performance_value": "training perf_value",
                 "exercise": {
                     "id": "exercise primary_key",
                     "name": "exercise.name",
-                    "exerciseType": "exercise_type",
+                    "exercise_type": "exercise_type",
                     "description": "description",
-                    "goalType": "goal_type",
-                    "goalValue": "goal_value",
+                    "goal_type": "goal_type",
+                    "goal_value": "goal_value",
                     "is_default": False,
                     "pb": "personal best record",
                     "movements" : [
@@ -318,8 +335,8 @@ class DataTreatment:
             "id": "",
             "date": "",
             "done": "",
-            "performanceType": "",
-            "performanceValue": "",
+            "performance_type": "",
+            "performance_value": "",
             "exercise": {},
         }
 
@@ -327,8 +344,8 @@ class DataTreatment:
             training_dict["id"] = training.pk
             training_dict["date"] = training.date
             training_dict["done"] = training.done
-            training_dict["performanceType"] = training.performance_type
-            training_dict["performanceValue"] = training.performance_value
+            training_dict["performance_type"] = training.performance_type
+            training_dict["performance_value"] = training.performance_value
             training_dict["exercise"] = self.get_one_exercise_in_dict_linked_to_one_user(training.exercise.pk, user)
         except Exception as e:
             completed = False
@@ -339,6 +356,13 @@ class DataTreatment:
         else:
             return None
 
+    def _manage_performance_value_to_get(self, performance_type, performance_value):
+
+        if performance_type == Training.TIME:
+            performance_value = self.tools.convert_seconds_into_time_string(performance_value)
+
+        return performance_value     
+
     def get_all_trainings_per_user_in_dict(self, user):    
         """
         This method returns all the trainings realized from a user in a list
@@ -348,15 +372,15 @@ class DataTreatment:
                     "id": "training primary_key",
                     "date": "training date",
                     "done": "training boolean",
-                    "performanceType": "training perf_type",
-                    "performanceValue": "training perf_value",
+                    "performance_type": "training perf_type",
+                    "performance_value": "training perf_value",
                     "exercise": {
                         "id": "exercise primary_key",
                         "name": "exercise.name",
                         "exerciseType": "exercise_type",
                         "description": "description",
-                        "goalType": "goal_type",
-                        "goalValue": "goal_value",
+                        "goal_type": "goal_type",
+                        "goal_value": "goal_value",
                         "is_default": False,
                         "pb": "pb",
                         "movements" : [
@@ -396,15 +420,15 @@ class DataTreatment:
                     "id": "training primary_key",
                     "date": "training date",
                     "done": "training boolean",
-                    "performanceType": "training perf_type",
-                    "performanceValue": "training perf_value",
+                    "performance_type": "training perf_type",
+                    "performance_value": "training perf_value",
                     "exercise": {
                         "id": "exercise primary_key",
                         "name": "exercise.name",
-                        "exerciseType": "exercise_type",
+                        "exercise_type": "exercise_type",
                         "description": "description",
-                        "goalType": "goal_type",
-                        "goalValue": "goal_value",
+                        "goal_type": "goal_type",
+                        "goal_value": "goal_value",
                         "is_default": False,
                         "pb": "personal best record",
                         "movements" : [
@@ -434,209 +458,3 @@ class DataTreatment:
                 training_list.append(training_dict)
 
         return training_list
-
-###################################################
-# Maybe these methods will be deleted bedore v1.0 #
-###################################################
-
-    def get_all_exercises_in_dict(self):
-        """
-        This method gets all the exercises and returns them in a list of dictionnary
-        -> see _build_exercises_list_of_dict method
-        """
-        exercises = self.db_exercise.get_all_exercises()
-        exercises_list = self._build_exercises_list_of_dict(exercises)
-        if exercises_list:
-            return exercises_list
-
-    def get_all_exercises_in_dict_for_user(self, user):
-        """
-        This method gets all the exercises by default + exercise created by a specific user
-        and returns them in a list of dictionnary -> see _build_exercises_list_of_dict method
-        """
-        exercises = self.db_exercise.get_all_user_exercises(user)
-        exercises_list = self._build_exercises_list_of_dict(exercises)
-        if exercises_list:
-            return exercises_list
-
-    def _build_exercises_list_of_dict(self, exercises):
-        """
-        This method returns all the exercises from the queryset into a list of dictionnaries:
-        [
-            {
-                "id": "exercise primary_key",
-                "name": "exercise.name",
-                "exerciseType": "exercise_type",
-                "description": "description",
-                "goalType": "goal_type",
-                "goalValue": "goal_value",
-                "is_default": False,
-                "movements" : [
-                    {
-                        "name" : "movement_name",
-                        "order": "movement_order",
-                        "settings": [
-                            {
-                                "name": "setting_name",
-                                "value": "setting_value,
-                            },
-                            ...
-                        ]
-                    },
-                    ...
-                ]
-            }
-        ]
-        """
-
-        completed = True
-        exercise_list = []
-
-        for exercise in exercises:
-            exercise_dict = {
-                "id": "",
-                "name": "",
-                "exerciseType": "",
-                "description": "",
-                "goalType": "",
-                "goalValue": "",
-                "is_default": False,
-                "movements": []
-            }
-
-            # We push all informations from exercise except movements
-            try:
-                exercise_dict["id"] = exercise.pk
-            except:
-                completed = False
-            
-            try:
-                exercise_dict["name"] = exercise.name
-            except:
-                completed = False
-
-            try:
-                exercise_dict["description"] = exercise.description
-            except:
-                exercise_dict["description"] = ""
-
-            try:
-                exercise_dict["exerciseType"] = exercise.exercise_type
-            except:
-                completed = False
-
-            try:
-                exercise_dict["goalType"] = exercise.goal_type
-            except:
-                completed = False
-
-            try:
-                exercise_dict["goalValue"] = exercise.goal_value
-            except:
-                completed = False
-
-            try:
-                exercise_dict["is_default"] = exercise.is_default
-            except:
-                completed = False
-
-            try:
-                exercise_dict["movements"] = self._get_movements_dict_linked_to_exercise(exercise) 
-            except:
-                completed = False
-
-            exercise_list.append(exercise_dict)
-
-        if completed:
-            return exercise_list
-        else:
-            return None
-
-
-    def get_one_exercise_in_dict(self, exercise_pk):
-        """
-        This method returns all the information linked to an exercise in a dictionnary.
-        The method uses the primary key to get the targeted exercise
-            {
-                "id": "exercise primary_key",
-                "name": "exercise.name",
-                "exerciseType": "exercise_type",
-                "description": "description",
-                "goalType": "goal_type",
-                "goalValue": "goal_value",
-                "is_default": False,
-                "movements" : [
-                    {
-                        "name" : "movement_name",
-                        "order": "movement_order",
-                        "settings": [
-                            {
-                                "name": "setting_name",
-                                "value": "setting_value,
-                            },
-                            ...
-                        ]
-                    },
-                    ...
-                ]
-            }
-        """
-
-        completed = True
-        exercise = self.db_exercise.get_one_exercise_by_pk(exercise_pk)
-        exercise_dict = {
-            "id": "",
-            "name": "",
-            "exerciseType": "",
-            "description": "",
-            "goalType": "",
-            "goalValue": "",
-            "is_default": False,
-            "movements": []
-        }
-
-        # We push all informations from exercise except movements
-        try:
-            exercise_dict["id"] = exercise.pk
-        except:
-            completed = False
-        
-        try:
-            exercise_dict["name"] = exercise.name
-        except:
-            completed = False
-
-        try:
-            exercise_dict["description"] = exercise.description
-        except:
-            exercise_dict["description"] = ""
-
-        try:
-            exercise_dict["exerciseType"] = exercise.exercise_type
-        except:
-            completed = False
-
-        try:
-            exercise_dict["goalType"] = exercise.goal_type
-        except:
-            completed = False
-
-        try:
-            exercise_dict["goalValue"] = exercise.goal_value
-        except:
-            completed = False
-
-        try:
-            exercise_dict["is_default"] = exercise.is_default
-        except:
-            completed = False
-
-        try:
-            exercise_dict["movements"] = self._get_movements_dict_linked_to_exercise(exercise) 
-        except:
-            completed = False
-
-        if completed:
-            return exercise_dict
-        else:
-            return None

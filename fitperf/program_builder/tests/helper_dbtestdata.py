@@ -142,7 +142,7 @@ class TestDatabase:
                                             founder=new_user,
                                             date=date,
                                             performance_type=Training.TIME,
-                                            performance_value=10,
+                                            performance_value=230,
                                             done=True)
 
         date = datetime(2018, 5, 2)
@@ -150,7 +150,7 @@ class TestDatabase:
                                             founder=new_user,
                                             date=date,
                                             performance_type=Training.TIME,
-                                            performance_value=8,
+                                            performance_value=330,
                                             done=True)
 
         date = datetime(2018, 8, 8)

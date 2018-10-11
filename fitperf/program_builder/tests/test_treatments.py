@@ -285,10 +285,10 @@ class TestDataTreatment(TestCase):
             {
                 "id": a_chelsea_training.exercise.pk,
                 "name": a_chelsea_training.exercise.name,
-                "exerciseType": a_chelsea_training.exercise.exercise_type,
+                "exercise_type": a_chelsea_training.exercise.exercise_type,
                 "description": a_chelsea_training.exercise.description,
-                "goalType": a_chelsea_training.exercise.goal_type,
-                "goalValue": a_chelsea_training.exercise.goal_value,
+                "goal_type": a_chelsea_training.exercise.goal_type,
+                "goal_value": a_chelsea_training.exercise.goal_value,
                 "is_default": a_chelsea_training.exercise.is_default,
                 "pb": 15,
                 "movements": [
@@ -334,12 +334,12 @@ class TestDataTreatment(TestCase):
             {
                 "id": connie_first_training.exercise.pk,
                 "name": connie_first_training.exercise.name,
-                "exerciseType": connie_first_training.exercise.exercise_type,
+                "exercise_type": connie_first_training.exercise.exercise_type,
                 "description": connie_first_training.exercise.description,
-                "goalType": connie_first_training.exercise.goal_type,
-                "goalValue": connie_first_training.exercise.goal_value,
+                "goal_type": connie_first_training.exercise.goal_type,
+                "goal_value": connie_first_training.exercise.goal_value,
                 "is_default": connie_first_training.exercise.is_default,
-                "pb": 10,
+                "pb": 230,
                 "movements" : [
                     {
                         "id": connie_pullup.movement.pk,
@@ -401,12 +401,12 @@ class TestDataTreatment(TestCase):
         result = {
             "id": connie.pk,
             "name": connie.name,
-            "exerciseType": connie.exercise_type,
+            "exercise_type": connie.exercise_type,
             "description": connie.description,
-            "goalType": connie.goal_type,
-            "goalValue": connie.goal_value,
+            "goal_type": connie.goal_type,
+            "goal_value": connie.goal_value,
             "is_default": connie.is_default,
-            "pb": 10,
+            "pb": 230,
             "movements" : [
                 {
                     "id": connie_pullup.movement.pk,
@@ -474,17 +474,17 @@ class TestDataTreatment(TestCase):
             "id": connie_training.pk,
             "date": connie_training.date,
             "done": connie_training.done,
-            "performanceType": connie_training.performance_type,
-            "performanceValue": connie_training.performance_value,
+            "performance_type": connie_training.performance_type,
+            "performance_value": connie_training.performance_value,
             "exercise": {
                 "id": connie_training.exercise.pk,
                 "name": connie_training.exercise.name,
-                "exerciseType": connie_training.exercise.exercise_type,
+                "exercise_type": connie_training.exercise.exercise_type,
                 "description": connie_training.exercise.description,
-                "goalType": connie_training.exercise.goal_type,
-                "goalValue": connie_training.exercise.goal_value,
+                "goal_type": connie_training.exercise.goal_type,
+                "goal_value": connie_training.exercise.goal_value,
                 "is_default": connie_training.exercise.is_default,
-                "pb": 10,
+                "pb": 230,
                 "movements" : [
                     {
                         "id": connie_pullup.movement.pk,
@@ -559,15 +559,15 @@ class TestDataTreatment(TestCase):
             "id": a_chelsea_training.pk,
             "date": a_chelsea_training.date,
             "done": a_chelsea_training.done,
-            "performanceType": a_chelsea_training.performance_type,
-            "performanceValue": a_chelsea_training.performance_value,
+            "performance_type": a_chelsea_training.performance_type,
+            "performance_value": a_chelsea_training.performance_value,
             "exercise": {
                 "id": a_chelsea_training.exercise.pk,
                 "name": a_chelsea_training.exercise.name,
-                "exerciseType": a_chelsea_training.exercise.exercise_type,
+                "exercise_type": a_chelsea_training.exercise.exercise_type,
                 "description": a_chelsea_training.exercise.description,
-                "goalType": a_chelsea_training.exercise.goal_type,
-                "goalValue": a_chelsea_training.exercise.goal_value,
+                "goal_type": a_chelsea_training.exercise.goal_type,
+                "goal_value": a_chelsea_training.exercise.goal_value,
                 "is_default": a_chelsea_training.exercise.is_default,
                 "pb": 0,
                 "movements" : [
@@ -688,17 +688,17 @@ class TestDataTreatment(TestCase):
                 "id": connie_second_training.pk,
                 "date": connie_second_training.date,
                 "done": connie_second_training.done,
-                "performanceType": connie_second_training.performance_type,
-                "performanceValue": connie_second_training.performance_value,
+                "performance_type": connie_second_training.performance_type,
+                "performance_value": connie_second_training.performance_value,
                 "exercise": {
                     "id": connie_second_training.exercise.pk,
                     "name": connie_second_training.exercise.name,
-                    "exerciseType": connie_second_training.exercise.exercise_type,
+                    "exercise_type": connie_second_training.exercise.exercise_type,
                     "description": connie_second_training.exercise.description,
-                    "goalType": connie_second_training.exercise.goal_type,
-                    "goalValue": connie_second_training.exercise.goal_value,
+                    "goal_type": connie_second_training.exercise.goal_type,
+                    "goal_value": connie_second_training.exercise.goal_value,
                     "is_default": connie_second_training.exercise.is_default,
-                    "pb": 10,
+                    "pb": 230,
                     "movements" : [
                         {
                             "id": connie_pullup.movement.pk,
@@ -733,17 +733,17 @@ class TestDataTreatment(TestCase):
                 "id": connie_first_training.pk,
                 "date": connie_first_training.date,
                 "done": connie_first_training.done,
-                "performanceType": connie_first_training.performance_type,
-                "performanceValue": connie_first_training.performance_value,
+                "performance_type": connie_first_training.performance_type,
+                "performance_value": connie_first_training.performance_value,
                 "exercise": {
                     "id": connie_first_training.exercise.pk,
                     "name": connie_first_training.exercise.name,
-                    "exerciseType": connie_first_training.exercise.exercise_type,
+                    "exercise_type": connie_first_training.exercise.exercise_type,
                     "description": connie_first_training.exercise.description,
-                    "goalType": connie_first_training.exercise.goal_type,
-                    "goalValue": connie_first_training.exercise.goal_value,
+                    "goal_type": connie_first_training.exercise.goal_type,
+                    "goal_value": connie_first_training.exercise.goal_value,
                     "is_default": connie_first_training.exercise.is_default,
-                    "pb": 10,
+                    "pb": 230,
                     "movements" : [
                         {
                             "id": connie_pullup.movement.pk,
@@ -778,15 +778,15 @@ class TestDataTreatment(TestCase):
                 "id": a_chelsea_training.pk,
                 "date": a_chelsea_training.date,
                 "done": a_chelsea_training.done,
-                "performanceType": a_chelsea_training.performance_type,
-                "performanceValue": a_chelsea_training.performance_value,
+                "performance_type": a_chelsea_training.performance_type,
+                "performance_value": a_chelsea_training.performance_value,
                 "exercise": {
                     "id": a_chelsea_training.exercise.pk,
                     "name": a_chelsea_training.exercise.name,
-                    "exerciseType": a_chelsea_training.exercise.exercise_type,
+                    "exercise_type": a_chelsea_training.exercise.exercise_type,
                     "description": a_chelsea_training.exercise.description,
-                    "goalType": a_chelsea_training.exercise.goal_type,
-                    "goalValue": a_chelsea_training.exercise.goal_value,
+                    "goal_type": a_chelsea_training.exercise.goal_type,
+                    "goal_value": a_chelsea_training.exercise.goal_value,
                     "is_default": a_chelsea_training.exercise.is_default,
                     "pb": 15,
                     "movements": [
@@ -877,17 +877,17 @@ class TestDataTreatment(TestCase):
                 "id": connie_second_training.pk,
                 "date": connie_second_training.date,
                 "done": connie_second_training.done,
-                "performanceType": connie_second_training.performance_type,
-                "performanceValue": connie_second_training.performance_value,
+                "performance_type": connie_second_training.performance_type,
+                "performance_value": connie_second_training.performance_value,
                 "exercise": {
                     "id": connie_second_training.exercise.pk,
                     "name": connie_second_training.exercise.name,
-                    "exerciseType": connie_second_training.exercise.exercise_type,
+                    "exercise_type": connie_second_training.exercise.exercise_type,
                     "description": connie_second_training.exercise.description,
-                    "goalType": connie_second_training.exercise.goal_type,
-                    "goalValue": connie_second_training.exercise.goal_value,
+                    "goal_type": connie_second_training.exercise.goal_type,
+                    "goal_value": connie_second_training.exercise.goal_value,
                     "is_default": connie_second_training.exercise.is_default,
-                    "pb": 10,
+                    "pb": 230,
                     "movements" : [
                         {
                             "id": connie_pullup.movement.pk,
@@ -922,17 +922,17 @@ class TestDataTreatment(TestCase):
                 "id": connie_first_training.pk,
                 "date": connie_first_training.date,
                 "done": connie_first_training.done,
-                "performanceType": connie_first_training.performance_type,
-                "performanceValue": connie_first_training.performance_value,
+                "performance_type": connie_first_training.performance_type,
+                "performance_value": connie_first_training.performance_value,
                 "exercise": {
                     "id": connie_first_training.exercise.pk,
                     "name": connie_first_training.exercise.name,
-                    "exerciseType": connie_first_training.exercise.exercise_type,
+                    "exercise_type": connie_first_training.exercise.exercise_type,
                     "description": connie_first_training.exercise.description,
-                    "goalType": connie_first_training.exercise.goal_type,
-                    "goalValue": connie_first_training.exercise.goal_value,
+                    "goal_type": connie_first_training.exercise.goal_type,
+                    "goal_value": connie_first_training.exercise.goal_value,
                     "is_default": connie_first_training.exercise.is_default,
-                    "pb": 10,
+                    "pb": 230,
                     "movements" : [
                         {
                             "id": connie_pullup.movement.pk,
@@ -970,524 +970,3 @@ class TestDataTreatment(TestCase):
 
         # We test
         self.assertEqual(trainings, result)
-
-###################################################
-# Maybe these methods will be deleted bedore v1.0 #
-###################################################
-
-    def test_get_all_exercises_in_dict(self):
-        
-        # We get the user
-        admin_founder = User.objects.get(username="admin_user")
-        ordinary_founder = User.objects.get(username="ordinary_user")
-        new_user = User.objects.get(username="new_user")
-        
-        # We get the movements
-        pullup = Movement.objects.get(name="pullup")
-        pushup = Movement.objects.get(name="pushup")
-        squat = Movement.objects.get(name="squat")
-        wallball = Movement.objects.get(name="wallball")
-
-        # We get the settings 
-        rep = MovementSettings.objects.get(name=MovementSettings.REPETITIONS)
-        weight = MovementSettings.objects.get(name=MovementSettings.WEIGHT)
-        dist = MovementSettings.objects.get(name=MovementSettings.DISTANCE)
-        cal = MovementSettings.objects.get(name=MovementSettings.CALORIES)
-
-        # We get the workouts
-        
-        # 1. o_chelsea
-
-        o_chelsea = Exercise.objects.get(name="chelsea", founder=ordinary_founder)
-        o_chelsea_pullup = MovementsPerExercise.objects.get(exercise=o_chelsea, movement=pullup)
-        o_chelsea_pullup_rep = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=o_chelsea_pullup, setting=rep)
-        o_chelsea_pushup = MovementsPerExercise.objects.get(exercise=o_chelsea, movement=pushup)
-        o_chelsea_pushup_rep = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=o_chelsea_pushup, setting=rep)
-        o_chelsea_squat = MovementsPerExercise.objects.get(exercise=o_chelsea, movement=squat)
-        o_chelsea_squat_rep = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=o_chelsea_squat, setting=rep)
-        o_chelsea_squat_weight = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=o_chelsea_squat, setting=weight)
-
-        # 2. a_chelsea
-        a_chelsea = Exercise.objects.get(name="chelsea", founder=admin_founder)
-        a_chelsea_pullup = MovementsPerExercise.objects.get(exercise=a_chelsea, movement=pullup)
-        a_chelsea_pullup_rep = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=a_chelsea_pullup, setting=rep)
-        a_chelsea_pushup = MovementsPerExercise.objects.get(exercise=a_chelsea, movement=pushup)
-        a_chelsea_pushup_rep = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=a_chelsea_pushup, setting=rep)
-        a_chelsea_squat = MovementsPerExercise.objects.get(exercise=a_chelsea, movement=squat)
-        a_chelsea_squat_rep = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=a_chelsea_squat, setting=rep)
-        a_chelsea_squat_weight = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=a_chelsea_squat, setting=weight)
-
-        # 3. connie
-        connie = Exercise.objects.get(name="connie", founder=new_user)
-        connie_pullup = MovementsPerExercise.objects.get(exercise=connie, movement=pullup)
-        connie_pullup_rep = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=connie_pullup, setting=rep)
-        connie_wallball = MovementsPerExercise.objects.get(exercise=connie, movement=wallball)
-        connie_wallball_rep = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=connie_wallball, setting=rep)
-        connie_wallball_weight = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=connie_wallball, setting=weight)
-
-        # Result expected
-        result = [
-            {
-                "id": o_chelsea.pk,
-                "name": o_chelsea.name,
-                "exerciseType": o_chelsea.exercise_type,
-                "description": o_chelsea.description,
-                "goalType": o_chelsea.goal_type,
-                "goalValue": o_chelsea.goal_value,
-                "is_default": o_chelsea.is_default,
-                "movements": [
-                    {
-                        "id": o_chelsea_pullup.movement.pk,
-                        "name": o_chelsea_pullup.movement.name,
-                        "order": o_chelsea_pullup.movement_number,
-                        "settings": [
-                            {
-                                "name": o_chelsea_pullup_rep.setting.name,
-                                "value": o_chelsea_pullup_rep.setting_value,
-                            },
-                        ]
-                    },
-                    {
-                        "id": o_chelsea_pushup.movement.pk,
-                        "name": o_chelsea_pushup.movement.name,
-                        "order": o_chelsea_pushup.movement_number,
-                        "settings": [
-                            {
-                                "name": o_chelsea_pushup_rep.setting.name,
-                                "value": o_chelsea_pushup_rep.setting_value,
-                            },
-                        ]
-                    },
-                    {
-                        "id": o_chelsea_squat.movement.pk,
-                        "name": o_chelsea_squat.movement.name,
-                        "order": o_chelsea_squat.movement_number,
-                        "settings": [
-                            {
-                                "name": o_chelsea_squat_rep.setting.name,
-                                "value": o_chelsea_squat_rep.setting_value,
-                            },
-                            {
-                                "name": o_chelsea_squat_weight.setting.name,
-                                "value": o_chelsea_squat_weight.setting_value,
-                            },
-                        ]
-                    },
-                ],
-            },
-            {
-                "id": a_chelsea.pk,
-                "name": a_chelsea.name,
-                "exerciseType": a_chelsea.exercise_type,
-                "description": a_chelsea.description,
-                "goalType": a_chelsea.goal_type,
-                "goalValue": a_chelsea.goal_value,
-                "is_default": a_chelsea.is_default,
-                "movements": [
-                    {
-                        "id": a_chelsea_pullup.movement.pk,
-                        "name": a_chelsea_pullup.movement.name,
-                        "order": a_chelsea_pullup.movement_number,
-                        "settings": [
-                            {
-                                "name": a_chelsea_pullup_rep.setting.name,
-                                "value": a_chelsea_pullup_rep.setting_value,
-                            },
-                        ]
-                    },
-                    {
-                        "id": a_chelsea_pushup.movement.pk,
-                        "name": a_chelsea_pushup.movement.name,
-                        "order": a_chelsea_pushup.movement_number,
-                        "settings": [
-                            {
-                                "name": a_chelsea_pushup_rep.setting.name,
-                                "value": a_chelsea_pushup_rep.setting_value,
-                            },
-                        ]
-                    },
-                    {
-                        "id": a_chelsea_squat.movement.pk,
-                        "name": a_chelsea_squat.movement.name,
-                        "order": a_chelsea_squat.movement_number,
-                        "settings": [
-                            {
-                                "name": a_chelsea_squat_rep.setting.name,
-                                "value": a_chelsea_squat_rep.setting_value,
-                            },
-                            {
-                                "name": a_chelsea_squat_weight.setting.name,
-                                "value": a_chelsea_squat_weight.setting_value,
-                            },
-                        ]
-                    },
-                ],
-            },
-            {
-                "id": connie.pk,
-                "name": connie.name,
-                "exerciseType": connie.exercise_type,
-                "description": connie.description,
-                "goalType": connie.goal_type,
-                "goalValue": connie.goal_value,
-                "is_default": connie.is_default,
-                "movements": [
-                    {
-                        "id": connie_pullup.movement.pk,
-                        "name": connie_pullup.movement.name,
-                        "order": connie_pullup.movement_number,
-                        "settings": [
-                            {
-                                "name": connie_pullup_rep.setting.name,
-                                "value": connie_pullup_rep.setting_value,
-                            },
-                        ]
-                    },
-                    {
-                        "id": connie_wallball.movement.pk,
-                        "name": connie_wallball.movement.name,
-                        "order": connie_wallball.movement_number,
-                        "settings": [
-                            {
-                                "name": connie_wallball_rep.setting.name,
-                                "value": connie_wallball_rep.setting_value,
-                            },
-                            {
-                                "name": connie_wallball_weight.setting.name,
-                                "value": connie_wallball_weight.setting_value,
-                            },
-                        ]
-                    },
-                ],
-            },
-        ]
-
-        # We apply the method
-        all_exercises = self.treatment.get_all_exercises_in_dict()
-
-        # We test
-        self.assertEqual(all_exercises, result)
-
-    def test_all_exercises_in_dict_for_user(self):
-        
-        # We get the user
-        admin_founder = User.objects.get(username="admin_user")
-        ordinary_founder = User.objects.get(username="ordinary_user")
-        new_user = User.objects.get(username="new_user")
-        
-        # We get the movements
-        pullup = Movement.objects.get(name="pullup")
-        pushup = Movement.objects.get(name="pushup")
-        squat = Movement.objects.get(name="squat")
-        wallball = Movement.objects.get(name="wallball")
-
-        # We get the settings 
-        rep = MovementSettings.objects.get(name=MovementSettings.REPETITIONS)
-        weight = MovementSettings.objects.get(name=MovementSettings.WEIGHT)
-        dist = MovementSettings.objects.get(name=MovementSettings.DISTANCE)
-        cal = MovementSettings.objects.get(name=MovementSettings.CALORIES)
-
-        # We get the workouts
-        
-        # 1. o_chelsea
-
-        o_chelsea = Exercise.objects.get(name="chelsea", founder=ordinary_founder)
-        o_chelsea_pullup = MovementsPerExercise.objects.get(exercise=o_chelsea, movement=pullup)
-        o_chelsea_pullup_rep = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=o_chelsea_pullup, setting=rep)
-        o_chelsea_pushup = MovementsPerExercise.objects.get(exercise=o_chelsea, movement=pushup)
-        o_chelsea_pushup_rep = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=o_chelsea_pushup, setting=rep)
-        o_chelsea_squat = MovementsPerExercise.objects.get(exercise=o_chelsea, movement=squat)
-        o_chelsea_squat_rep = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=o_chelsea_squat, setting=rep)
-        o_chelsea_squat_weight = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=o_chelsea_squat, setting=weight)
-
-        # 2. a_chelsea
-        a_chelsea = Exercise.objects.get(name="chelsea", founder=admin_founder)
-        a_chelsea_pullup = MovementsPerExercise.objects.get(exercise=a_chelsea, movement=pullup)
-        a_chelsea_pullup_rep = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=a_chelsea_pullup, setting=rep)
-        a_chelsea_pushup = MovementsPerExercise.objects.get(exercise=a_chelsea, movement=pushup)
-        a_chelsea_pushup_rep = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=a_chelsea_pushup, setting=rep)
-        a_chelsea_squat = MovementsPerExercise.objects.get(exercise=a_chelsea, movement=squat)
-        a_chelsea_squat_rep = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=a_chelsea_squat, setting=rep)
-        a_chelsea_squat_weight = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=a_chelsea_squat, setting=weight)
-
-        # 3. connie
-        connie = Exercise.objects.get(name="connie", founder=new_user)
-        connie_pullup = MovementsPerExercise.objects.get(exercise=connie, movement=pullup)
-        connie_pullup_rep = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=connie_pullup, setting=rep)
-        connie_wallball = MovementsPerExercise.objects.get(exercise=connie, movement=wallball)
-        connie_wallball_rep = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=connie_wallball, setting=rep)
-        connie_wallball_weight = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=connie_wallball, setting=weight)
-
-        # Result expected
-        ordinary_user_result = [
-            {
-                "id": o_chelsea.pk,
-                "name": o_chelsea.name,
-                "exerciseType": o_chelsea.exercise_type,
-                "description": o_chelsea.description,
-                "goalType": o_chelsea.goal_type,
-                "goalValue": o_chelsea.goal_value,
-                "is_default": o_chelsea.is_default,
-                "movements": [
-                    {
-                        "id": o_chelsea_pullup.movement.pk,
-                        "name": o_chelsea_pullup.movement.name,
-                        "order": o_chelsea_pullup.movement_number,
-                        "settings": [
-                            {
-                                "name": o_chelsea_pullup_rep.setting.name,
-                                "value": o_chelsea_pullup_rep.setting_value,
-                            },
-                        ]
-                    },
-                    {
-                        "id": o_chelsea_pushup.movement.pk,
-                        "name": o_chelsea_pushup.movement.name,
-                        "order": o_chelsea_pushup.movement_number,
-                        "settings": [
-                            {
-                                "name": o_chelsea_pushup_rep.setting.name,
-                                "value": o_chelsea_pushup_rep.setting_value,
-                            },
-                        ]
-                    },
-                    {
-                        "id": o_chelsea_squat.movement.pk,
-                        "name": o_chelsea_squat.movement.name,
-                        "order": o_chelsea_squat.movement_number,
-                        "settings": [
-                            {
-                                "name": o_chelsea_squat_rep.setting.name,
-                                "value": o_chelsea_squat_rep.setting_value,
-                            },
-                            {
-                                "name": o_chelsea_squat_weight.setting.name,
-                                "value": o_chelsea_squat_weight.setting_value,
-                            },
-                        ]
-                    },
-                ],
-            },
-            {
-                "id": a_chelsea.pk,
-                "name": a_chelsea.name,
-                "exerciseType": a_chelsea.exercise_type,
-                "description": a_chelsea.description,
-                "goalType": a_chelsea.goal_type,
-                "goalValue": a_chelsea.goal_value,
-                "is_default": a_chelsea.is_default,
-                "movements": [
-                    {
-                        "id": a_chelsea_pullup.movement.pk,
-                        "name": a_chelsea_pullup.movement.name,
-                        "order": a_chelsea_pullup.movement_number,
-                        "settings": [
-                            {
-                                "name": a_chelsea_pullup_rep.setting.name,
-                                "value": a_chelsea_pullup_rep.setting_value,
-                            },
-                        ]
-                    },
-                    {
-                        "id": a_chelsea_pushup.movement.pk,
-                        "name": a_chelsea_pushup.movement.name,
-                        "order": a_chelsea_pushup.movement_number,
-                        "settings": [
-                            {
-                                "name": a_chelsea_pushup_rep.setting.name,
-                                "value": a_chelsea_pushup_rep.setting_value,
-                            },
-                        ]
-                    },
-                    {
-                        "id": a_chelsea_squat.movement.pk,
-                        "name": a_chelsea_squat.movement.name,
-                        "order": a_chelsea_squat.movement_number,
-                        "settings": [
-                            {
-                                "name": a_chelsea_squat_rep.setting.name,
-                                "value": a_chelsea_squat_rep.setting_value,
-                            },
-                            {
-                                "name": a_chelsea_squat_weight.setting.name,
-                                "value": a_chelsea_squat_weight.setting_value,
-                            },
-                        ]
-                    },
-                ],
-            },
-        ]
-
-        # Result expected
-        new_user_result = [
-            {
-                "id": a_chelsea.pk,
-                "name": a_chelsea.name,
-                "exerciseType": a_chelsea.exercise_type,
-                "description": a_chelsea.description,
-                "goalType": a_chelsea.goal_type,
-                "goalValue": a_chelsea.goal_value,
-                "is_default": a_chelsea.is_default,
-                "movements": [
-                    {
-                        "id": a_chelsea_pullup.movement.pk,
-                        "name": a_chelsea_pullup.movement.name,
-                        "order": a_chelsea_pullup.movement_number,
-                        "settings": [
-                            {
-                                "name": a_chelsea_pullup_rep.setting.name,
-                                "value": a_chelsea_pullup_rep.setting_value,
-                            },
-                        ]
-                    },
-                    {
-                        "id": a_chelsea_pushup.movement.pk,
-                        "name": a_chelsea_pushup.movement.name,
-                        "order": a_chelsea_pushup.movement_number,
-                        "settings": [
-                            {
-                                "name": a_chelsea_pushup_rep.setting.name,
-                                "value": a_chelsea_pushup_rep.setting_value,
-                            },
-                        ]
-                    },
-                    {
-                        "id": a_chelsea_squat.movement.pk,
-                        "name": a_chelsea_squat.movement.name,
-                        "order": a_chelsea_squat.movement_number,
-                        "settings": [
-                            {
-                                "name": a_chelsea_squat_rep.setting.name,
-                                "value": a_chelsea_squat_rep.setting_value,
-                            },
-                            {
-                                "name": a_chelsea_squat_weight.setting.name,
-                                "value": a_chelsea_squat_weight.setting_value,
-                            },
-                        ]
-                    },
-                ],
-            },
-            {
-                "id": connie.pk,
-                "name": connie.name,
-                "exerciseType": connie.exercise_type,
-                "description": connie.description,
-                "goalType": connie.goal_type,
-                "goalValue": connie.goal_value,
-                "is_default": connie.is_default,
-                "movements": [
-                    {
-                        "id": connie_pullup.movement.pk,
-                        "name": connie_pullup.movement.name,
-                        "order": connie_pullup.movement_number,
-                        "settings": [
-                            {
-                                "name": connie_pullup_rep.setting.name,
-                                "value": connie_pullup_rep.setting_value,
-                            },
-                        ]
-                    },
-                    {
-                        "id": connie_wallball.movement.pk,
-                        "name": connie_wallball.movement.name,
-                        "order": connie_wallball.movement_number,
-                        "settings": [
-                            {
-                                "name": connie_wallball_rep.setting.name,
-                                "value": connie_wallball_rep.setting_value,
-                            },
-                            {
-                                "name": connie_wallball_weight.setting.name,
-                                "value": connie_wallball_weight.setting_value,
-                            },
-                        ]
-                    },
-                ],
-            },
-        ]
-
-        # We apply the method
-        ordinary_user_exercise = self.treatment.get_all_exercises_in_dict_for_user(ordinary_founder)
-        self.assertEqual(ordinary_user_exercise, ordinary_user_result)
-
-        new_user_exercise = self.treatment.get_all_exercises_in_dict_for_user(new_user)
-        self.assertEqual(new_user_exercise, new_user_result)
-
-    def test_get_one_exercise_in_dict(self):
-        # We get the user
-        ordinary_founder = User.objects.get(username="ordinary_user")
-        
-        # We get the movements
-        pullup = Movement.objects.get(name="pullup")
-        pushup = Movement.objects.get(name="pushup")
-        squat = Movement.objects.get(name="squat")
-
-        # We get the settings 
-        rep = MovementSettings.objects.get(name=MovementSettings.REPETITIONS)
-        weight = MovementSettings.objects.get(name=MovementSettings.WEIGHT)
-
-        # We get one movement
-
-        o_chelsea = Exercise.objects.get(name="chelsea", founder=ordinary_founder)
-        o_chelsea_pullup = MovementsPerExercise.objects.get(exercise=o_chelsea, movement=pullup)
-        o_chelsea_pullup_rep = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=o_chelsea_pullup, setting=rep)
-        o_chelsea_pushup = MovementsPerExercise.objects.get(exercise=o_chelsea, movement=pushup)
-        o_chelsea_pushup_rep = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=o_chelsea_pushup, setting=rep)
-        o_chelsea_squat = MovementsPerExercise.objects.get(exercise=o_chelsea, movement=squat)
-        o_chelsea_squat_rep = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=o_chelsea_squat, setting=rep)
-        o_chelsea_squat_weight = MovementSettingsPerMovementsPerExercise.objects.get(exercise_movement=o_chelsea_squat, setting=weight)
-
-        # Result
-        result = {
-            "id": o_chelsea.pk,
-            "name": o_chelsea.name,
-            "exerciseType": o_chelsea.exercise_type,
-            "description": o_chelsea.description,
-            "goalType": o_chelsea.goal_type,
-            "goalValue": o_chelsea.goal_value,
-            "is_default": o_chelsea.is_default,
-            "movements": [
-                {
-                    "id": o_chelsea_pullup.movement.pk,
-                    "name": o_chelsea_pullup.movement.name,
-                    "order": o_chelsea_pullup.movement_number,
-                    "settings": [
-                        {
-                            "name": o_chelsea_pullup_rep.setting.name,
-                            "value": o_chelsea_pullup_rep.setting_value,
-                        },
-                    ]
-                },
-                {
-                    "id": o_chelsea_pushup.movement.pk,
-                    "name": o_chelsea_pushup.movement.name,
-                    "order": o_chelsea_pushup.movement_number,
-                    "settings": [
-                        {
-                            "name": o_chelsea_pushup_rep.setting.name,
-                            "value": o_chelsea_pushup_rep.setting_value,
-                        },
-                    ]
-                },
-                {
-                    "id": o_chelsea_squat.movement.pk,
-                    "name": o_chelsea_squat.movement.name,
-                    "order": o_chelsea_squat.movement_number,
-                    "settings": [
-                        {
-                            "name": o_chelsea_squat_rep.setting.name,
-                            "value": o_chelsea_squat_rep.setting_value,
-                        },
-                        {
-                            "name": o_chelsea_squat_weight.setting.name,
-                            "value": o_chelsea_squat_weight.setting_value,
-                        },
-                    ]
-                },
-            ],
-        }
-
-        # We test
-        o_chelsea_dict = self.treatment.get_one_exercise_in_dict(o_chelsea.pk)
-        self.assertEqual(o_chelsea_dict, result)

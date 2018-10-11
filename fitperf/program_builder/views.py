@@ -87,7 +87,6 @@ def exercise_page(request, exercise_pk):
             return render(request, "exercise_page.html", locals())
     else:
         date = datetime.now
-        print(exercise_dict)
         return render(request, 'exercise_page.html', locals())
 
 @login_required
@@ -118,7 +117,7 @@ def trainings_list(request):
     trainings = db.get_all_trainings_per_user_in_dict(request.user)
     trainings_number = len(trainings)
     trainings_done_number = len([training for training in trainings if training["done"]])
-    pb_number = len([training for training in trainings if training["performanceValue"] and training["performanceValue"] == training["exercise"]["pb"]])
+    pb_number = len([training for training in trainings if training["performance_value"] and training["performance_value"] == training["exercise"]["pb"]])
     return render(request, "trainings_list.html", locals())
 
 @login_required

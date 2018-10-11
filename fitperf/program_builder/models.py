@@ -59,10 +59,12 @@ class Exercise(models.Model):
     TIME = 'duree'
     ROUND = 'round'
     DISTANCE = 'distance'
+    ANYONE = "anyone"
     PERFORMANCE_TYPE = (
         (TIME, 'duree'),
         (ROUND, 'round'),
         (DISTANCE, 'distance'),
+        (ANYONE, 'anyone')
     )
     name = models.CharField(max_length=200,
                             verbose_name="Nom")
