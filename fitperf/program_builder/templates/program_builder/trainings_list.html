@@ -45,68 +45,94 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-12">
-            <div class="card mb-4 shadow">
-                <div class="card-body">
-                    <table class="table" id="trainings-table">
-                        <thead>
-                            <tr>
-                                <th scope="col"></th>
-                                <th scope="col">Date</th>
-                                <th scope="col">Exercice</th>
-                                <th scope="col">Performance</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for training in trainings %}
-                                <tr>
-                                    {% if training.performance_value and training.performance_value == training.exercise.pb %}
-                                        <td class=""align-middle><i class="fas fa-medal"></i></td>
-                                    {% else %}
-                                    <td class=""align-middle></td>
-                                    {% endif %}
-                                    <td class="align-middle">{{ training.date }}</td>
-                                    <td class="align-middle">{{ training.exercise.name|upper }}</td>
-                                    {% if training.performance_value %}
-                                        <td class="align-middle">{{ training.performance_value }}</td>
-                                    {% else %}
-                                        <td>
-                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#performanceModal{{training.pk}}">
+        {% for training in trainings %}
+            {% if training.performance_value and training.performance_value == training.exercise.pb %}
+                <div class="col-12 my-2">
+                    <div class="card bg-info shadow">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-6 col-md-10">
+                                    <div class="row align-items-center">
+                                        <h5 class="col-sm-12 col-md-4 card-subtitle text-light">{{ training.date }}</h5>
+                                        <h5 class="col-sm-12 col-md-4 card-title text-white">{{ training.exercise.name|upper }}</h5>
+                                        <h5 class="col-sm-12 col-md-4 text-white">{{ training.performance_value }}</h5>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-2">
+                                    <h5 class="text-center"><i class="fas fa-medal fa-2x text-white"></i></h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% elif training.performance_value %}
+                <div class="col-12 my-2">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-6 col-md-10">
+                                    <div class="row align-items-center">
+                                        <h5 class="col-sm-12 col-md-4 card-subtitle text-muted">{{ training.date }}</h5>
+                                        <h5 class="col-sm-12 col-md-4 card-title">{{ training.exercise.name|upper }}</h5>
+                                        <h5 class="col-sm-12 col-md-4">{{ training.performance_value }}</h5>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-2">
+                                    <h5 class="text-center"><i class="fas fa-check fa-2x"></i></h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}  
+                <div class="col-12 my-2">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-6 col-md-10">
+                                    <div class="row align-items-center">
+                                        <h5 class="col-sm-12 col-md-4 card-subtitle text-muted">{{ training.date }}</h5>
+                                        <h5 class="col-sm-12 col-md-4 card-title">{{ training.exercise.name|upper }}</h5>
+                                        <h5 class="col-sm-12 col-md-4 text-warning">Ajoute ton score</h5>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-2">
+                                    <div class="text-center">
+                                        <button type="button" class="btn btn-lg btn-warning rounded-circle text-white font-weight-bold shadow" data-toggle="modal" data-target="#performanceModal{{training.pk}}">
                                                 +
-                                            </button>
-                                            <div class="modal fade" id="performanceModal{{training.pk}}" tabindex="-1" role="dialog" aria-labelledby="performanceModal{{training.pk}}Label" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                    <h5 class="modal-title" id="exerciseStartModalLabel">Votre Performance: {{ training.exercise.name }} - {{ training.date }}</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <form action="" method="post" id="performanceModal{{training.pk}}Form">
-                                                            {% csrf_token %}
-                                                            <input type="text" name="training_pk" value="{{ training.id }}" hidden>
-                                                            <div class="input-group">
-                                                                <input type="text" name="performance_value" class="form-control" placeholder="Votre score" aria-label="Votre score" aria-describedby="enregistrement du score">
-                                                                <div class="input-group-append">
-                                                                    <button class="btn btn-outline-secondary" type="submit">Enregistrer</button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </div>
+                                        </button>
+                                    </div>
+                                    <div class="modal fade" id="performanceModal{{training.pk}}" tabindex="-1" role="dialog" aria-labelledby="performanceModal{{training.pk}}Label" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                <h5 class="modal-title" id="exerciseStartModalLabel">Votre Performance: {{ training.exercise.name }} - {{ training.date }}</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
                                                 </div>
+                                                <div class="modal-body">
+                                                    <form action="" method="post" id="performanceModal{{training.pk}}Form">
+                                                        {% csrf_token %}
+                                                        <input type="text" name="training_pk" value="{{ training.id }}" hidden>
+                                                        <div class="input-group">
+                                                            <input type="text" name="performance_value" class="form-control" placeholder="Votre score" aria-label="Votre score" aria-describedby="enregistrement du score">
+                                                            <div class="input-group-append">
+                                                                <button class="btn btn-outline-secondary" type="submit">Enregistrer</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
                                                 </div>
                                             </div>
-                                        </td>
-                                    {% endif %}
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>   
+            {% endif %}
+        {% endfor %}
     </div>
 </main>
 {% endblock %}

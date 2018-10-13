@@ -1,4 +1,5 @@
 env/
+.sass-cache
 fitperf/.sass-cache
 fitperf/fitperf/__pycache__/
 fitperf/fitperf/settings/__pycache__/

@@ -51,7 +51,14 @@ def exercises_list(request):
     custom_exercises_number = len([exercise for exercise in exercises if not exercise["is_default"]])
     pb_number = len([exercise for exercise in exercises if exercise["pb"]])
     new_exercise_form = RegisterExerciseStep1()
-    return render(request, 'exercises_list.html', locals())
+    context = {
+        'exercises': exercises,
+        'exercises_number': exercises_number,
+        'custom_exercises_number': custom_exercises_number,
+        'pb_number': pb_number,
+        'new_exercise_form': new_exercise_form,
+    }
+    return render(request, 'exercises_list.html', context)
 
 @csrf_protect
 @login_required
@@ -84,10 +91,10 @@ def exercise_page(request, exercise_pk):
         else:
             messages.error(request, """Un problème a été rencontré lors de la création de votre entraînement. 
                                     Veuillez réessayer s'il vous plait.""")
-            return render(request, "exercise_page.html", locals())
+            return render(request, "exercise_page.html", {"exercise_dict": exercise_dict})
     else:
         date = datetime.now
-        return render(request, 'exercise_page.html', locals())
+        return render(request, 'exercise_page.html', {"exercise_dict": exercise_dict, "date": date})
 
 @login_required
 def delete_exercise(request, exercise_pk):
@@ -115,10 +122,13 @@ def trainings_list(request):
      
     db = DataTreatment()
     trainings = db.get_all_trainings_per_user_in_dict(request.user)
-    trainings_number = len(trainings)
-    trainings_done_number = len([training for training in trainings if training["done"]])
-    pb_number = len([training for training in trainings if training["performance_value"] and training["performance_value"] == training["exercise"]["pb"]])
-    return render(request, "trainings_list.html", locals())
+    context = {
+        "trainings": trainings,
+        "trainings_number": len(trainings),
+        "trainings_done_number": len([training for training in trainings if training["done"]]),
+        "pb_number": len([training for training in trainings if training["performance_value"] and training["performance_value"] == training["exercise"]["pb"]]),
+    }
+    return render(request, "trainings_list.html", context)
 
 @login_required
 def profile(request):

@@ -1,3 +1,10 @@
-@import 'modules/variables';
+// Import all bootstrap scss
+@import '../bootstrap/scss/bootstrap';
+// Import Modules
+@import 'modules/custom_variables';
+@import 'modules/custom_mixins';
+// Import Base
 @import 'base/bootstrap-overrides';
 @import 'base/base';
+// Import Layout
+@import 'layout/card';
