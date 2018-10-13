@@ -48,14 +48,18 @@
         {% for training in trainings %}
             {% if training.performance_value and training.performance_value == training.exercise.pb %}
                 <div class="col-12 my-2">
-                    <div class="card bg-info shadow">
+                    <div class="card bg-primary shadow">
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-6 col-md-10">
                                     <div class="row align-items-center">
-                                        <h5 class="col-sm-12 col-md-4 card-subtitle text-light">{{ training.date }}</h5>
+                                        <h5 class="col-sm-12 col-md-4 card-subtitle text-light">{{ training.date.day }}/{{ training.date.month }}/{{ training.date.year }}</h5>
                                         <h5 class="col-sm-12 col-md-4 card-title text-white">{{ training.exercise.name|upper }}</h5>
-                                        <h5 class="col-sm-12 col-md-4 text-white">{{ training.performance_value }}</h5>
+                                        {% if training.performance_type == "duree" %}
+                                            <h5 class="col-sm-12 col-md-4 card-title text-white">duree: {{ training.performance_value.minute }}:{{ training.performance_value.second }}</h5>
+                                        {% else %}
+                                            <h5 class="col-sm-12 col-md-4 card-title text-white">tours: {{ training.performance_value }}</h5>
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="col-6 col-md-2">
@@ -72,13 +76,17 @@
                             <div class="row align-items-center">
                                 <div class="col-6 col-md-10">
                                     <div class="row align-items-center">
-                                        <h5 class="col-sm-12 col-md-4 card-subtitle text-muted">{{ training.date }}</h5>
+                                        <h5 class="col-sm-12 col-md-4 card-subtitle text-muted">{{ training.date.day }}/{{ training.date.month }}/{{ training.date.year }}</h5>
                                         <h5 class="col-sm-12 col-md-4 card-title">{{ training.exercise.name|upper }}</h5>
-                                        <h5 class="col-sm-12 col-md-4">{{ training.performance_value }}</h5>
+                                        {% if training.performance_type == "duree" %}
+                                            <h5 class="col-sm-12 col-md-4 card-title text-primary">duree: {{ training.performance_value.minute }}:{{ training.performance_value.second }}</h5>
+                                        {% else %}
+                                            <h5 class="col-sm-12 col-md-4 card-title text-primary">tours: {{ training.performance_value }}</h5>
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="col-6 col-md-2">
-                                    <h5 class="text-center"><i class="fas fa-check fa-2x"></i></h5>
+                                    <h5 class="text-center"><i class="fas fa-check fa-2x text-primary"></i></h5>
                                 </div>
                             </div>
                         </div>
@@ -91,9 +99,9 @@
                             <div class="row align-items-center">
                                 <div class="col-6 col-md-10">
                                     <div class="row align-items-center">
-                                        <h5 class="col-sm-12 col-md-4 card-subtitle text-muted">{{ training.date }}</h5>
+                                        <h5 class="col-sm-12 col-md-4 card-subtitle text-muted">{{ training.date.day }}/{{ training.date.month }}/{{ training.date.year }}</h5>
                                         <h5 class="col-sm-12 col-md-4 card-title">{{ training.exercise.name|upper }}</h5>
-                                        <h5 class="col-sm-12 col-md-4 text-warning">Ajoute ton score</h5>
+                                        <h5 class="col-sm-12 col-md-4 card-title text-warning">Ajoute ton score</h5>
                                     </div>
                                 </div>
                                 <div class="col-6 col-md-2">
@@ -106,7 +114,7 @@
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                <h5 class="modal-title" id="exerciseStartModalLabel">Votre Performance: {{ training.exercise.name }} - {{ training.date }}</h5>
+                                                <h5 class="modal-title" id="exerciseStartModalLabel">{{ training.exercise.name|upper }} - {{ training.date.day }}/{{ training.date.month }}/{{ training.date.year }}</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
@@ -116,7 +124,11 @@
                                                         {% csrf_token %}
                                                         <input type="text" name="training_pk" value="{{ training.id }}" hidden>
                                                         <div class="input-group">
-                                                            <input type="text" name="performance_value" class="form-control" placeholder="Votre score" aria-label="Votre score" aria-describedby="enregistrement du score">
+                                                            {% if training.performance_type == "duree" %}
+                                                                <input type="time" name="performance_value" class="form-control" step="1" placeholder="temps réalisé" aria-label="Votre score" aria-describedby="enregistrement du score" required>
+                                                            {% else %}
+                                                                <input type="text" name="performance_value" class="form-control" placeholder="nombre de tours" aria-label="Votre score" aria-describedby="enregistrement du score" required>
+                                                            {%  endif %}
                                                             <div class="input-group-append">
                                                                 <button class="btn btn-outline-secondary" type="submit">Enregistrer</button>
                                                             </div>

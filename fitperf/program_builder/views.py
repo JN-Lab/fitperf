@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import time, datetime
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import JsonResponse
@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_protect
 from .forms import RegisterExerciseStep1
 from .utils.db_interactions import DBMovement, DBExercise, DBTraining
 from .utils.treatments import DataTreatment
+from .utils.tools import Tools
 
 def index(request):
     if request.user.is_authenticated:
@@ -93,7 +94,7 @@ def exercise_page(request, exercise_pk):
                                     Veuillez réessayer s'il vous plait.""")
             return render(request, "exercise_page.html", {"exercise_dict": exercise_dict})
     else:
-        date = datetime.now
+        date = datetime.now()
         return render(request, 'exercise_page.html', {"exercise_dict": exercise_dict, "date": date})
 
 @login_required
@@ -111,17 +112,29 @@ def delete_exercise(request, exercise_pk):
 @login_required
 def trainings_list(request):
 
+    tools = Tools()
     if request.method == "POST":
         db_training = DBTraining()
         training_pk = request.POST.get("training_pk")
         performance_value = request.POST.get("performance_value")
+        print(performance_value)
+        print(type(performance_value))
         training = db_training.get_one_training_from_pk(training_pk)
+        if training.performance_type == "duree":
+            performance_value = datetime.strptime(performance_value, '%H:%M:%S')
+            performance_value = performance_value.hour * 60 * 60 + performance_value.minute * 60 + performance_value.second
+        print(performance_value)
         training.performance_value = performance_value
         training.done = True
         training.save()
      
     db = DataTreatment()
     trainings = db.get_all_trainings_per_user_in_dict(request.user)
+    for training in trainings:
+        if training["performance_value"] and training["performance_type"] == "duree":
+            training["performance_value"] = tools.convert_seconds_into_time(training["performance_value"])
+            training["exercise"]["pb"] = tools.convert_seconds_into_time(training["exercise"]["pb"])
+
     context = {
         "trainings": trainings,
         "trainings_number": len(trainings),
