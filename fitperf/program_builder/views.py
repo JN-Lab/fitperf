@@ -117,19 +117,21 @@ def trainings_list(request):
         db_training = DBTraining()
         training_pk = request.POST.get("training_pk")
         performance_value = request.POST.get("performance_value")
-        print(performance_value)
-        print(type(performance_value))
         training = db_training.get_one_training_from_pk(training_pk)
+
+        # For trainings with time as performance_type, we convert string from input type=time in seconds(int)
         if training.performance_type == "duree":
-            performance_value = datetime.strptime(performance_value, '%H:%M:%S')
-            performance_value = performance_value.hour * 60 * 60 + performance_value.minute * 60 + performance_value.second
-        print(performance_value)
+            performance_value = tools.convert_string_time_into_int_seconds(performance_value)
+        
+        # We register the new performance_value
         training.performance_value = performance_value
         training.done = True
         training.save()
      
     db = DataTreatment()
     trainings = db.get_all_trainings_per_user_in_dict(request.user)
+
+    # For trainings with time as performance_type, we convert performance_value and pb in time
     for training in trainings:
         if training["performance_value"] and training["performance_type"] == "duree":
             training["performance_value"] = tools.convert_seconds_into_time(training["performance_value"])

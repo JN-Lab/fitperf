@@ -4,7 +4,10 @@
 {% block content %}
 {% load static %}
 <main class="container">
-    <h1 class="display-4">Entraînements</h1>
+    <div class="row mx-1 my-2 justify-content-between">
+        <h1 class="d-inline">Entraînements</h1>
+        <button type="button" class="btn btn-primary">Nouvel Exercice</button>
+    </div>
     <div class="row">
         <div class="col-12">
             {% if messages %}
