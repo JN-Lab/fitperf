@@ -6,7 +6,9 @@ from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
-from .forms import RegisterExerciseStep1
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.models import User
+from .forms import RegisterExerciseStep1, PasswordChangeCustomForm
 from .utils.db_interactions import DBMovement, DBExercise, DBTraining
 from .utils.treatments import DataTreatment
 from .utils.tools import Tools
@@ -147,5 +149,16 @@ def trainings_list(request):
 
 @login_required
 def profile(request):
-
+    if request.method == 'POST':
+        form = PasswordChangeCustomForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Votre mot de passe a bien été changé.')
+            return redirect('program_builder:profile')
+        else:
+            messages.error(request, "Corrigez l'erreur s'il vous plait.")
+    else:
+        form = PasswordChangeCustomForm(request.user)
+    user = User.objects.get(pk=request.user.pk)
     return render(request, "profile.html", locals())
