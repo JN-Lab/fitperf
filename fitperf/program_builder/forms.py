@@ -1,5 +1,5 @@
 from django import forms
-from .models import Movement, Exercise
+from .models import Movement, Exercise, Training
 
 class RegisterExerciseStep1(forms.ModelForm):
     class Meta:
@@ -9,4 +9,12 @@ class RegisterExerciseStep1(forms.ModelForm):
             'name' : forms.TextInput(attrs={'class': 'form-control', 'required':True}),
             'exercise_type': forms.Select(attrs={'class': 'form-control', 'required': True}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows':3})
+        }
+
+class AddNewExercise(forms.ModelForm):
+    class Meta:
+        model = Training
+        fields = ['exercise',]
+        widgets = {
+            'exercise': forms.Select(attrs={'class': 'form-control', 'required': True}),
         }
