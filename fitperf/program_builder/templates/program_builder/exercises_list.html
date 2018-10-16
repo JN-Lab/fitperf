@@ -64,8 +64,10 @@
                                         <h6 class="card-subtitle mb-2 text-muted">{{ exercise.exercise_type }}</h6>
                                     </div>
                                     <div class="col">
-                                        <h5 class="card-title text-right text-primary"><i class="fas fa-medal"></i></h5>
-                                        <h6 class="card-subtitle mb-2 text-right text-primary">{{ exercise.pb }}</h6>
+                                        {% if exercise.pb != 0 %}
+                                            <h5 class="card-title text-right text-primary"><i class="fas fa-medal"></i></h5>
+                                            <h6 class="card-subtitle mb-2 text-right text-primary">{{ exercise.pb }}</h6>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
