@@ -3,90 +3,64 @@
 {% block title %}Fitperf - Exercices{% endblock %}
 {% block content %}
 {% load static %}
-<main class="container">
-    <h1 class="display-4">Exercices</h1>
-    <div class="jumbotron mt-4">
-        
+<div class="jumbotron jumbotron-fluid bg-dark text-light">
+    <div class="container">
+        <h1>Exercices</h1>
         <p class="lead">Retrouvez l'ensemble des exercices disponibles avec lesquels vous pouvez composez vos entraînements.</p>
-        <hr class="my-4">
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exerciseModalStep1">
-            Nouvel Exercice
-        </button>
+        <div class="cta-custom-lg-screen">
+            <hr class="my-4">
+            <!-- Button trigger modal for exercise composition -->
+            <button type="button" class="btn btn-secondary text-light font-weight-bold" data-toggle="modal" data-target="#exerciseModalStep1">
+                Nouvel Exercice
+            </button>
+        </div>
+
     </div>
-    <div class="row">
-        <div class="col-md-6 col-lg-4">
-            <div class="card mb-4 shadow">
-                <div class="card-header">
-                    <h5 class="card-title">TOTAL</h5>
-                </div>
-                <div class="card-body">
-                    <h6 class="card-subtitle">{{ exercises_number }}</h6>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-lg-4">
-            <div class="card mb-4 shadow">
-                <div class="card-header">
-                    <h5 class="card-title">PERSO</h5>
-                </div>
-                <div class="card-body">
-                    <h6 class="card-subtitle">{{ custom_exercises_number }}</h6>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-lg-4">
-            <div class="card mb-4 shadow">
-                <div class="card-header">
-                    <h5 class="card-title">Nbr PB</h5>
-                </div>
-                <div class="card-body">
-                    <h6 class="card-subtitle">{{ pb_number }}</h6>
-                </div>
-            </div>
-        </div>
-    </div>
+</div>
+<main class="container">
     <div class="row">
         <div class="col-12">
             {% if messages %}
                 {% include 'messages.html' %}
             {% endif %}
         </div>
+    </div>
+    <div class="row">
         <div class="col-12">
             <div class="row">
                 {% for exercise in exercises %}
                     <div class="col-md-6 col-lg-4">
-                        <div class="card mb-4 shadow">
-                            <div class="card-header">
-                                <div class="row justify-content-between">
-                                    <div class="col">
-                                        <h5 class="card-title">{{ exercise.name|upper }}</h5>
-                                        <h6 class="card-subtitle mb-2 text-muted">{{ exercise.exercise_type }}</h6>
-                                    </div>
-                                    <div class="col">
-                                        {% if exercise.pb != 0 %}
-                                            <h5 class="card-title text-right text-primary"><i class="fas fa-medal"></i></h5>
-                                            <h6 class="card-subtitle mb-2 text-right text-primary">{{ exercise.pb }}</h6>
-                                        {% endif %}
-                                    </div>
+                        <div class="card mb-4 shadow ml-0 rounded-0">
+                            <div class="row">
+                                <div class="col-8 card-body">
+                                    <h5 class="card-title mb-2">{{ exercise.name|upper }}</h5>
+                                    <h6 class="card-subtitle text-muted">{{ exercise.exercise_type }}</h6>
+                                </div>
+                                <div class="col-4 card-body text-center">
+                                    {% if exercise.pb != 0 %}
+                                        <h5 class="card-title mb-2"><i class="fas fa-medal fa-lg text-info"></i></h5>
+                                        <h6 class="card-subtitle text-info">{{ exercise.pb }}</h6>
+                                    {% endif %}
+                                </div>
+                                <div class="col-12 mb-2">
+                                    <a href="{% url 'program_builder:exercise_page' exercise_pk=exercise.id %}" class="card-link text-info ml-1">DETAILS</a>
+                                    {% if exercise.is_default == False %}
+                                        <a href="{% url 'program_builder:delete_exercise' exercise_pk=exercise.id %}" class="card-link text-danger ml-1">SUPPRIMER</a>
+                                    {% endif %}
                                 </div>
                             </div>
-                            <div class="card-body">
-                                <p class="card-text">{{ exercise.description|truncatechars:100 }}</p>
-                            </div>
-                            <div class="card-body bg-light">
-                                <a href="{% url 'program_builder:exercise_page' exercise_pk=exercise.id %}" class="card-link">Détails</a>
-                                {% if exercise.is_default == False %}
-                                    <a href="{% url 'program_builder:delete_exercise' exercise_pk=exercise.id %}" class="card-link">Supprimer</a>
-                                {% endif %}
-                            </div>
                         </div>
-                    </div>
+                    </div>    
                 {% endfor %}
             </div>
         </div>
     </div>
 </main>
+<nav class="navbar cta-custom-sm-screen navbar-dark bg-dark shadow fixed-bottom d-flex justify-content-center px-0 py-0">
+    <button type="button" class="btn btn-block btn-secondary text-light font-weight-bold border-0 rounded-0 py-2" data-toggle="modal" data-target="#exerciseModalStep1">
+        NOUVEL EXERCICE
+    </button>   
+</nav>
 
 <!-- Form Modal Exercise Creation Step1 -->
 <div class="modal fade" id="exerciseModalStep1" tabindex="-1" role="dialog" aria-labelledby="exerciseModalStep1Label" aria-hidden="true">
@@ -118,7 +92,7 @@
                     {{ new_exercise_form.description.label }}
                     {{ new_exercise_form.description }}
                 </div>
-                <button type="submit" class="btn btn-block btn-primary">Suivant</button> 
+                <button type="submit" class="btn btn-block btn-secondary text-light font-weight-bold">SUIVANT</button> 
             </form>
         </div>
     </div>

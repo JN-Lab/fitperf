@@ -31,7 +31,7 @@ modalStep1.form.addEventListener("submit", function(e) {
         .then(function (response) {
             modalStep2.addMovementBlock(response);
             modalStep2.addSplittedLine();
-            modalStep2.addSubmitButton("Créer");
+            modalStep2.addSubmitButton("CREER");
         })
         .catch(function (error) {
             console.log(error.status);

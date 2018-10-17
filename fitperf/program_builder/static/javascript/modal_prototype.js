@@ -295,7 +295,7 @@ ModalBuilder.prototype.addSubmitButton = function(buttonText) {
 
     var buttonElt = document.createElement("button");
     buttonElt.setAttribute("type", "submit");
-    buttonElt.classList.add("btn", "btn-block" ,"btn-primary");
+    buttonElt.classList.add("btn", "btn-block" ,"btn-secondary", "text-light", "font-weight-bold");
     buttonElt.textContent = buttonText;
 
     this.form.appendChild(buttonElt);

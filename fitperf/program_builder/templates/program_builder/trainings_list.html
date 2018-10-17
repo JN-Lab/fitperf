@@ -3,10 +3,13 @@
 {% block title %}Fitperf - Exercices{% endblock %}
 {% block content %}
 {% load static %}
-<main class="container">
-    <div class="row mx-1 my-2 justify-content-between">
-        <h1 class="d-inline">Entraînements</h1>
+<div class="jumbotron jumbotron-fluid bg-dark text-light">
+    <div class="container">
+        <h1>Entraînements</h1>
+        <p class="lead">Retrouvez l'ensemble des entraînementsque vous avez effectué.</p>
     </div>
+</div>
+<main class="container">
     <div class="row">
         <div class="col-12">
             {% if messages %}
@@ -15,42 +18,10 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6 col-lg-4">
-            <div class="card text-center mb-4 shadow">
-                <div class="card-header">
-                    <h5 class="card-title">TOTAL</h5>
-                </div>
-                <div class="card-body">
-                    <h6 class="card-subtitle display-3">{{ trainings_number }}</h6>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-lg-4">
-            <div class="card text-center mb-4 shadow">
-                <div class="card-header">
-                    <h5 class="card-title">TOTAL REALISE</h5>
-                </div>
-                <div class="card-body">
-                    <h6 class="card-subtitle display-3">{{ trainings_done_number }}</h6>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-lg-4">
-            <div class="card text-center mb-4 shadow">
-                <div class="card-header">
-                    <h5 class="card-title">TOTAL <i class="fas fa-medal fa-lg"></i></h5>
-                </div>
-                <div class="card-body">
-                    <h6 class="card-subtitle display-3">{{ pb_number }}</h6>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
         {% for training in trainings %}
             {% if training.performance_value and training.performance_value == training.exercise.pb %}
                 <div class="col-12 my-2">
-                    <div class="card bg-primary shadow">
+                    <div class="card bg-info shadow rounded-0 border-0">
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-6 col-md-10">
@@ -73,7 +44,7 @@
                 </div>
             {% elif training.performance_value %}
                 <div class="col-12 my-2">
-                    <div class="card shadow">
+                    <div class="card shadow rounded-0 border-0">
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-6 col-md-10">
@@ -81,14 +52,14 @@
                                         <h5 class="col-sm-12 col-md-4 card-subtitle text-muted">{{ training.date.day }}/{{ training.date.month }}/{{ training.date.year }}</h5>
                                         <h5 class="col-sm-12 col-md-4 card-title">{{ training.exercise.name|upper }}</h5>
                                         {% if training.performance_type == "duree" %}
-                                            <h5 class="col-sm-12 col-md-4 card-title text-primary">duree: {{ training.performance_value.minute }}:{{ training.performance_value.second }}</h5>
+                                            <h5 class="col-sm-12 col-md-4 card-title text-info">duree: {{ training.performance_value.minute }}:{{ training.performance_value.second }}</h5>
                                         {% else %}
-                                            <h5 class="col-sm-12 col-md-4 card-title text-primary">tours: {{ training.performance_value }}</h5>
+                                            <h5 class="col-sm-12 col-md-4 card-title text-info">tours: {{ training.performance_value }}</h5>
                                         {% endif %}
                                     </div>
                                 </div>
                                 <div class="col-6 col-md-2">
-                                    <h5 class="text-center"><i class="fas fa-check fa-2x text-primary"></i></h5>
+                                    <h5 class="text-center"><i class="fas fa-check fa-2x text-info"></i></h5>
                                 </div>
                             </div>
                         </div>
@@ -96,19 +67,19 @@
                 </div>
             {% else %}  
                 <div class="col-12 my-2">
-                    <div class="card shadow">
+                    <div class="card shadow rounded-0 border-0">
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-6 col-md-10">
                                     <div class="row align-items-center">
                                         <h5 class="col-sm-12 col-md-4 card-subtitle text-muted">{{ training.date.day }}/{{ training.date.month }}/{{ training.date.year }}</h5>
                                         <h5 class="col-sm-12 col-md-4 card-title">{{ training.exercise.name|upper }}</h5>
-                                        <h5 class="col-sm-12 col-md-4 card-title text-warning">Ajoute ton score</h5>
+                                        <h5 class="col-sm-12 col-md-4 card-title text-secondary">Ajoute ton score</h5>
                                     </div>
                                 </div>
                                 <div class="col-6 col-md-2">
                                     <div class="text-center">
-                                        <button type="button" class="btn btn-lg btn-warning rounded-circle text-white font-weight-bold shadow" data-toggle="modal" data-target="#performanceModal{{training.pk}}">
+                                        <button type="button" class="btn btn-lg btn-secondary rounded-circle text-white font-weight-bold shadow" data-toggle="modal" data-target="#performanceModal{{training.pk}}">
                                                 +
                                         </button>
                                     </div>

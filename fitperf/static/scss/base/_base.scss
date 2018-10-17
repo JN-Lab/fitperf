@@ -1,7 +1,36 @@
 html,
 body {
     height: 100%;
-    background-color: $gray;
+    background-color: $grey;
     font-family: $font-stack;
     padding-top: 25px;
+}
+
+// Navigation
+
+@include media-breakpoint-up(md) {
+    body {
+    }
+
+    .cta-custom-sm-screen {
+        @include invisible(hidden);
+    }
+
+    .cta-custom-lg-screen {
+        display: block;
+    }
+}
+
+@include media-breakpoint-down(md) {
+    body {
+        margin-bottom: 25px;
+    }
+
+    .cta-custom-sm-screen {
+        @include invisible(visible);
+    }
+
+    .cta-custom-lg-screen {
+        display: none;
+    }
 }
