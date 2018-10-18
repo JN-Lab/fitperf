@@ -6804,7 +6804,10 @@ body {
     display: none; }
 
   .jumbotron-desktop-only {
-    display: block; } }
+    display: block; }
+
+  .text-custom-profile {
+    font-size: 1.4rem; } }
 @media (max-width: 991.98px) {
   body {
     margin-bottom: 25px;
@@ -6823,7 +6826,10 @@ body {
     display: none; }
 
   .jumbotron {
-    margin-top: -25px; } }
+    margin-top: -25px; }
+
+  .text-custom-profile {
+    font-size: 1rem; } }
 .card-subtitle {
   font-size: 1rem; }
 

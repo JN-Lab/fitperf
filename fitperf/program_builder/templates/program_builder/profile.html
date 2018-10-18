@@ -18,19 +18,57 @@
         </div>
     </div>
     <div class="row justify-content-center">
-        <div class="col-12 col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    {{ user.username }}
+        <div class="col-12 col-md-10">
+            <div class="card mb-4 shadow rounded-0 border-0">
+                <div class="row">
+                    <div class="col-3 col-sm-3 col-md-2 col-xl-1">
+                        <div class="card-body h-100">
+                            <i class="fas fa-user align-middle h-100 fa-3x"></i>
+                        </div>
+                    </div>
+                    <div class="col-9 col-sm-9 col-md-10 col-xl-11">
+                        <div class="card-body py-0 px-0 h-100">
+                            <div class="row align-items-center h-100 ml-2">
+                                <p class="col-12 col-md-6 text-custom-profile mb-0">PSEUDO</p>
+                                <p class="col-12 col-md-6 text-custom-profile mb-0">{{ user.username }}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <p>Prénom:</p>
-                    <p>Nom:</p>
-                    <p>Mail: {{ user.email }}</p>
+            </div>
+        </div>
+        <div class="col-12 col-md-10">
+            <div class="card mb-4 shadow rounded-0 border-0">
+                <div class="row">
+                    <div class="col-3 col-sm-3 col-md-2 col-xl-1">
+                        <div class="card-body h-100">
+                            <i class="fas fa-at align-middle h-100 fa-3x"></i>
+                        </div>
+                    </div>
+                    <div class="col-9 col-sm-9 col-md-10 col-xl-11">
+                        <div class="card-body py-0 px-0 h-100">
+                            <div class="row align-items-center h-100 ml-2">
+                                <p class="col-12 col-md-6 text-custom-profile mb-0">MAIL</p>
+                                <p class="col-12 col-md-6 text-custom-profile mb-0">{{ user.email }}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <hr>
-                    <button type="button" class="btn btn-danger btn-lg btn-block" data-toggle="modal" data-target="#changePasswordModal">Change Password</button>
+            </div>
+        </div>
+        <div class="col-12 col-md-10">
+            <div class="card mb-4 shadow rounded-0 border-0">
+                <div class="row">
+                    <div class="col-3 col-sm-3 col-md-2 col-xl-1">
+                        <div class="card-body h-100">
+                            <i class="fas fa-key align-middle h-100 fa-3x"></i>
+                        </div>
+                    </div>
+                    <div class="col-9 col-sm-9 col-md-10 col-xl-11">
+                        <div class="card-body py-0 px-0 h-100">
+                            <button type="button" class="h-100 rounded-0 btn btn-danger btn-lg btn-block" data-toggle="modal" data-target="#changePasswordModal">Change Password</button>                            
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

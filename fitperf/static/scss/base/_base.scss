@@ -25,6 +25,11 @@ body {
     .jumbotron-desktop-only {
         display: block;
     }
+
+    .text-custom-profile {
+        font-size: 1.4rem;
+    }
+
 }
 
 @include media-breakpoint-down(md) {
@@ -51,5 +56,9 @@ body {
 
     .jumbotron {
         margin-top: -25px;
+    }
+
+    .text-custom-profile {
+        font-size: 1rem;
     }
 }
