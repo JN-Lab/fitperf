@@ -6786,6 +6786,9 @@ a.text-dark:hover, a.text-dark:focus {
 .modal {
   overflow: auto; }
 
+.btn:focus, .btn:active:focus, .btn.active:focus {
+  box-shadow: none; }
+
 html,
 body {
   height: 100%;
