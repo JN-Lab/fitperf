@@ -26,6 +26,7 @@ def homepage(request):
     This is just a view to have an homepage for the example.
     Usually, this view will be out of the application in another project
     """
+    title = "homepage"
     return render(request, 'homepage.html', locals())
 
 @login_required
@@ -61,6 +62,7 @@ def exercises_list(request):
         'custom_exercises_number': len([exercise for exercise in exercises if not exercise["is_default"]]),
         'pb_number': len([exercise for exercise in exercises if exercise["pb"] != 0]),
         'new_exercise_form': new_exercise_form,
+        'title': 'exercises'
     }
     return render(request, 'exercises_list.html', context)
 
@@ -84,6 +86,11 @@ def exercise_page(request, exercise_pk):
     
     treatment = DataTreatment()
     exercise_dict = treatment.get_one_exercise_in_dict_linked_to_one_user(exercise_pk, request.user)
+    context = {
+     'exercise_dict': exercise_dict,
+     'title': 'exercises',
+     'date': datetime.now()
+    }
     if request.method == "POST":
         db_training = DBTraining()
         db_exercise = DBExercise()
@@ -95,10 +102,9 @@ def exercise_page(request, exercise_pk):
         else:
             messages.error(request, """Un problème a été rencontré lors de la création de votre entraînement. 
                                     Veuillez réessayer s'il vous plait.""")
-            return render(request, "exercise_page.html", {"exercise_dict": exercise_dict})
+            return render(request, "exercise_page.html", context)
     else:
-        date = datetime.now()
-        return render(request, 'exercise_page.html', {"exercise_dict": exercise_dict, "date": date})
+        return render(request, 'exercise_page.html', context)
 
 @login_required
 def delete_exercise(request, exercise_pk):
@@ -141,6 +147,7 @@ def trainings_list(request):
             training["exercise"]["pb"] = tools.convert_seconds_into_time(training["exercise"]["pb"])
 
     context = {
+        "title": 'trainings',
         "trainings": trainings,
         "trainings_number": len(trainings),
         "trainings_done_number": len([training for training in trainings if training["done"]]),
@@ -162,4 +169,9 @@ def profile(request):
     else:
         form = PasswordChangeCustomForm(request.user)
     user = User.objects.get(pk=request.user.pk)
-    return render(request, "profile.html", locals())
+    context = {
+        'user': user,
+        'title': 'profile',
+        'form': form
+    }
+    return render(request, "profile.html", context)

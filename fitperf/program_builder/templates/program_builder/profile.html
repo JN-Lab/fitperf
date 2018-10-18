@@ -3,10 +3,13 @@
 {% block title %}Fitperf - Page Exercice{% endblock %}
 {% block content %}
 {% load static %}
-<main class="container">
-    <div class="row mx-1 my-2 justify-content-between">
-        <h1 class="d-inline">Profil</h1>
+<div class="jumbotron jumbotron-fluid jumbotron-desktop-only bg-dark text-light">
+    <div class="container">
+        <h1>Profil</h1>
+        <p class="lead">Retrouvez l'ensemble des informations de votre compte.</p>
     </div>
+</div>
+<main class="container">
     <div class="row">
         <div class="col-12">
             {% if messages %}

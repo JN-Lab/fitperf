@@ -6798,16 +6798,32 @@ body {
     visibility: hidden !important; }
 
   .cta-custom-lg-screen {
+    display: block; }
+
+  .nav-custom-page-title {
+    display: none; }
+
+  .jumbotron-desktop-only {
     display: block; } }
 @media (max-width: 991.98px) {
   body {
-    margin-bottom: 25px; }
+    margin-bottom: 25px;
+    padding-top: 50px; }
 
   .cta-custom-sm-screen {
     visibility: visible !important; }
 
   .cta-custom-lg-screen {
-    display: none; } }
+    display: none; }
+
+  .nav-custom-page-title {
+    display: block; }
+
+  .jumbotron-desktop-only {
+    display: none; }
+
+  .jumbotron {
+    margin-top: -25px; } }
 .card-subtitle {
   font-size: 1rem; }
 
