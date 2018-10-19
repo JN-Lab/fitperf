@@ -128,14 +128,15 @@ def trainings_list(request):
         performance_value = request.POST.get("performance_value")
         training = db_training.get_one_training_from_pk(training_pk)
 
-        # For trainings with time as performance_type, we convert string from input type=time in seconds(int)
-        if training.performance_type == "duree":
-            performance_value = tools.convert_string_time_into_int_seconds(performance_value)
-        
-        # We register the new performance_value
-        training.performance_value = performance_value
-        training.done = True
-        training.save()
+        if training:
+            # For trainings with time as performance_type, we convert string from input type=time in seconds(int)
+            if training.performance_type == "duree":
+                performance_value = tools.convert_string_time_into_int_seconds(performance_value)
+            
+            # We register the new performance_value
+            training.performance_value = performance_value
+            training.done = True
+            training.save()
      
     db = DataTreatment()
     trainings = db.get_all_trainings_per_user_in_dict(request.user)
