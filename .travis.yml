@@ -20,4 +20,4 @@ addons:
   postgresql: "9.4"
 
 script:
-  - cd ./manage.py test
+  - ./manage.py test
