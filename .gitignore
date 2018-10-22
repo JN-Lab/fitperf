@@ -1,5 +1,6 @@
 env/
 .sass-cache
+node_modules/
 fitperf/__pycache__/
 fitperf/settings/__pycache__/
 authentification/__pycache__/
