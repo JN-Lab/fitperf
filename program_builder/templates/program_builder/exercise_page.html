@@ -10,7 +10,7 @@
         <div class="cta-custom-lg-screen">
             <hr class="my-4">
             <!-- Button trigger modal for exercise composition -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exerciseStartModal">
+            <button type="button" class="btn btn-secondary text-light font-weight-bold" data-toggle="modal" data-target="#exerciseStartModal">
                 Démarrer un Entrainement
             </button>
         </div>
@@ -34,8 +34,14 @@
                         {{ exercise_dict.goal_type|upper }} : {{ exercise_dict.goal_value }}
                         {% if exercise_dict.goal_type == "duree" %}
                             minutes
+                        {% elif exercise_dict.goal_type == "round" %}
+                            {% if exercise_dict.goal_value == 1 %}
+                                tour
+                            {% else %}
+                                tours
+                            {% endif %}
                         {% else %}
-                            tours
+                            metres
                         {% endif %}
                     </h5>
                 </div>
