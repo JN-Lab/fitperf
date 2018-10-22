@@ -199,21 +199,23 @@ ModalBuilder.prototype.returnMovementForm = function(movementsList, mvtFormIndex
 
     divSelectElt.appendChild(selectElt);
 
-    if (mvtFormIndex > 1) {
-        // Test close Button
-        var delBtnElt = document.createElement("button");
-        delBtnElt.id = "close-button-" + mvtFormIndex;
-        delBtnElt.classList.add("close", 'col-2');
-        delBtnElt.setAttribute("type", "button");
-        delBtnElt.setAttribute("arial-label", "Close");
 
-        var delSpanElt = document.createElement("span");
-        delSpanElt.setAttribute("aria-hidden", "true");
-        delSpanElt.textContent = "×";
+    // FOR FIRST MVP -> WE DON'T MANAGE DEL MOVEMENT DURING CREATION
+    // if (mvtFormIndex > 1) {
+    //     // Test close Button
+    //     var delBtnElt = document.createElement("button");
+    //     delBtnElt.id = "close-button-" + mvtFormIndex;
+    //     delBtnElt.classList.add("close", 'col-2');
+    //     delBtnElt.setAttribute("type", "button");
+    //     delBtnElt.setAttribute("arial-label", "Close");
 
-        delBtnElt.appendChild(delSpanElt);
-        formElt.appendChild(delBtnElt);
-    }
+    //     var delSpanElt = document.createElement("span");
+    //     delSpanElt.setAttribute("aria-hidden", "true");
+    //     delSpanElt.textContent = "×";
+
+    //     delBtnElt.appendChild(delSpanElt);
+    //     formElt.appendChild(delBtnElt);
+    // }
     
     formElt.appendChild(labelElt);
     formElt.appendChild(divSelectElt);
