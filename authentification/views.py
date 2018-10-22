@@ -25,7 +25,7 @@ def log_in(request):
             user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)
-                return redirect(reverse('program_builder:homepage'), locals())
+                return redirect(reverse('program_builder:trainings_list'), locals())
             else:
                 messages.error(request, """Votre nom d'utilisateur ou votre mot de passe est incorrect.""")
                 return render(request, 'login.html', locals())

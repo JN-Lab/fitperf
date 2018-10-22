@@ -15,19 +15,9 @@ from .utils.tools import Tools
 
 def index(request):
     if request.user.is_authenticated:
-        return redirect(reverse("program_builder:homepage"), locals())
+        return redirect(reverse("program_builder:trainings_list"), locals())
     else:
         return redirect(reverse("authentification:log_in"), locals())
-
-# Create your views here.
-@login_required
-def homepage(request):
-    """
-    This is just a view to have an homepage for the example.
-    Usually, this view will be out of the application in another project
-    """
-    title = "homepage"
-    return render(request, 'homepage.html', locals())
 
 @login_required
 def ajax_all_movements(request):

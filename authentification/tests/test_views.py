@@ -93,7 +93,7 @@ class LoginPageTestCase(TestCase):
 
         response = self.client.post(reverse('authentification:log_in'), data)
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('program_builder:homepage'))
+        self.assertRedirects(response, reverse('program_builder:trainings_list'))
 
         user = auth.get_user(self.client)
         self.assertTrue(user.is_authenticated)
