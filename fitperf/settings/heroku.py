@@ -8,7 +8,7 @@ import dj_database_url
 # Do not forget to set as an env variable DJANGO_SETTINGS_MODULE -> heroku config: set DJANGO_SETTINGS_MODULE='fitperf.settings.heroku'
 
 SECRET_KEY = os.environ['SECRET_KEY']
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ['fitperf.herokuapp.com']
 
 # For static management during production
