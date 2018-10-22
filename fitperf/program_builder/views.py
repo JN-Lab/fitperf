@@ -53,7 +53,7 @@ def exercises_list(request):
     db = DataTreatment()
     exercises = db.get_all_exercises_dict_linked_to_one_user(request.user)
     for exercise in exercises:
-        if exercise["pb"] != 0 and exercise["goal_type"] == "duree":
+        if exercise["pb"] != 0 and exercise["goal_type"] != "duree":
             exercise["pb"] = tools.convert_seconds_into_time(exercise["pb"])
     new_exercise_form = RegisterExerciseStep1()
     context = {

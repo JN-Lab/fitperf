@@ -92,7 +92,7 @@ class DBinit:
         run = Movement.objects.create(name="run", founder=founder, equipment=anyone)
         burpees.settings.add(dist, lest)
 
-        deadlift = Movement.objects.create(name="deadlift", founder=founder, equipement=bar)
+        deadlift = Movement.objects.create(name="deadlift", founder=founder, equipment=bar)
         deadlift.settings.add(rep, weight)
 
         handstand_pushup = Movement.objects.create(name="handstand pushup", founder=founder, equipment=anyone)
