@@ -45,7 +45,11 @@ class DBinit:
         """
         This method creates all the necessary settings
         """
-        founder = User.objects.get(username="juliennuellas")
+
+        try:
+            founder = User.objects.get(username="juliennuellas")
+        except:
+            founder = User.objects.create_superuser(username="juliennuellas", email="julien.nuellas@gmail.com", password="fitperf1987")
 
         # We create the necessary settings
         rep = MovementSettings.objects.create(name=MovementSettings.REPETITIONS, founder=founder)
