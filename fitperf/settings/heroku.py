@@ -7,6 +7,7 @@ import dj_database_url
 # Secret key is set as a env variable -> heroku config: set SECRET_KEY=YOUR_SECRET_KEY
 # Do not forget to set as an env variable DJANGO_SETTINGS_MODULE -> heroku config: set DJANGO_SETTINGS_MODULE='fitperf.settings.heroku'
 
+SECRET_KEY = os.environ['SECRET_KEY']
 DEBUG = False
 ALLOWED_HOSTS = ['fitperf.herokuapp.com']
 
