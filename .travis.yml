@@ -11,8 +11,13 @@ branches:
 before_script:
   - pip install -r requirements.txt
 
-env: DJANGO_SETTINGS_MODULE="fitperf.settings.travis"
-
+env: 
+  - DJANGO_SETTINGS_MODULE="fitperf.settings.travis"
+  - EMAIL_HOST_PASSWORD="dev_travis_test"
+  - EMAIL_HOST_USER="travis-fitperf@gmail.com"
+  - SUPERUSER_EMAIL="superuser@gmail.com"
+  - SUPERUSER_PASSWORD="superpassword"
+  - SUPERUSER_USERNAME="juliennuellas"
 services:
   - postgresql
 
