@@ -13,9 +13,8 @@ before_script:
 
 env: 
   - DJANGO_SETTINGS_MODULE="fitperf.settings.travis"
-  - EMAIL_HOST_PASSWORD="dev_travis_test"
-  - EMAIL_HOST_USER="travis-fitperf@gmail.com"
-  - SUPERUSER_EMAIL="superuser@gmail.com"
+  - SENDGRID_USERNAME="sendgrid_username"
+  - SENDGRID_PASSWORD="sendgrid_password"
   - SUPERUSER_PASSWORD="superpassword"
   - SUPERUSER_USERNAME="juliennuellas"
 services:
