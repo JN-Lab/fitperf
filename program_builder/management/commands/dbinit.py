@@ -42,6 +42,10 @@ class DBinit:
         if trainings:
             trainings.delete()
 
+        users = User.objects.all()
+        if users:
+            users.delete()
+
     def start(self):
         """
         This method creates all the necessary settings
