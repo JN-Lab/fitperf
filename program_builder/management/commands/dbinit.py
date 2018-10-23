@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 # coding: utf-8
+import os
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from ...models import Training, Exercise, MovementsPerExercise, MovementSettingsPerMovementsPerExercise, Movement, MovementSettings, Equipment
@@ -41,11 +42,22 @@ class DBinit:
         if trainings:
             trainings.delete()
 
+        users = User.objects.all()
+        if users:
+            users.delete()
+
     def start(self):
         """
         This method creates all the necessary settings
         """
-        founder = User.objects.get(username="juliennuellas")
+        username = os.environ['SUPERUSER_USERNAME']
+        email = os.environ['SUPERUSER_EMAIL']
+        password = os.environ['SUPERUSER_PASSWORD']
+
+        try:
+            founder = User.objects.get(username=username)
+        except:
+            founder = User.objects.create_superuser(username=username, email=email, password=password)
 
         # We create the necessary settings
         rep = MovementSettings.objects.create(name=MovementSettings.REPETITIONS, founder=founder)

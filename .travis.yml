@@ -11,8 +11,14 @@ branches:
 before_script:
   - pip install -r requirements.txt
 
-env: DJANGO_SETTINGS_MODULE="fitperf.settings.travis"
-
+env: 
+  global:
+    - DJANGO_SETTINGS_MODULE="fitperf.settings.travis"
+    - SENDGRID_USERNAME="sendgrid_username"
+    - SENDGRID_PASSWORD="sendgrid_password"
+    - SUPERUSER_EMAIL="travis@gmail.com"
+    - SUPERUSER_PASSWORD="superpassword"
+    - SUPERUSER_USERNAME="juliennuellas"
 services:
   - postgresql
 
