@@ -140,8 +140,8 @@ STATICFILES_DIRS = [
 # Email configuration
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'dev.openclassrooms@gmail.com' #'YOUR_MAIL'
-EMAIL_HOST_PASSWORD = 'dev_openclassrooms_2018' #'YOUR_PASSWORD'
+EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
 EMAIL_PORT = 587
 
 # Messages configuration with boostrap class
